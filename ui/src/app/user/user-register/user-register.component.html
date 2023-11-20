@@ -1,1 +1,26 @@
 <p>user-register works!</p>
+
+<form action="" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+    <label for="email">email: </label>
+    <input id="email" type="email" formControlName="email">
+
+    <label for="username">username: </label>
+    <input id="username" type="text" formControlName="username">
+
+    <label for="password">password: </label>
+    <input id="password" type="password" formControlName="password">
+
+    <button type="submit" (click)="clearForm()">Clear</button>
+    <button type="submit" [disabled]="!registerForm.valid">Submit</button>
+</form>
+
+
+
+
+
+<p>Form Status: {{ registerForm.status }}</p>
+<p>{{ registerForm.value | json}}</p>
+
+<!-- <button type="button" (click)="register()">Register</button>
+<button type="button" (click)="clearForm()">Clear</button> -->

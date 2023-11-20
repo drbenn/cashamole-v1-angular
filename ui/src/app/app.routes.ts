@@ -8,7 +8,8 @@ import { HowToComponent } from './how-to/how-to.component';
 import { AppComponent } from './app.component';
 
 export const routes: Routes = [
-    { path: '', component: HomeComponent },
+    // { path: '', component: HomeComponent },
+    { path: '', component: UserRegisterComponent },
     { path: 'login', component: UserLoginComponent },
     { path: 'register', component: UserRegisterComponent },
     { path: 'password-reset', component: UserResetPasswordComponent },
