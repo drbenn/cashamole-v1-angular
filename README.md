@@ -10,16 +10,6 @@ npm install --save-dev jest @types/jest jest-environment-jsdom
 
 angular.json > test > builder: "@angular-devkit/build-angular:jest"  & remove karma section
 
-tsconfig.spec.ts > compilerOptions> types: ["jest"]
-
-npx jest --init
-
-in angular r`oot create file jestconfig.js and input
-
-module.exports = {
-  preset: 'jest-preset-angular',
-  setupFilesAfterEnv: ['<rootDir>/setup-jest.js'],
-  moduleNameMapper: {
-    '^@app/(.*)$': '<rootDir>/src/app/$1'
-  }
-};
+npm run test
+npm run test:coverage
+npm run test:watch

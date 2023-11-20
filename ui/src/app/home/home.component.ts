@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-donation',
+  selector: 'app-home',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './donation.component.html',
-  styleUrl: './donation.component.scss'
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.scss'
 })
-export class DonationComponent {
+export class HomeComponent {
 
 }
