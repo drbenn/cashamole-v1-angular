@@ -11,7 +11,7 @@
     <label for="password">password: </label>
     <input id="password" type="password" formControlName="password">
 
-    <button type="submit" (click)="clearForm()">Clear</button>
+    <button type="reset" (click)="clearForm()">Clear</button>
     <button type="submit" [disabled]="!registerForm.valid">Submit</button>
 </form>
 
@@ -22,5 +22,5 @@
 <p>Form Status: {{ registerForm.status }}</p>
 <p>{{ registerForm.value | json}}</p>
 
-<!-- <button type="button" (click)="register()">Register</button>
+<!-- <button type="button" (click)="onSubmit()">Register</button>
 <button type="button" (click)="clearForm()">Clear</button> -->

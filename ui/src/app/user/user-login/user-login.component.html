@@ -1,1 +1,20 @@
 <p>user-login works!</p>
+
+<form action="" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+    <label for="username">username: </label>
+    <input id="username" type="text" formControlName="username">
+
+    <label for="password">password: </label>
+    <input id="password" type="password" formControlName="password">
+
+    <button type="reset" (click)="clearForm()">Clear</button>
+    <button type="submit" [disabled]="!loginForm.valid">Submit</button>
+</form>
+
+
+
+
+
+<p>Form Status: {{ loginForm.status }}</p>
+<p>{{ loginForm.value | json}}</p>
