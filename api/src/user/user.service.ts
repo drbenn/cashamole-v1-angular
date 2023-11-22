@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Connection } from 'mysql2';
 import { InjectClient } from 'nest-mysql';
-import { InsertUser, LoginUserDto, RegisterUserDto, UserExist } from './register-user-dto/register-user-dto';
+import { InsertUser, LoginUserDto, RegisterUserDto, UserExist } from './user-dto/user-dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -18,7 +19,7 @@ export class UserService {
         const existingUser = await this.connection.query(sqlQuery)
         const results = Object.assign([{}], existingUser[0]);
         
-        let userResult: UserExist = {
+        let userExistResult: UserExist = {
             userExist: false,
             username: false,
             email: false
@@ -27,53 +28,95 @@ export class UserService {
         if (results.length) {
             results.forEach((result: any) => {
                 if (result.username === username) {
-                    userResult.username = true;
-                    userResult.userExist = true;
+                    userExistResult.username = true;
+                    userExistResult.userExist = true;
                 }
                 if (result.email === email) {
-                    userResult.email = true;
-                    userResult.userExist = true;
+                    userExistResult.email = true;
+                    userExistResult.userExist = true;
                 }
             })
         }
-        return userResult;
+        return userExistResult;
     }
 
-    async insertNewUser(userRegisterDto: RegisterUserDto): Promise<InsertUser> {
-        const shaPassword: string = await this.generateSha256(userRegisterDto.password)
-        const sqlQuery: string = `INSERT INTO users (email, username, password) VALUES (\'${userRegisterDto.email}\', \'${userRegisterDto.username}\', \'${shaPassword}\')`;
+    async insertNewUser(userRegisterDto: RegisterUserDto): Promise<InsertUser> {        
+        const sqlQuery: string = `INSERT INTO users (email, username, password) 
+            VALUES (\'${userRegisterDto.email}\', \'${userRegisterDto.username}\', \'${userRegisterDto.password}\')`;
         const registeredUser = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], registeredUser[0]);
-        const success: boolean = results.affectedRows > 0 ? true : false;
-        return {insertSuccessful: success, username: userRegisterDto.username, email: userRegisterDto.email};
-    }
-
-    async generateSha256(password: string): Promise<string> {
-        const passwordAsArrayBuffer: ArrayBuffer = new TextEncoder().encode(password);
-        const shaPasswordBuffer: ArrayBuffer =  await crypto.subtle.digest('SHA-256', passwordAsArrayBuffer);
-        const decoder = new TextDecoder('utf-8');
-        const shaPassword: string = decoder.decode(shaPasswordBuffer);
-        return shaPassword;
-    }
-
-
-
-    async validateLoginCredentials(loginUserDto: LoginUserDto) {
-        const shaPassword: string = await this.generateSha256(loginUserDto.password)
-        const sqlQuery: string = `SELECT * FROM users WHERE username='${loginUserDto.username} AND password='${shaPassword}'`;
-        const authenticateUser = await this.connection.query(sqlQuery);
-        const results = Object.assign([{}], authenticateUser[0]);
         console.log(results);
         
-        // const result = await con.promise().query(sql, [username, password])
-        // .then( ([row, fields]) => {
-        //     console.log(row);
-        //     console.log(fields);
-        //     const isLoginValidated = row && row.length === 1;
-        //     const userId = 0; // todo: once userId is column in table, should be row.id
-        //     return { userId: userId, isLoginValidated: isLoginValidated}
-        // });
-        // return result;
+        const success: boolean = results.affectedRows > 0 ? true : false;
+        return {insertSuccessful: success, userId: results.insertId, username: userRegisterDto.username, email: userRegisterDto.email};
+    }
+
+    // The salt gets automatically included with the hash, so you do not need to store it in a database.
+    async generateHashSaltPassword(password: string): Promise<string | any> {
+        const saltRounds: number = 10;
+        return await bcrypt.hash(password, saltRounds, null);
+    }
+
+    async generateDbTablesForNewUser(userId: number) {
+        this.generateUserTransactionsTable(userId);
+        this.generateUserBalanceSheetTable(userId);
+        this.generateUserChipsTable(userId);
+    }
+
+    async generateUserTransactionsTable(userId: number) {
+        const sqlQuery: string = `
+            CREATE TABLE IF NOT EXISTS user${userId}_transactions (
+            trans_id INT PRIMARY KEY AUTO_INCREMENT,
+            date DATETIME NOT NULL,
+            amount DECIMAL(10,2) NOT NULL,
+            category VARCHAR(250) NOT NULL,
+            description VARCHAR(100) NOT NULL,
+            active BOOLEAN NOT NULL
+        )`;
+        const queryDb = await this.connection.query(sqlQuery);
+        const results = Object.assign([{}], queryDb[0]);
+        console.log(results);
+    }
+
+    async generateUserBalanceSheetTable(userId: number) {
+        const sqlQuery: string = `
+            CREATE TABLE IF NOT EXISTS user${userId}_bal_sheet (
+            trans_id INT PRIMARY KEY AUTO_INCREMENT,
+            date DATETIME NOT NULL,
+            amount DECIMAL(10,2) NOT NULL,
+            type VARCHAR(50) NOT NULL,
+            description VARCHAR(100) NOT NULL,
+            active BOOLEAN NOT NULL
+        )`;
+        const queryDb = await this.connection.query(sqlQuery);
+        const results = Object.assign([{}], queryDb[0]);
+        console.log(results);
+    }
+
+    async generateUserChipsTable(userId: number) {
+        const sqlQuery: string = `
+            CREATE TABLE IF NOT EXISTS user${userId}_chips (
+            id INT PRIMARY KEY AUTO_INCREMENT,
+            type VARCHAR(50) NOT NULL,
+            chip VARCHAR(200) NOT NULL,
+            active BOOLEAN NOT NULL
+        )`;
+        const queryDb = await this.connection.query(sqlQuery);
+        const results = Object.assign([{}], queryDb[0]);
+        console.log(results);
+    }
+
+    async validateLoginCredentials(loginUserDto: LoginUserDto): Promise<boolean> {
+        const sqlQuery: string = `SELECT password FROM users WHERE username='${loginUserDto.username}'`;
+        const hashSaltPasswordFromDbQuery = await this.connection.query(sqlQuery);
+        const results = Object.assign([{}], hashSaltPasswordFromDbQuery[0]);
+        const dbHashSaltPassword: string = `${results[0].password}`;
+        const isMatch: boolean = await bcrypt.compare(loginUserDto.password, dbHashSaltPassword);
+        if (!isMatch) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
 }

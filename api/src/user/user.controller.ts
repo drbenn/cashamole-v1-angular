@@ -1,7 +1,7 @@
-import { Body, Controller, Get, Header, HttpStatus, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Req, Res } from '@nestjs/common';
 import { UserService } from './user.service';
-import { InsertUser, LoginUserDto, RegisterUserDto, UserExist } from './register-user-dto/register-user-dto';
-import { Response } from 'express';
+import { InsertUser, LoginUserDto, RegisterUserDto, UserExist } from './user-dto/user-dto';
+import { Request, Response } from 'express';
 
 
 @Controller('user')
@@ -15,24 +15,42 @@ export class UserController {
         return 'This action returns all cats'
     }
 
+    @Get('all')
+    allUsers(
+        @Req() request: Request,
+        @Res({ passthrough: true }) response: Response
+        ): any {
+        console.log(request.cookies);
+        
+        let users = this.userService.findAll();
+        // console.log(response);
+        
+        return users;
+        // return 'This action returns all cats'
+    }
+
     
     @Post('register_user')
     async registerUser(
         @Res() res: Response, 
         @Body() userRegisterDto: RegisterUserDto
         ) {
-        // let users = this.userService.findAll();
+
         const email: string = userRegisterDto.email;
         const username: string = userRegisterDto.username;
         const isUserExisting: UserExist = await this.userService.doesUserExist(email,username);
 
-        if (!isUserExisting.userExist) {
+        if (isUserExisting.userExist) {
+            res.status(HttpStatus.NOT_ACCEPTABLE).send("registration failed" + JSON.stringify(isUserExisting));
+        } else {
+            const hashSaltPassword: string = await this.userService.generateHashSaltPassword(userRegisterDto.password);
+            userRegisterDto.password = hashSaltPassword; // replace text password with hash/salt password
             const insertResponse: InsertUser = await this.userService.insertNewUser(userRegisterDto);
-            res.status(HttpStatus.ACCEPTED).send("successful" + JSON.stringify(insertResponse));
+            res.status(HttpStatus.OK).send("registration successful" + JSON.stringify(insertResponse));
             // todo: send registration confirmation email
             // todo: create user specific database tables
-        } else {
-            res.status(HttpStatus.NOT_ACCEPTABLE).send("failed" + JSON.stringify(isUserExisting));
+            this.userService.generateDbTablesForNewUser(insertResponse.userId);
+            // todo: treat user as logged in and retrieve session token just like at login
         };
     };
 
@@ -41,42 +59,16 @@ export class UserController {
     async loginUser(
         @Res() res: Response, 
         @Body() userLoginDto: LoginUserDto
-        ) {
-        const username: string = userLoginDto.username;
-        const password: string = userLoginDto.password;
-        const loginValidation = await this.userService.validateLoginCredentials(userLoginDto);
-        // const isUserExisting: UserExist = await this.userService.doesUserExist(email,username);
+        ) {        
+        const isloginValidated: boolean = await this.userService.validateLoginCredentials(userLoginDto);
 
-        // if (!isUserExisting.userExist) {
-        //     const insertResponse: InsertUser = await this.userService.insertNewUser(userRegisterDto);
-        //     res.status(HttpStatus.ACCEPTED).send("successful" + JSON.stringify(insertResponse));
-        //     // todo: send registration confirmation email
-        //     // todo: create user specific database tables
-        // } else {
-        //     res.status(HttpStatus.NOT_ACCEPTABLE).send("failed" + JSON.stringify(isUserExisting));
-        // };
-    };
-
-
-    /**
- * Verifies if username exists and then registers/inserts new user to database
- */
-// app.post('/login_user', async (req, res) => {
-//     res.setHeader('Access-Control-Allow-Origin', '*');
-//     const username = req.body.username;
-//     const password = req.body.password;
-//     const loginValidation = await validateLoginCredentials(username, password);
-//     // const userId = 1; // should get userId from db to add to generate token field
-//     // todo: if autheticated and additional data for user required, set db query function here
-//     if (!loginValidation.isLoginValidated) {
-//         res.status(400).json({message: 'Username/Password incorrect'});
-//       } else {
-//         const token = jwtService.generateToken({ userId: loginValidation.userId, username: username});
-//         console.log(token);
-//         res.status(201).json({message: 'Login Successful'});
-//       }
-//     }
-//   )
-  
+        if (!isloginValidated) {
+            res.status(HttpStatus.BAD_REQUEST).send("login failed");
+        } else {
+            // todo: grab existing user data from db
+            const userData = {data: 'placeholder'}
+            res.status(HttpStatus.OK).send("login successful" + JSON.stringify(userData));
+        }
+    };  
 
 }

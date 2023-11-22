@@ -6,6 +6,7 @@ export class RegisterUserDto {
 
 export class InsertUser {
     insertSuccessful: boolean;
+    userId: number;
     username: string;
     email: string;
 }
@@ -15,7 +16,6 @@ export class UserExist {
     username: boolean;
     email: boolean;
 }
-
 
 export class LoginUserDto {
     username: string;

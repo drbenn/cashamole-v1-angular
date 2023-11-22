@@ -1,21 +1,27 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserController } from './user/user.controller';
-import { UserService } from './user/user.service';
 import { MysqlModule } from 'nest-mysql';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
+
+
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     MysqlModule.forRoot({
-      host: 'localhost',
-      database: 'cashamole',
-      password: 'pass',
-      user: 'root',
-      port: 3306,      
+      host: process.env.DATABASE_HOST,
+      database: process.env.DATABASE_NAME,
+      password: process.env.DATABASE_PASSWORD,
+      user: process.env.DATABASE_USER,
+      port: parseInt(process.env.DATABASE_PORT),      
   }),
+    UserModule,
+    AuthModule
   ],
-  controllers: [AppController, UserController],
-  providers: [AppService, UserService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
