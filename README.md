@@ -11,12 +11,6 @@ npm run test
 npm run test:coverage
 npm run test:watch
 
-# Nest mac permissions bypass
-## for directory
-sudo chown -R $USER /Users/danielbennett/Desktop/code/cashamole/api
-## for shell file
-chmod +x create-db.sh
-
 # MYSQL
 /usr/local/mysql/bin/mysql -uroot -p
 nest app.module holds database config
@@ -24,6 +18,10 @@ nest app.module holds database config
 # NestJs
 enable cors config in main.ts
 https://www.youtube.com/watch?v=UQEQHPwQJdg
+
+# NGXS App Module imports
+NgxsModule.forRoot([AppState]),
+NgxsReduxDevtoolsPluginModule.forRoot(),
 
 
 # Most Popular Semantic Html to implement
@@ -49,3 +47,9 @@ details: This tag defines a section of content that can be toggled between expan
 summary: This tag defines a brief summary of the content within a details element.
 
 time: This tag defines a specific date or time within the content.
+
+# Nest mac permissions bypass
+## for directory
+sudo chown -R $USER /Users/danielbennett/Desktop/code/cashamole/api
+## for shell file
+chmod +x create-db.sh
