@@ -4,7 +4,7 @@ import { UserLoginComponent } from './user/user-login/user-login.component';
 import { UserRegisterComponent } from './user/user-register/user-register.component';
 import { UserResetPasswordComponent } from './user/user-reset-password/user-reset-password.component';
 import { DonateComponent } from './donate/donate.component';
-import { HowToComponent } from './how-to/how-to.component';
+import { HowToComponent } from './common/how-to/how-to.component';
 import { AppComponent } from './app.component';
 
 export const routes: Routes = [
