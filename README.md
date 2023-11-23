@@ -23,6 +23,9 @@ https://www.youtube.com/watch?v=UQEQHPwQJdg
 NgxsModule.forRoot([AppState]),
 NgxsReduxDevtoolsPluginModule.forRoot(),
 
+# MailerModule
+https://www.youtube.com/watch?v=DHcxpZEaVWg
+
 
 # Most Popular Semantic Html to implement
 

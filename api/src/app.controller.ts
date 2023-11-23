@@ -35,4 +35,9 @@ export class AppController {
     console.log(req.cookies);
     return this.appService.getHello();
   }
+
+  @Get('/email')
+  sendMail(): void {
+    return this.appService.sendMail();
+  }
 }

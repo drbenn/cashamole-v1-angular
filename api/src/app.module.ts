@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { MysqlModule } from 'nest-mysql';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 
 
@@ -17,6 +18,15 @@ import { ConfigModule } from '@nestjs/config';
       user: process.env.DATABASE_USER,
       port: parseInt(process.env.DATABASE_PORT),      
   }),
+    MailerModule.forRoot({
+      transport: {
+        host: 'smtp.gmail.com',
+        auth: {
+          user: 'from.user.name@gmail.com',
+          pass: 'pass',
+        }
+      }
+    }),
     AuthModule
   ],
   controllers: [AppController],
