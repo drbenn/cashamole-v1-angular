@@ -1,20 +1,21 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CoreApiService } from '../../shared/api/core-api.service';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CoreApiService } from '../../../shared/api/core-api.service';
 
 @Component({
-  selector: 'app-balance-sheet',
+  selector: 'app-new-transaction',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './balance-sheet.component.html',
-  styleUrl: './balance-sheet.component.scss'
+  templateUrl: './new-transaction.component.html',
+  styleUrl: './new-transaction.component.scss'
 })
-export class BalanceSheetComponent {
-  newRecordForm = this.fb.group({
-    type: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
+export class NewTransactionComponent {
+  newTransactionForm = this.fb.group({
+    category: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
     date: ['', [Validators.required]],
-    description: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(75)]],
+    vendor: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(75)]],
+    note: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(75)]],
     amount: ['', [Validators.required, Validators.min(0), Validators.max(10000000)]]
   })
 
@@ -24,11 +25,19 @@ export class BalanceSheetComponent {
   ) {}
 
   protected clearForm() {
-    this.newRecordForm.setValue({ type: '',  date: '', description: '', amount: '' });
+    this.newTransactionForm.setValue({ 
+      category:'',
+      date: '',
+      vendor: '',
+      note: '',
+      amount: ''
+    });
   }
 
   protected onSubmit() {
-    const values: any = this.newRecordForm.value;
+    const values: any = this.newTransactionForm.value;
+    console.log(values);
+    
     // if (!values) {
     //   return;
     // }

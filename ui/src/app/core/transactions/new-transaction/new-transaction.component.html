@@ -1,0 +1,17 @@
+<form action="" [formGroup]="newTransactionForm" (ngSubmit)="onSubmit()">
+
+    <label for="password">category: </label>
+    <input id="text" type="text" formControlName="category">
+
+    <label for="username">date: </label>
+    <input id="date" type="date" formControlName="date">
+
+    <label for="password">vendor: </label>
+    <input id="vendor" type="text" formControlName="vendor">
+
+    <button type="reset" (click)="clearForm()">Clear</button>
+    <button type="submit" [disabled]="!newTransactionForm.valid">Submit</button>
+</form>
+
+<p>Form Status: {{ newTransactionForm.status }}</p>
+<p>{{ newTransactionForm.value | json}}</p>
