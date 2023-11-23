@@ -70,7 +70,7 @@ export class AuthService {
             date DATETIME NOT NULL,
             amount DECIMAL(10,2) NOT NULL,
             category VARCHAR(250) NOT NULL,
-            vendor VARCHAR(100) NOT NULL,
+            payee VARCHAR(100) NOT NULL,
             note VARCHAR(100),
             active BOOLEAN NOT NULL
         )`;

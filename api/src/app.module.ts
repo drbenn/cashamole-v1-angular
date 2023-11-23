@@ -5,6 +5,7 @@ import { MysqlModule } from 'nest-mysql';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { TransactionModule } from './transaction/transaction.module';
 
 
 
@@ -27,7 +28,8 @@ import { MailerModule } from '@nestjs-modules/mailer';
         }
       }
     }),
-    AuthModule
+    AuthModule,
+    TransactionModule
   ],
   controllers: [AppController],
   providers: [AppService],
