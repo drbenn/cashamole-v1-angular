@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Connection } from 'mysql2';
 import { InjectClient } from 'nest-mysql';
-import { InsertUser, LoginUserDto, RegisterUserDto, UserExist } from './user-dto/user-dto';
+import { InsertUser, LoginUserDto, RegisterUserDto, UserBalanceSheetEntry, UserBasicProfile, UserChip, UserExist, UserLoginData, UserTransaction } from './auth-dto/auth-dto';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
-export class UserService {
+export class AuthService {
     constructor(@InjectClient() private readonly connection: Connection) {}
 
     async findAll() {
@@ -70,7 +70,8 @@ export class UserService {
             date DATETIME NOT NULL,
             amount DECIMAL(10,2) NOT NULL,
             category VARCHAR(250) NOT NULL,
-            description VARCHAR(100) NOT NULL,
+            vendor VARCHAR(100) NOT NULL,
+            note VARCHAR(100),
             active BOOLEAN NOT NULL
         )`;
         const queryDb = await this.connection.query(sqlQuery);
@@ -81,7 +82,7 @@ export class UserService {
     async generateUserBalanceSheetTable(userId: number) {
         const sqlQuery: string = `
             CREATE TABLE IF NOT EXISTS user${userId}_bal_sheet (
-            trans_id INT PRIMARY KEY AUTO_INCREMENT,
+            record_id INT PRIMARY KEY AUTO_INCREMENT,
             date DATETIME NOT NULL,
             amount DECIMAL(10,2) NOT NULL,
             type VARCHAR(50) NOT NULL,
@@ -119,4 +120,60 @@ export class UserService {
         }
     }
 
+    async getUserDataOnSuccessfulValidation(username: string): Promise<UserLoginData> {
+        const userBasicProfile: UserBasicProfile = await this.getUserBasicProfile(username);
+        
+        
+        const userTransactions: UserTransaction[] = await this.getUserTransactions(userBasicProfile.id);
+        const userBalanceSheetEntries: UserBalanceSheetEntry[] = await this.getUserBalanceSheetEntries(userBasicProfile.id);
+        const userChips: UserChip[] = await this.getUserChips(userBasicProfile.id);
+        // const sqlQuery: string = `SELECT (id, username, email, join_date) FROM users WHERE username='${username}'`;
+        // const basicUserData = await this.connection.query(sqlQuery);
+        // const results = Object.assign([{}], basicUserData[0]);
+        // console.log(results);
+        const userLoginData: UserLoginData = {
+            basicProfile: userBasicProfile,
+            transactions: userTransactions,
+            balanceSheetEntries: userBalanceSheetEntries,
+            chips: userChips
+        }
+        return userLoginData;
+    }
+
+    async getUserBasicProfile(username: string): Promise<UserBasicProfile> {
+        const sqlQuery: string = `SELECT id, username, email, join_date FROM users WHERE username='${username}'`;
+        const basicUserData = await this.connection.query(sqlQuery);
+        const results = Object.assign([{}], basicUserData[0]);
+        return results[0];
+    }
+
+    async getUserTransactions(userId: number): Promise<UserTransaction[]> {
+        const sqlQuery: string = `SELECT * FROM user${userId}_transactions`;
+        const userTransactions = await this.connection.query(sqlQuery);
+        const results = Object.assign([{}], userTransactions[0]);
+        return this.checkForReturnValues(results);
+    }
+
+    async getUserBalanceSheetEntries(userId: number): Promise<UserBalanceSheetEntry[]> {
+        const sqlQuery: string = `SELECT * FROM user${userId}_bal_sheet`;
+        const userBalanceSheetEntries = await this.connection.query(sqlQuery);
+        const results = Object.assign([{}], userBalanceSheetEntries[0]);
+        return this.checkForReturnValues(results);
+    }
+
+    async getUserChips(userId: number): Promise<UserChip[]> {
+        const sqlQuery: string = `SELECT * FROM user${userId}_chips`;
+        const userChips = await this.connection.query(sqlQuery);
+        const results = Object.assign([{}], userChips[0]);
+        return this.checkForReturnValues(results);
+    }
+
+    private checkForReturnValues(results: any): UserTransaction[] | UserBalanceSheetEntry[] | UserChip[] | null | any {
+        // if no values return(if table is empty will still return length of 1, but of an object with no key/value pairs)
+        if (Object.keys(results[0]).length === 0 && results.length === 1) {
+            return null;
+        } else {
+            return results;
+        };
+    }
 }

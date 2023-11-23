@@ -41,7 +41,12 @@ export class UserLoginComponent {
       this.userApi.authenticateUser(loginBody).pipe(take(1), first())
       .subscribe(
         {
-          next: (value: any) => {},
+          next: (value: any) => {
+            console.log('values');
+            console.log(value);
+            
+            
+          },
           error: (error: any) => {
             console.error(error)
             if (error.status === 202) {

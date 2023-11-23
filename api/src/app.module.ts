@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MysqlModule } from 'nest-mysql';
-import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 
@@ -18,7 +17,6 @@ import { ConfigModule } from '@nestjs/config';
       user: process.env.DATABASE_USER,
       port: parseInt(process.env.DATABASE_PORT),      
   }),
-    UserModule,
     AuthModule
   ],
   controllers: [AppController],

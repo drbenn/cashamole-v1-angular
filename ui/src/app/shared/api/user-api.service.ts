@@ -30,15 +30,15 @@ export class UserApiService {
   }
 
   public getAllUsers(): Observable<any> {
-    return this.httpClient.get(this.apiUrl + '/user/all') as Observable<any>;
+    return this.httpClient.get(this.apiUrl + '/auth/all', {withCredentials: true}) as Observable<any>;
   }
 
   public registerUser(registerBody: UserRegister): Observable<any> {
-    return this.httpClient.post(this.apiUrl + '/user/register_user', registerBody) as Observable<any>;
+    return this.httpClient.post(this.apiUrl + '/auth/register_user', registerBody, {withCredentials: true}) as Observable<any>;
   }
 
 
   public authenticateUser(loginBody: UserLogin): Observable<any> {
-    return this.httpClient.post(this.apiUrl + '/user/login_user', loginBody) as Observable<any>;
+    return this.httpClient.post(this.apiUrl + '/auth/login_user', loginBody, {withCredentials: true }) as Observable<any>;
   }
 }

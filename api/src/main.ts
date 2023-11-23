@@ -8,7 +8,7 @@ async function bootstrap() {
     { 
       cors: {
         credentials: true,
-        allowedHeaders: ['content-type', 'application/x-www-form-urlencoded'],
+        allowedHeaders: ['content-type'],
         origin: [process.env.CLIENT_ORIGIN],
         methods: ['GET', 'PUT', 'PATCH', 'POST']
     } 
