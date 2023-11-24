@@ -36,11 +36,13 @@ export class AuthController {
       @Res() res: Response, 
       @Body() userRegisterDto: RegisterUserDto
       ) {
-
+        console.log('in register user');
+        
       const email: string = userRegisterDto.email;
       const username: string = userRegisterDto.username;
       const isUserExisting: UserExist = await this.authService.doesUserExist(email,username);
-
+        console.log('iseUserExist: ', isUserExisting);
+        
       if (isUserExisting.userExist) {
           let existType: string;
           if (isUserExisting.email && isUserExisting.username) {
@@ -50,13 +52,18 @@ export class AuthController {
           } else {
             existType = 'username already exists';
           }
-          const existingType: string = isUserExisting.email ? 'email already exists' : 'username already exists';
+          console.log('isUserexist type: ', existType);
+          
           throw new HttpException(`registration failed - ${existType}`, HttpStatus.BAD_REQUEST);
       } else {
           const hashSaltPassword: string = await this.authService.generateHashSaltPassword(userRegisterDto.password);
           userRegisterDto.password = hashSaltPassword; // replace text password with hash/salt password
+          console.log('hashpass: ', hashSaltPassword);
+          
           const insertResponse: InsertUser = await this.authService.insertNewUser(userRegisterDto);
-          res.status(HttpStatus.OK).send("registration successful" + JSON.stringify(insertResponse));
+          console.log('insert response: ', insertResponse);
+          
+          res.status(HttpStatus.OK).send({message: "registration successful", data: JSON.stringify(insertResponse)});
           // todo: send registration confirmation email
           this.authService.generateDbTablesForNewUser(insertResponse.userId);
       };

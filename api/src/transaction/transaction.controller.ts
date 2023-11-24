@@ -12,9 +12,11 @@ export class TransactionController {
     async newTransaction(
         @Res() res: Response, 
         @Body() transactionDto: TransactionDto
-        ) {        
-        const userId = 1;
-        const newTransaction: boolean = await this.transactionService.postNewTrasaction(transactionDto, userId);
+        ) {  
+        console.log('in transaction');
+              
+        const userId = 18;
+        const newTransaction: boolean = await this.transactionService.postNewTransaction(transactionDto, userId);
         if (!newTransaction) {
             throw new HttpException('transaction failed', HttpStatus.BAD_REQUEST);
         } else {

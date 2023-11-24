@@ -45,7 +45,6 @@ export class AuthService {
             VALUES (\'${userRegisterDto.email}\', \'${userRegisterDto.username}\', \'${userRegisterDto.password}\')`;
         const registeredUser = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], registeredUser[0]);
-        console.log(results);
         
         const success: boolean = results.affectedRows > 0 ? true : false;
         return {insertSuccessful: success, userId: results.insertId, username: userRegisterDto.username, email: userRegisterDto.email};
@@ -72,11 +71,10 @@ export class AuthService {
             category VARCHAR(250) NOT NULL,
             payee VARCHAR(100) NOT NULL,
             note VARCHAR(100),
-            active BOOLEAN NOT NULL
+            status VARCHAR(25) NOT NULL
         )`;
         const queryDb = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], queryDb[0]);
-        console.log(results);
     }
 
     async generateUserBalanceSheetTable(userId: number) {
@@ -87,11 +85,10 @@ export class AuthService {
             amount DECIMAL(10,2) NOT NULL,
             type VARCHAR(50) NOT NULL,
             description VARCHAR(100) NOT NULL,
-            active BOOLEAN NOT NULL
+            status VARCHAR(25) NOT NULL
         )`;
         const queryDb = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], queryDb[0]);
-        console.log(results);
     }
 
     async generateUserChipsTable(userId: number) {
@@ -100,11 +97,10 @@ export class AuthService {
             id INT PRIMARY KEY AUTO_INCREMENT,
             type VARCHAR(50) NOT NULL,
             chip VARCHAR(200) NOT NULL,
-            active BOOLEAN NOT NULL
+            status VARCHAR(25) NOT NULL
         )`;
         const queryDb = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], queryDb[0]);
-        console.log(results);
     }
 
     async validateLoginCredentials(loginUserDto: LoginUserDto): Promise<boolean> {

@@ -7,7 +7,13 @@ export class TransactionService {
 
     constructor(@InjectClient() private readonly connection: Connection) {}
 
-    async postNewTrasaction(transactionDto, userId: number): Promise<any> {        
+    async postNewTransaction(transactionDto, userId: number): Promise<any> {
+        console.log('BOOYAH');
+        
+        console.log(transactionDto);
+        console.log(userId);
+        
+          
         const sqlQuery: string = `INSERT INTO user${userId}_transactions (date, amount, category, vendor, note, active) 
             VALUES (
                 \'${transactionDto.date}\', 
