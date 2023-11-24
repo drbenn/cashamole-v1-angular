@@ -41,4 +41,8 @@ export class UserApiService {
   public authenticateUser(loginBody: UserLogin): Observable<any> {
     return this.httpClient.post(this.apiUrl + '/auth/login_user', loginBody, {withCredentials: true }) as Observable<any>;
   }
+
+  public logoutUser() {
+    return this.httpClient.get(this.apiUrl + '/auth/logout_user', {withCredentials: true}) as Observable<any>;
+  }
 }

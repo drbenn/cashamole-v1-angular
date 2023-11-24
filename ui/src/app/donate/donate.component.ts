@@ -14,11 +14,11 @@ import { Increment } from '../store/appState.actions';
   styleUrl: './donate.component.scss'
 })
 export class DonateComponent {
-  counter$ = this.store.select<AppState>(AppState);
+  // counter$ = this.store.select<AppState>(AppState);
 
-  constructor(private store: Store) {}
+  // constructor(private store: Store) {}
 
-  increment(): void {
-    this.store.dispatch(new Increment());
-  }
+  // increment(): void {
+  //   this.store.dispatch(new Increment());
+  // }
 }

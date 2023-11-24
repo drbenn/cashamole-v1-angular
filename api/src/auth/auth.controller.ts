@@ -6,6 +6,8 @@ import { InsertUser, LoginUserDto, RegisterUserDto, UserExist, UserLoginData } f
 
 @Controller('auth')
 export class AuthController {
+  protected cookieExpireTime: number = 3600000;
+
   constructor(
     private jwtService: JwtService,
     private authService: AuthService
@@ -99,10 +101,22 @@ export class AuthController {
           const username: string = userLoginData.basicProfile.username;
           const userId: number = <number>userLoginData.basicProfile.id;
           const payload = { username: username, id: userId };
+          console.log(this.cookieExpireTime);
+          
           res.cookie('cashamole_user_token', this.jwtService.sign(payload), {
-            expires: new Date(Date.now() + 3600000),
+            expires: new Date(Date.now() + this.cookieExpireTime),
+          });
+          res.cookie('cashamole_uid', userId, {
+            expires: new Date(Date.now() + this.cookieExpireTime),
           });
           res.status(HttpStatus.OK).send({message: 'login successful', data: JSON.stringify(userLoginData)});
       };
-  };  
+  };
+
+  @Get('logout_user')
+  async logoutUser(@Res({ passthrough: true }) res: Response) {
+    res.cookie('cashamole_user_token', '', { expires: new Date(Date.now()) });
+    res.cookie('cashamole_uid', '', { expires: new Date(Date.now()) });
+    return {};
+  }
 }
