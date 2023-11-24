@@ -13,7 +13,7 @@ import { first, take } from 'rxjs';
   styleUrl: './new-transaction.component.scss'
 })
 export class NewTransactionComponent implements OnInit {
-  today: string = '';
+  today: Date = new Date();
 
   newTransactionForm = this.fb.group({
     category: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
@@ -29,7 +29,7 @@ export class NewTransactionComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.today = new Date().toLocaleDateString();
+    this.today = new Date();
     console.log(this.today);
     
     this.newTransactionForm.get('date')?.setValue(this.today);

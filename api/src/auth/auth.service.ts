@@ -66,7 +66,7 @@ export class AuthService {
         const sqlQuery: string = `
             CREATE TABLE IF NOT EXISTS user${userId}_transactions (
             trans_id INT PRIMARY KEY AUTO_INCREMENT,
-            date DATETIME NOT NULL,
+            date VARCHAR(250) NOT NULL,
             amount DECIMAL(10,2) NOT NULL,
             category VARCHAR(250) NOT NULL,
             payee VARCHAR(100) NOT NULL,
@@ -81,7 +81,7 @@ export class AuthService {
         const sqlQuery: string = `
             CREATE TABLE IF NOT EXISTS user${userId}_bal_sheet (
             record_id INT PRIMARY KEY AUTO_INCREMENT,
-            date DATETIME NOT NULL,
+            date VARCHAR(250) NOT NULL,
             amount DECIMAL(10,2) NOT NULL,
             type VARCHAR(50) NOT NULL,
             description VARCHAR(100) NOT NULL,
