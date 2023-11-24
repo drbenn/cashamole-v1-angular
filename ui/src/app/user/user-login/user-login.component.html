@@ -1,5 +1,3 @@
-<p>user-login works!</p>
-
 <form action="" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
     <label for="username">username: </label>
@@ -11,10 +9,6 @@
     <button type="reset" (click)="clearForm()">Clear</button>
     <button type="submit" [disabled]="!loginForm.valid">Submit</button>
 </form>
-
-
-
-
 
 <p>Form Status: {{ loginForm.status }}</p>
 <p>{{ loginForm.value | json}}</p>

@@ -6,6 +6,8 @@ import { UserResetPasswordComponent } from './user/user-reset-password/user-rese
 import { DonateComponent } from './donate/donate.component';
 import { HowToComponent } from './common/how-to/how-to.component';
 import { AppComponent } from './app.component';
+import { NewTransactionComponent } from './core/transactions/new-transaction/new-transaction.component';
+import { NewBsRecordComponent } from './core/balance-sheet/new-bs-record/new-bs-record.component';
 
 export const routes: Routes = [
     // { path: '', component: HomeComponent },
@@ -15,5 +17,7 @@ export const routes: Routes = [
     { path: 'password-reset', component: UserResetPasswordComponent },
     { path: 'donate', component: DonateComponent },
     { path: 'how-to', component: HowToComponent },
+    { path: 'new-transaction', component: NewTransactionComponent },
+    { path: 'new-bs-record', component: NewBsRecordComponent },
     
 ];

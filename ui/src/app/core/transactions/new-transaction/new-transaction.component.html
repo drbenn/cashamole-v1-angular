@@ -1,13 +1,19 @@
 <form action="" [formGroup]="newTransactionForm" (ngSubmit)="onSubmit()">
 
-    <label for="password">category: </label>
-    <input id="text" type="text" formControlName="category">
+    <label for="category">category: </label>
+    <input id="category" type="text" formControlName="category">
 
-    <label for="username">date: </label>
-    <input id="date" type="date" formControlName="date">
+    <label for="date">date: </label>
+    <input id="date" type="date" formControlName="date" [value]=today>
 
-    <label for="password">vendor: </label>
-    <input id="vendor" type="text" formControlName="vendor">
+    <label for="payee">payee: </label>
+    <input id="payee" type="text" formControlName="payee">
+
+    <label for="note">note: </label>
+    <input id="note" type="text" formControlName="note">
+
+    <label for="amount">amount: </label>
+    <input id="amount" type="text" formControlName="amount">
 
     <button type="reset" (click)="clearForm()">Clear</button>
     <button type="submit" [disabled]="!newTransactionForm.valid">Submit</button>

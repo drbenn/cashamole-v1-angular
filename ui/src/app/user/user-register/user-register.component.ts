@@ -43,17 +43,20 @@ export class UserRegisterComponent {
       this.userApi.registerUser(registerBody).pipe(take(1), first())
       .subscribe(
         {
-          next: (value: any) => {},
+          next: (value: any) => {
+            console.log(value);
+            
+          },
           error: (error: any) => {
             console.error(error)
-            if (error.status === 202) {
-              console.log('successful registration - need to redirect and set state with username/email');
-              console.log(error.error);
-            };
-            if (error.status === 406) {
-              console.log('UNsuccessful registration - communicate which if username or email is already registered');
-              console.log(error.error);
-            };
+            // if (error.status === 202) {
+            //   console.log('successful registration - need to redirect and set state with username/email');
+            //   console.log(error.error);
+            // };
+            // if (error.status === 406) {
+            //   console.log('UNsuccessful registration - communicate which if username or email is already registered');
+            //   console.log(error.error);
+            // };
           }
         }
       )
