@@ -1,5 +1,10 @@
+// @use '../../app/styles/abstracts/index' as a;
+@use '../../styles/variables.scss' as vars;
+
 .gradient-logo-text {
-  background-image: linear-gradient(45deg, #f3ec78, #af4261);
+  // background-image: linear-gradient(45deg, #f3ec78, #af4261);
+  // background-image: linear-gradient(45deg, vars.$biscay-green, vars.$pistachio);
+  background-image: linear-gradient(45deg, #5aef8c, #e302e357, vars.$biscay-green);
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }

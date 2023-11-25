@@ -23,7 +23,11 @@ public loggedInUserVal!: string;
 
 
 ngOnInit(): void {
-    this.loggedInUser$.subscribe((username:string) => this.loggedInUserVal = username);
+    this.loggedInUser$.subscribe((username:string) => {
+      this.loggedInUserVal = username;
+      console.log(this.loggedInUserVal);
+      
+    });
 }
 
   constructor(

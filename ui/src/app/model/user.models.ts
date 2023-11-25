@@ -26,7 +26,7 @@ export interface User {
 }
 
 export interface UserLoginData {
-    profile: User,
+    basicProfile: User,
     transactions: TransactionBody[],
     balanceSheetEntries: BalanceSheetEntryBody[],
     chips: Chip[],

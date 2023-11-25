@@ -65,9 +65,11 @@ export class UserState implements NgxsOnInit {
     ctx: StateContext<UserStateModel>,
     action: UserActions.SetUserDataOnLogin
   ) {
+    console.log(action.payload);
+    
     ctx.patchState({ 
       isInitUserDataLoaded: true,
-      loggedInUser: action.payload.profile,
+      loggedInUser: action.payload.basicProfile,
       transactions: action.payload.transactions,
       balanceSheetEntries: action.payload.balanceSheetEntries,
       chips: action.payload.chips
