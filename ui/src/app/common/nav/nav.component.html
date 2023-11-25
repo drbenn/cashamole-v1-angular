@@ -1,15 +1,23 @@
-<nav>
-    <ul>
-        <li><a routerLink="/" routerLinkActive="active">((-O-))</a></li>
-        <li><a routerLink="login" routerLinkActive="active">Login</a></li>
-        <li><a routerLink="register" routerLinkActive="active">Register</a></li>
-        <li><a routerLink="/password-reset" routerLinkActive="active">Password Reset</a></li>
-        <li><a routerLink="/donate" routerLinkActive="active">Donate</a></li>
-        <li><a routerLink="/how-to" routerLinkActive="active">How-to</a></li>
-        <li><a routerLink="/new-transaction" routerLinkActive="active">New Trans</a></li>
-        <li><a routerLink="/new-bs-record" routerLinkActive="active">New BS</a></li>
-        <li><a routerLink="/home" routerLinkActive="active">Home</a></li>
-        <li><a (click)="logoutUser()">Logout</a></li>
-        <!-- <li><a routerLink="/new-chip" routerLinkActive="active">How-to</a></li> -->
-    </ul>
+<nav class="h-4rem bg-white cursor-pointer flex flex-row justify-content-between align-items-center">
+    <div class="text-xl font-bold gradient-logo-text" (click)="navigateHome()">
+       CASHAMOLE
+    </div>
+    <div class="text-right">
+        <ul>
+            <li><a routerLink="login" routerLinkActive="active">Login</a></li>
+            <li><a routerLink="register" routerLinkActive="active">Register</a></li>
+            <li><a routerLink="/password-reset" routerLinkActive="active">Password Reset</a></li>
+            <li><a routerLink="/donate" routerLinkActive="active">Donate</a></li>
+            <li><a routerLink="/how-to" routerLinkActive="active">How-to</a></li>
+            <li><a routerLink="/new-transaction" routerLinkActive="active">New Trans</a></li>
+            <li><a routerLink="/new-bs-record" routerLinkActive="active">New BS</a></li>
+            <li><a routerLink="/home" routerLinkActive="active">Home</a></li>
+            <!-- @if (loggedInUserVal) {
+                <li>{{ loggedInUserVal | async }}</li>
+            } -->
+
+            <li><a (click)="logoutUser()">Logout</a></li>
+        </ul>
+    </div>
+
 </nav>
