@@ -19,12 +19,12 @@ export class NavComponent {
     .subscribe(
       {
         next: (value: any) => {
-          console.log('values');
-          console.log(value);
+          // console.log('values');
+          // console.log(value);
           
         },
         error: (error: any) => {
-          console.error(error)
+          // console.error(error)
         }
       }
     )

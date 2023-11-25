@@ -1,23 +1,27 @@
-<form action="" [formGroup]="newTransactionForm" (ngSubmit)="onSubmit()">
+<div class="bg-red-100">
+    <form action="" [formGroup]="newTransactionForm" (ngSubmit)="onSubmit()">
 
-    <label for="category">category: </label>
-    <input id="category" type="text" formControlName="category">
+        <label for="category">category: </label>
+        <input id="category" type="text" formControlName="category">
+    
+        <label for="date">date: </label>
+        <input id="date" type="date" formControlName="date" [value]=today>
+    
+        <label for="payee">payee: </label>
+        <input id="payee" type="text" formControlName="payee">
+    
+        <label for="note">note: </label>
+        <input id="note" type="text" formControlName="note">
+    
+        <label for="amount">amount: </label>
+        <input id="amount" type="number" formControlName="amount">
+    
+        <button type="reset" (click)="clearForm()">Clear</button>
+        <p-button type="submit" [disabled]="!newTransactionForm.valid">Submit</p-button>
+    </form>
 
-    <label for="date">date: </label>
-    <input id="date" type="date" formControlName="date" [value]=today>
+</div>
 
-    <label for="payee">payee: </label>
-    <input id="payee" type="text" formControlName="payee">
-
-    <label for="note">note: </label>
-    <input id="note" type="text" formControlName="note">
-
-    <label for="amount">amount: </label>
-    <input id="amount" type="number" formControlName="amount">
-
-    <button type="reset" (click)="clearForm()">Clear</button>
-    <button type="submit" [disabled]="!newTransactionForm.valid">Submit</button>
-</form>
-
+<p-button label="Submit" icon="pi pi-check"></p-button>
 <p>Form Status: {{ newTransactionForm.status }}</p>
 <p>{{ newTransactionForm.value | json}}</p>

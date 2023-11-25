@@ -6,11 +6,13 @@ import { TransactionBody } from '../../../model/transaction.model';
 import { first, take } from 'rxjs';
 import { UserActions } from '../../../store/user/userState.actions';
 import { Store } from '@ngxs/store';
+import { ButtonModule } from 'primeng/button';
+
 
 @Component({
   selector: 'app-new-transaction',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ButtonModule],
   templateUrl: './new-transaction.component.html',
   styleUrl: './new-transaction.component.scss'
 })
@@ -67,8 +69,6 @@ export class NewTransactionComponent implements OnInit {
       .subscribe(
         {
           next: (value: any) => {
-            console.log(value);
-            
             // Updates state with new transaction / no need for full data pull on db upon each update
             this.store.dispatch(new UserActions.AddUserTransaction(JSON.parse(value.data)));
           },
