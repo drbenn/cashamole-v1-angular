@@ -2,6 +2,7 @@ export class RegisterUserDto {
     email: string;
     username: string;
     password: string;
+    status?: string;
 }
 
 export class InsertUser {

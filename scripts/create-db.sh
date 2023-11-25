@@ -16,7 +16,8 @@ mysql -u root -p$ROOT_PASSWD -e "
         username VARCHAR(75) NOT NULL,
         password VARCHAR(200) NOT NULL,
         email VARCHAR(75) NOT NULL,
-        join_date DATETIME DEFAULT CURRENT_TIMESTAMP
+        join_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+        status VARCHAR(25) NOT NULL
     );"
 
 # Switch to the newly created database AND Create test data for new users table

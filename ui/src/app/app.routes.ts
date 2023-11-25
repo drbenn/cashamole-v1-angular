@@ -19,5 +19,6 @@ export const routes: Routes = [
     { path: 'how-to', component: HowToComponent },
     { path: 'new-transaction', component: NewTransactionComponent },
     { path: 'new-bs-record', component: NewBsRecordComponent },
+    { path: 'home', component: HomeComponent },
     
 ];

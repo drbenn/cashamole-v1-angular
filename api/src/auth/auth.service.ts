@@ -40,9 +40,14 @@ export class AuthService {
         return userExistResult;
     }
 
-    async insertNewUser(userRegisterDto: RegisterUserDto): Promise<InsertUser> {        
-        const sqlQuery: string = `INSERT INTO users (email, username, password) 
-            VALUES (\'${userRegisterDto.email}\', \'${userRegisterDto.username}\', \'${userRegisterDto.password}\')`;
+    async insertNewUser(userRegisterDto: RegisterUserDto): Promise<InsertUser> {    
+        userRegisterDto.status = 'active';    
+        const sqlQuery: string = `INSERT INTO users (email, username, password, status) 
+            VALUES (\'${userRegisterDto.email}\',
+                    \'${userRegisterDto.username}\',
+                    \'${userRegisterDto.password}\',
+                    \'${userRegisterDto.status}\'
+                    )`;
         const registeredUser = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], registeredUser[0]);
         
@@ -103,30 +108,34 @@ export class AuthService {
         const results = Object.assign([{}], queryDb[0]);
     }
 
-    async validateLoginCredentials(loginUserDto: LoginUserDto): Promise<boolean> {
-        const sqlQuery: string = `SELECT password FROM users WHERE username='${loginUserDto.username}'`;
+    async validateLoginCredentials(loginUserDto: LoginUserDto): Promise<number> {
+        const sqlQuery: string = `SELECT id, password FROM users WHERE username='${loginUserDto.username}'`;
         const hashSaltPasswordFromDbQuery = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], hashSaltPasswordFromDbQuery[0]);
         const dbHashSaltPassword: string = `${results[0].password}`;
+        const userId: number = results[0].id;
         const isMatch: boolean = await bcrypt.compare(loginUserDto.password, dbHashSaltPassword);
-        if (!isMatch) {
-            return false;
+        if (!isMatch) {            
+            return 0;
         } else {
-            return true;
+            return userId;
         }
     }
 
-    async getUserDataOnSuccessfulValidation(username: string): Promise<UserLoginData> {
-        const userBasicProfile: UserBasicProfile = await this.getUserBasicProfile(username);
-        
-        
+    async getUserDataOnSuccessfulValidation(userId: number): Promise<UserLoginData> {
+        const userBasicProfile: UserBasicProfile = await this.getUserBasicProfile(userId);
         const userTransactions: UserTransaction[] = await this.getUserTransactions(userBasicProfile.id);
         const userBalanceSheetEntries: UserBalanceSheetEntry[] = await this.getUserBalanceSheetEntries(userBasicProfile.id);
         const userChips: UserChip[] = await this.getUserChips(userBasicProfile.id);
-        // const sqlQuery: string = `SELECT (id, username, email, join_date) FROM users WHERE username='${username}'`;
-        // const basicUserData = await this.connection.query(sqlQuery);
-        // const results = Object.assign([{}], basicUserData[0]);
-        // console.log(results);
+
+        // mysql float values are stored strings and must therefore be transformed to numbers after retrieved for application use
+        if (userTransactions) {
+            userTransactions.map((transaction: UserTransaction) => transaction.amount = Number(transaction.amount));
+        };
+        if (userBalanceSheetEntries) {
+            userBalanceSheetEntries.map((entry: UserBalanceSheetEntry) => entry.amount = Number(entry.amount));
+        };
+
         const userLoginData: UserLoginData = {
             basicProfile: userBasicProfile,
             transactions: userTransactions,
@@ -136,8 +145,8 @@ export class AuthService {
         return userLoginData;
     }
 
-    async getUserBasicProfile(username: string): Promise<UserBasicProfile> {
-        const sqlQuery: string = `SELECT id, username, email, join_date FROM users WHERE username='${username}'`;
+    async getUserBasicProfile(userId: number): Promise<UserBasicProfile> {
+        const sqlQuery: string = `SELECT id, username, email, join_date FROM users WHERE id='${userId}'`;
         const basicUserData = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], basicUserData[0]);
         return results[0];

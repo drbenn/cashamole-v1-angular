@@ -3,7 +3,9 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { first, take } from 'rxjs';
 import { UserApiService } from '../../shared/api/user-api.service';
-import { UserRegister } from '../../shared/models/user.models';
+import { UserRegister } from '../../model/user.models';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-user-register',
@@ -21,7 +23,8 @@ export class UserRegisterComponent {
 
   constructor (
     private fb: FormBuilder,
-    private userApi: UserApiService
+    private userApi: UserApiService,
+    private router: Router
   ) {}
 
   protected clearForm() {
@@ -45,18 +48,12 @@ export class UserRegisterComponent {
         {
           next: (value: any) => {
             console.log(value);
-            
+            // todo: success notification
+            this.router.navigate(['home']);
           },
           error: (error: any) => {
             console.error(error)
-            // if (error.status === 202) {
-            //   console.log('successful registration - need to redirect and set state with username/email');
-            //   console.log(error.error);
-            // };
-            // if (error.status === 406) {
-            //   console.log('UNsuccessful registration - communicate which if username or email is already registered');
-            //   console.log(error.error);
-            // };
+            // todo: error notification 
           }
         }
       )

@@ -2,7 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
-import { TransactionBody } from '../models/transaction.model';
+import { TransactionBody } from '../../model/transaction.model';
+import { BalanceSheetEntryBody } from '../../model/balanceSheet.model';
 
 
 @Injectable({
@@ -16,8 +17,12 @@ export class CoreApiService {
   constructor() { }
 
   public submitNewTransaction(transactionBody: TransactionBody): Observable<any> {
-    console.log(transactionBody);
-    
     return this.httpClient.post(this.apiUrl + '/transaction', transactionBody, {withCredentials: true}) as Observable<any>;
+  };
+
+  public submitNewBsRecord(balanceSheetEntryBody: BalanceSheetEntryBody): Observable<any> {
+    console.log('ioyiuh');
+    
+    return this.httpClient.post(this.apiUrl + '/balance-sheet', balanceSheetEntryBody, {withCredentials: true}) as Observable<any>;
   }
 }

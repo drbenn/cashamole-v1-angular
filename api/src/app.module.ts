@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { TransactionModule } from './transaction/transaction.module';
+import { BalanceSheetModule } from './balance_sheet/balance_sheet.module';
 
 
 
@@ -29,7 +30,8 @@ import { TransactionModule } from './transaction/transaction.module';
       }
     }),
     AuthModule,
-    TransactionModule
+    TransactionModule,
+    BalanceSheetModule
   ],
   controllers: [AppController],
   providers: [AppService],

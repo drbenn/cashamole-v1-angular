@@ -3,7 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserApiService } from '../../shared/api/user-api.service';
 import { first, take } from 'rxjs';
-import { UserLogin } from '../../shared/models/user.models';
+import { UserLogin } from '../../model/user.models';
+import { Router } from '@angular/router';
+import { Store } from '@ngxs/store';
+import { UserActions } from '../../store/user/userState.actions';
 
 @Component({
   selector: 'app-user-login',
@@ -20,7 +23,9 @@ export class UserLoginComponent {
 
   constructor (
     private fb: FormBuilder,
-    private userApi: UserApiService
+    private userApi: UserApiService,
+    private router: Router,
+    private store: Store
   ) {}
 
   protected clearForm() {
@@ -42,21 +47,16 @@ export class UserLoginComponent {
       .subscribe(
         {
           next: (value: any) => {
-            console.log('values');
-            console.log(value);
-            
+            // console.log('values');
+            // console.log(value);
+            this.store.dispatch(new UserActions.SetUserDataOnLogin(JSON.parse(value.data)));
+            this.router.navigate(['home']);
+            // console.log('platformId', localStorage);
             
           },
           error: (error: any) => {
+            // todo: error handling
             console.error(error)
-            if (error.status === 202) {
-              console.log('successful login - need to redirect and set state with username/email');
-              console.log(error.error);
-            };
-            if (error.status === 406) {
-              console.log('UNsuccessful login');
-              console.log(error.error);
-            };
           }
         }
       )

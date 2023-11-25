@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Req, Res } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
@@ -93,11 +93,11 @@ export class AuthController {
       @Res() res: Response, 
       @Body() userLoginDto: LoginUserDto
       ) {        
-      const isloginValidated: boolean = await this.authService.validateLoginCredentials(userLoginDto);
-      if (!isloginValidated) {
+      const userIdIfIsloginValidated: number = await this.authService.validateLoginCredentials(userLoginDto);
+      if (!userIdIfIsloginValidated) {
           throw new HttpException('login failed', HttpStatus.BAD_REQUEST);
       } else {
-          const userLoginData: UserLoginData = await this.authService.getUserDataOnSuccessfulValidation(userLoginDto.username);
+          const userLoginData: UserLoginData = await this.authService.getUserDataOnSuccessfulValidation(userIdIfIsloginValidated);
           const username: string = userLoginData.basicProfile.username;
           const userId: number = <number>userLoginData.basicProfile.id;
           const payload = { username: username, id: userId };
@@ -111,6 +111,21 @@ export class AuthController {
           });
           res.status(HttpStatus.OK).send({message: 'login successful', data: JSON.stringify(userLoginData)});
       };
+  };
+
+  @Get('cached_login_user/:id')
+  async cachedLoginUser(
+    @Param() params: any,
+    @Res() res: Response
+    ) {      
+      const userId: number = params.id;
+      const userLoginData: UserLoginData = await this.authService.getUserDataOnSuccessfulValidation(userId);
+      
+      if (!userLoginData) {
+        throw new HttpException('cached login failed', HttpStatus.BAD_REQUEST);
+      } else {
+        res.status(HttpStatus.OK).send({message: 'cached login successful', data: JSON.stringify(userLoginData)});
+      }
   };
 
   @Get('logout_user')

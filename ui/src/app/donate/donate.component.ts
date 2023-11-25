@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AppState } from '../store/appState.state';
-import { Store } from '@ngxs/store';
-import { Increment } from '../store/appState.actions';
+import { Select, Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import { User } from '../model/user.models';
+import { UserStateModel } from '../store/user/userState.state';
+import { UserActions } from '../store/user/userState.actions';
 
 
 @Component({
@@ -13,12 +15,20 @@ import { Increment } from '../store/appState.actions';
   templateUrl: './donate.component.html',
   styleUrl: './donate.component.scss'
 })
-export class DonateComponent {
-  // counter$ = this.store.select<AppState>(AppState);
+export class DonateComponent implements OnInit {
 
-  // constructor(private store: Store) {}
+  @Select((state: {user: UserStateModel}) => state.user.loggedInUser) 
+    loggedInUser$! : Observable<User>;
 
-  // increment(): void {
-  //   this.store.dispatch(new Increment());
-  // }
+  public loggedInUserVal!: User;
+
+  constructor(private store: Store) {}
+
+  ngOnInit(): void {
+      this.loggedInUser$.subscribe(user => this.loggedInUserVal = user)
+  }
+
+  loginState(): void {
+    this.store.dispatch(new UserActions.RegisterLoggedInUser({username: 'frank', email: 'frank@xyz.com'}));
+  }
 }

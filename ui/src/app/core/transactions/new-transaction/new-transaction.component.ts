@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CoreApiService } from '../../../shared/api/core-api.service';
-import { TransactionBody } from '../../../shared/models/transaction.model';
+import { TransactionBody } from '../../../model/transaction.model';
 import { first, take } from 'rxjs';
+import { UserActions } from '../../../store/user/userState.actions';
+import { Store } from '@ngxs/store';
 
 @Component({
   selector: 'app-new-transaction',
@@ -25,20 +27,21 @@ export class NewTransactionComponent implements OnInit {
 
   constructor (
     private fb: FormBuilder,
-    private coreApi: CoreApiService
+    private coreApi: CoreApiService,
+    private store: Store
   ) {}
 
   ngOnInit(): void {
     this.today = new Date();
-    console.log(this.today);
+    // console.log('todays date: ', this.today);
     
-    this.newTransactionForm.get('date')?.setValue(this.today);
+    // this.newTransactionForm.get('date')?.setValue(this.today);
   }
 
   protected clearForm() {
     this.newTransactionForm.setValue({ 
       category:'',
-      date: this.today,
+      date: new Date(this.today),
       payee: '',
       note: '',
       amount: ''
@@ -47,7 +50,6 @@ export class NewTransactionComponent implements OnInit {
 
   protected onSubmit() {
     const values: any = this.newTransactionForm.value;
-    console.log(values);
     
     if (!values) {
       return;
@@ -55,36 +57,26 @@ export class NewTransactionComponent implements OnInit {
     else if (values) {
       const transactionBody: TransactionBody = {
         category: values.category,
-        date: values.date,
+        date: new Date(values.date),
         payee: values.payee,
         note: values.note,
         amount: values.amount,
         status: 'active'
       }
-      console.log(transactionBody);
       this.coreApi.submitNewTransaction(transactionBody).pipe(take(1), first())
       .subscribe(
         {
           next: (value: any) => {
-            console.log('values');
             console.log(value);
             
-            
+            // Updates state with new transaction / no need for full data pull on db upon each update
+            this.store.dispatch(new UserActions.AddUserTransaction(JSON.parse(value.data)));
           },
           error: (error: any) => {
             console.error(error)
-            if (error.status === 202) {
-              console.log('successful login - need to redirect and set state with username/email');
-              console.log(error.error);
-            };
-            if (error.status === 406) {
-              console.log('UNsuccessful login');
-              console.log(error.error);
-            };
           }
         }
       )
     }
   }
-
 }

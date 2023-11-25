@@ -13,7 +13,7 @@
     <input id="note" type="text" formControlName="note">
 
     <label for="amount">amount: </label>
-    <input id="amount" type="text" formControlName="amount">
+    <input id="amount" type="number" formControlName="amount">
 
     <button type="reset" (click)="clearForm()">Clear</button>
     <button type="submit" [disabled]="!newTransactionForm.valid">Submit</button>
