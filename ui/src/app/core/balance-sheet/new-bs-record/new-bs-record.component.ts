@@ -6,22 +6,46 @@ import { BalanceSheetEntryBody } from '../../../model/balanceSheet.model';
 import { first, take } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { UserActions } from '../../../store/user/userState.actions';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+
+
+export interface BalanceSheetType {
+  type: string
+}
+
+
 
 @Component({
   selector: 'app-new-bs-record',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    DropdownModule,
+    InputTextModule,
+    InputNumberModule,
+    ButtonModule,
+    CalendarModule
+  ],
   templateUrl: './new-bs-record.component.html',
   styleUrl: './new-bs-record.component.scss'
 })
 export class NewBsRecordComponent implements OnInit {
+  bsTypes: BalanceSheetType[] = [{ type: 'Asset'}, { type: "Liability"}];
+
+  selectedBsType: BalanceSheetType = this.bsTypes[0];
+  
   today: Date = new Date();
 
   newRecordForm = this.fb.group({
-    type: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
+    type: [this.selectedBsType, [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
     date: [this.today, [Validators.required]],
     description: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(75)]],
-    amount: ['', [Validators.required, Validators.min(-10000000), Validators.max(10000000)]]
+    amount: [null as unknown as number, [Validators.required, Validators.min(-10000000), Validators.max(10000000)]]
   })
 
   constructor (
@@ -33,6 +57,7 @@ export class NewBsRecordComponent implements OnInit {
 
   ngOnInit(): void {
     this.today = new Date();
+    // this.selectedBsType = this.bsTypes[0];
     // console.log('todays date: ', this.today);
     
     // this.newTransactionForm.get('date')?.setValue(this.today);
@@ -40,10 +65,10 @@ export class NewBsRecordComponent implements OnInit {
 
   protected clearForm() {
     this.newRecordForm.setValue({ 
-      type:'',
+      type: this.selectedBsType,
       date: new Date(this.today),
       description: '',
-      amount: ''
+      amount: null
     });
   }
 

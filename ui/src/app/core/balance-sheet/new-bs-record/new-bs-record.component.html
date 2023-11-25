@@ -1,20 +1,98 @@
-<form action="" [formGroup]="newRecordForm" (ngSubmit)="onSubmit()">
+<main
+class="w-full bg-white flex flex-column justify-content-center align-items-center"
+[ngStyle]="{'min-height': '40rem'}"
+>
 
-    <label for="password">type: </label>
-    <input id="type" type="text" formControlName="type">
-    
-    <label for="username">date: </label>
-    <input id="date" type="date" formControlName="date">
+    <form action="" [formGroup]="newRecordForm" (ngSubmit)="onSubmit()">
 
-    <label for="password">description: </label>
-    <input id="description" type="text" formControlName="description">
+        <h1 class="m-4 text-gray-800 text-left">New Transaction</h1>
 
-    <label for="password">amount: </label>
-    <input id="amount" type="text" formControlName="amount">
+        <div class="m-4">
+            <p-dropdown
+                formControlName="type"
+                [(ngModel)]="selectedBsType"
+                [options]="bsTypes"
+                optionLabel="type"
+                placeholder="Select Type"
+                [style]="{'width':'20rem'}"
+            >
+            </p-dropdown>
+        </div>
 
-    <button type="reset" (click)="clearForm()">Clear</button>
-    <button type="submit" [disabled]="!newRecordForm.valid">Submit</button>
-</form>
+        <div class="m-4">
+            <span class="p-float-label">
+                <p-calendar
+                    id="date"
+                    [showIcon]="true"
+                    formControlName="date"
+                    [style]="{'width':'20rem'}"
+                >
+                </p-calendar>
+                <label htmlFor="description">Date</label>
+            </span>
+        </div>
+        
+        <!-- p-inputgroup -->
+        <div class="m-4">
+            <span class="p-float-label">
+                <input 
+                    pInputText
+                    id="description"
+                    formControlName="description"
+                    [style]="{'width':'20rem'}"
+                />
+                <!-- <span class="p-inputgroup-addon border-round-right-sm border-right-1 border-solid border-black-alpha-40">
+                    <i class="pi pi-book"></i>
+                </span> -->
+            <label htmlFor="description">Description</label>
+            </span>
+        </div>
 
-<p>Form Status: {{ newRecordForm.status }}</p>
-<p>{{ newRecordForm.value | json}}</p>
+        <!-- p-inputgroup -->
+        <div class="m-4">
+            <span class="p-float-label">
+                <p-inputNumber 
+                    id="amount"
+                    formControlName="amount"
+                    inputId="minmaxfraction"
+                    mode="decimal"
+                    [minFractionDigits]="2"
+                    [maxFractionDigits]="2"
+                    placeholder=0.00
+                    [style]="{'width':'20rem'}"
+                > </p-inputNumber>
+                <!-- <span class="p-inputgroup-addon">
+                    <i class="pi pi-dollar"></i>
+                </span> -->
+                <label htmlFor="amount">$ Amount</label>
+            </span>
+        </div>
+
+        <div class="mx-4 my-1 text-right">
+            <button 
+                pButton
+                pRipple
+                type="reset"
+                (click)="clearForm()"
+                class="px-4 mr-2"
+            >Clear</button>
+            <button 
+                class="ml-4"
+                pButton
+                pRipple
+                type="submit"
+                [disabled]="!newRecordForm.valid"
+                class="px-4"
+            >Submit</button>
+        </div>
+    </form>
+
+    <p>Form Status: {{ newRecordForm.status }}</p>
+    <p>{{ newRecordForm.value | json}}</p>
+
+
+
+
+</main>
+
+

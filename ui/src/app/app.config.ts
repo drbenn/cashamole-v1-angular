@@ -9,6 +9,7 @@ import { AppState } from './store/appState.state';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { UserState } from './store/user/userState.state';
 import { CookieService } from 'ngx-cookie-service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,7 +22,8 @@ export const appConfig: ApplicationConfig = {
       ),
       // devtools always last
       NgxsReduxDevtoolsPluginModule.forRoot(),
-      CookieService
+      CookieService,
+      BrowserAnimationsModule
     )
   ]
 };
