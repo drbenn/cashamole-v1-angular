@@ -20,9 +20,9 @@ export class BalanceSheetController {
         }  else {
             const userId: number = req.cookies.cashamole_uid;
             
-            const newInsertedRecord: BalanceRecordDto | 'insert error' = await this.balanceSheetService.postNewBalanceRecord(balanceRecordDto, userId);
+            const newInsertedRecord: BalanceRecordDto | 'insert error' | 'undefined userid' = await this.balanceSheetService.postNewBalanceRecord(balanceRecordDto, userId);
 
-            if (newInsertedRecord === 'insert error') {
+            if (newInsertedRecord === 'insert error' || newInsertedRecord ===  'undefined userid') {
                 throw new HttpException('balance sheet record insert failed', HttpStatus.BAD_REQUEST);
             } else {
                 res.status(HttpStatus.OK).send({message: 'balance insert successful', data: JSON.stringify(newInsertedRecord)});

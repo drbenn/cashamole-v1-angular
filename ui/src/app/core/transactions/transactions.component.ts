@@ -1,13 +1,49 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NewTransactionComponent } from './new-transaction/new-transaction.component';
+import { Observable } from 'rxjs';
+import { TransactionBody } from '../../model/transaction.model';
+import { Store } from '@ngxs/store';
+import { TransactionTableComponent } from './transaction-table/transaction-table.component';
 
 @Component({
   selector: 'app-transactions',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NewTransactionComponent, TransactionTableComponent],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.scss'
 })
-export class TransactionsComponent {
+export class TransactionsComponent implements OnInit {
+  transactions$: Observable<any> = this.store.select((state) => state.user.transactions);
+  tableCategories: string[] = [];
+  transactionSets: any = {};
+
+  constructor(private store: Store) {}
+
+  ngOnInit(): void {
+    this.transactions$.subscribe((entries: TransactionBody[]) => {
+      entries.forEach((entry: TransactionBody) => {
+        if (!this.tableCategories.includes(entry.category)) {
+          this.tableCategories.push(entry.category);
+          this.transactionSets[entry.category] = [];
+          this.transactionSets[entry.category].push(entry);
+        } else {
+          this.transactionSets[entry.category].push(entry);
+        }
+      });
+      console.log(this.tableCategories);
+      console.log(this.transactionSets);
+      
+      
+    },
+      (error: any )=> console.log(error)
+    );
+
+  // this.sizes = [
+  //     { name: 'Small', class: 'p-datatable-sm' },
+  //     { name: 'Normal', class: '' },
+  //     { name: 'Large',  class: 'p-datatable-lg' }
+  // ];
+  };
 
 }

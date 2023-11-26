@@ -8,7 +8,11 @@ export class TransactionService {
 
     constructor(@InjectClient() private readonly connection: Connection) {}
 
-    async postNewTransaction(transactionDto: TransactionDto, userId: number): Promise<TransactionDto | 'insert error'> {
+    async postNewTransaction(transactionDto: TransactionDto, userId: number): Promise<TransactionDto | 'insert error' | 'undefined userid' > {
+        
+        if (!userId) {
+            return 'undefined userid';
+        };
         const sqlQuery: string = `INSERT INTO user${userId}_transactions (date, amount, category, payee, note, status) 
             VALUES (
                 \'${transactionDto.date}\', 

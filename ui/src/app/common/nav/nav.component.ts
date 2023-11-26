@@ -16,7 +16,7 @@ import { UserStateModel } from '../../store/user/userState.state';
 export class NavComponent {
   private userApi = inject(UserApiService);
   @Select((state: {user: UserStateModel}) => state.user.loggedInUser.username)
-  loggedInUser$! : Observable<string>;
+    loggedInUser$! : Observable<string>;
 
 public loggedInUserVal!: string;
 

@@ -1,1 +1,11 @@
-<p>transactions works!</p>
+<main class="w-full flex flex-row flex-wrap justify-content-center align-items-start">
+    @for (table of tableCategories; track transactionSets[table].trans_id) {
+        <section class="m-4">
+            <app-transaction-table [tableTitle]="table" [tableData]="transactionSets[table]"></app-transaction-table>
+        </section>
+      } @empty {
+        No Transactions Available
+      }
+</main>
+
+<app-new-transaction></app-new-transaction>

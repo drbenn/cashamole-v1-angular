@@ -8,7 +8,10 @@ export class BalanceSheetService {
     
     constructor(@InjectClient() private readonly connection: Connection) {}
 
-    async postNewBalanceRecord(balanceRecordDto: BalanceRecordDto, userId: number): Promise<BalanceRecordDto | 'insert error'> {
+    async postNewBalanceRecord(balanceRecordDto: BalanceRecordDto, userId: number): Promise<BalanceRecordDto | 'insert error' | 'undefined userid' > {
+        if (!userId) {
+            return 'undefined userid';
+        };
         const sqlQuery: string = `INSERT INTO user${userId}_bal_sheet (date, amount, type, description, status) 
             VALUES (
                 \'${balanceRecordDto.date}\', 
