@@ -7,11 +7,13 @@ import { UserLogin } from '../../model/user.models';
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { UserActions } from '../../store/user/userState.actions';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-user-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, InputTextModule, ButtonModule],
   templateUrl: './user-login.component.html',
   styleUrl: './user-login.component.scss'
 })

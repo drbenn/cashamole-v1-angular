@@ -35,7 +35,7 @@ export interface BalanceSheetType {
   styleUrl: './new-bs-record.component.scss'
 })
 export class NewBsRecordComponent implements OnInit {
-  bsTypes: BalanceSheetType[] = [{ type: 'Asset'}, { type: "Liability"}];
+  bsTypes: BalanceSheetType[] = [{ type: 'asset'}, { type: "liability"}];
 
   selectedBsType: BalanceSheetType = this.bsTypes[0];
   

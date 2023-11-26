@@ -9,7 +9,7 @@ import { TransactionTableComponent } from './transaction-table/transaction-table
 @Component({
   selector: 'app-transactions',
   standalone: true,
-  imports: [CommonModule, NewTransactionComponent, TransactionTableComponent],
+  imports: [CommonModule, TransactionTableComponent],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.scss'
 })
@@ -31,19 +31,9 @@ export class TransactionsComponent implements OnInit {
           this.transactionSets[entry.category].push(entry);
         }
       });
-      console.log(this.tableCategories);
-      console.log(this.transactionSets);
-      
-      
     },
       (error: any )=> console.log(error)
     );
-
-  // this.sizes = [
-  //     { name: 'Small', class: 'p-datatable-sm' },
-  //     { name: 'Normal', class: '' },
-  //     { name: 'Large',  class: 'p-datatable-lg' }
-  // ];
   };
 
 }

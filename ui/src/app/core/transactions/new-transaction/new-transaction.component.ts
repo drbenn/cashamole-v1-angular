@@ -6,17 +6,36 @@ import { TransactionBody } from '../../../model/transaction.model';
 import { first, take } from 'rxjs';
 import { UserActions } from '../../../store/user/userState.actions';
 import { Store } from '@ngxs/store';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
 
+export interface TranactionCategory {
+  category: string
+}
 
 @Component({
   selector: 'app-new-transaction',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ButtonModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    DropdownModule,
+    InputTextModule,
+    InputNumberModule,
+    ButtonModule,
+    CalendarModule
+  ],
   templateUrl: './new-transaction.component.html',
   styleUrl: './new-transaction.component.scss'
 })
 export class NewTransactionComponent implements OnInit {
+  transactionCategories: TranactionCategory[] = [{ category: 'discretionary'}, { category: "recurring"}];
+
+  selectedTransactionType: TranactionCategory = this.transactionCategories[0];
+
   today: Date = new Date();
 
   newTransactionForm = this.fb.group({

@@ -1,14 +1,56 @@
-<form action="" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+<main
+class="w-full bg-white flex flex-column justify-content-center align-items-center"
+[ngStyle]="{'min-height': '5rem'}"
+>
 
-    <label for="username">username: </label>
-    <input id="username" type="text" formControlName="username">
+    <form action="" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
-    <label for="password">password: </label>
-    <input id="password" type="password" formControlName="password">
+        <h2 class="m-4 text-gray-800 text-start">Login</h2>
 
-    <button type="reset" (click)="clearForm()">Clear</button>
-    <button type="submit" [disabled]="!loginForm.valid">Submit</button>
-</form>
+        <div class="m-4">
+            <span class="p-float-label">
+                <input 
+                    pInputText
+                    id="username"
+                    formControlName="username"
+                    [style]="{'width':'20rem'}"
+                />
+            <label htmlFor="username">Username</label>
+            </span>
+        </div>
+
+        <div class="m-4">
+            <span class="p-float-label">
+                <input 
+                    pInputText
+                    id="password"
+                    formControlName="password"
+                    [style]="{'width':'20rem'}"
+                />
+            <label htmlFor="password">Username</label>
+            </span>
+        </div>
+
+        <div class="mx-4 my-1 text-right">
+            <button 
+                pButton
+                pRipple
+                type="reset"
+                (click)="clearForm()"
+                class="px-4 mr-2"
+            >Clear</button>
+            <button 
+                class="ml-4"
+                pButton
+                pRipple
+                type="submit"
+                [disabled]="!loginForm.valid"
+                class="px-4"
+            >Submit</button>
+        </div>
+    </form>
+
+</main>
 
 <p>Form Status: {{ loginForm.status }}</p>
 <p>{{ loginForm.value | json}}</p>
