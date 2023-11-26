@@ -8,6 +8,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { TransactionModule } from './transaction/transaction.module';
 import { BalanceSheetModule } from './balance_sheet/balance_sheet.module';
 import { ChipService } from './chip/chip.service';
+import { ChipController } from './chip/chip.controller';
 
 
 
@@ -34,7 +35,7 @@ import { ChipService } from './chip/chip.service';
     TransactionModule,
     BalanceSheetModule
   ],
-  controllers: [AppController],
+  controllers: [AppController, ChipController],
   providers: [AppService, ChipService],
 })
 export class AppModule {}

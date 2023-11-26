@@ -18,40 +18,34 @@ export class NavComponent {
   @Select((state: {user: UserStateModel}) => state.user.loggedInUser.username)
     loggedInUser$! : Observable<string>;
 
-public loggedInUserVal!: string;
-
-
-
-ngOnInit(): void {
-    this.loggedInUser$.subscribe((username:string) => {
-      this.loggedInUserVal = username;
-      console.log(this.loggedInUserVal);
-      
-    });
-}
-
+  public loggedInUserVal!: string;
+  
   constructor(
     private router: Router,
     private store: Store
-    ) {}
+  ) {}
+
+  ngOnInit(): void {
+      this.loggedInUser$.subscribe((username:string) => {
+        this.loggedInUserVal = username;
+      });
+  };
 
   protected navigateHome() {
     this.router.navigate(['home']);
-  }
+  };
 
   protected logoutUser(): void {
     this.userApi.logoutUser().pipe(take(1), first())
     .subscribe(
       {
         next: (value: any) => {
-          // console.log('values');
-          // console.log(value);
-          
+
         },
         error: (error: any) => {
-          // console.error(error)
+
         }
       }
-    )
+    );
   }
 }

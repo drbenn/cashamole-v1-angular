@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CoreApiService } from '../../../shared/api/core-api.service';
 import { BalanceSheetEntryBody } from '../../../model/balanceSheet.model';
-import { first, take } from 'rxjs';
+import { Observable, first, take } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { UserActions } from '../../../store/user/userState.actions';
 import { DropdownModule } from 'primeng/dropdown';
@@ -11,13 +11,13 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
+import { ChipSelectComponent } from '../../../shared/chip-select/chip-select.component';
+import { Chip } from '../../../model/chips.model';
 
 
 export interface BalanceSheetType {
   type: string
 }
-
-
 
 @Component({
   selector: 'app-new-bs-record',
@@ -29,17 +29,23 @@ export interface BalanceSheetType {
     InputTextModule,
     InputNumberModule,
     ButtonModule,
-    CalendarModule
+    CalendarModule,
+    ChipSelectComponent
   ],
   templateUrl: './new-bs-record.component.html',
   styleUrl: './new-bs-record.component.scss'
 })
 export class NewBsRecordComponent implements OnInit {
   bsTypes: BalanceSheetType[] = [{ type: 'asset'}, { type: "liability"}];
-
   selectedBsType: BalanceSheetType = this.bsTypes[0];
   
   today: Date = new Date();
+
+  chips$: Observable<any> = this.store.select((state) => state.user.chips);
+  assetChips: Chip[] = [];
+  assetChipStrings: string[] = [];
+  liabilityChips: Chip[] = [];
+  liabilityChipStrings: string[] = [];
 
   newRecordForm = this.fb.group({
     type: [this.selectedBsType.type, [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
@@ -57,10 +63,42 @@ export class NewBsRecordComponent implements OnInit {
 
   ngOnInit(): void {
     this.today = new Date();
-    // this.selectedBsType = this.bsTypes[0];
-    // console.log('todays date: ', this.today);
+    this.getAndSetChips();
+  }
+
+  private getAndSetChips(): void {
+    this.chips$.subscribe((chips: Chip[]) => {
+      const assetChips: Chip[] = [];
+      const assetChipStrings: string[] = [];
+      const liabilityChips: Chip[] = [];
+      const liabilityChipStrings: string[] = [];
+
+      if (chips) {
+        chips.forEach((chip: Chip) => {
+          if (chip.kind === 'asset') {
+            assetChips.push(chip);
+            assetChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
+          } else if (chip.kind === 'liability') {
+            liabilityChips.push(chip);
+            liabilityChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
+          };
+        });
+      }
+      this.assetChipStrings = assetChipStrings;
+      this.liabilityChipStrings = liabilityChipStrings;
+    },
+      (error: any )=> console.log(error)
+    );
+  }
+
+  protected handleChipSelect(event: any) {
+    console.log('handleChipSelect: ', event);
+    if (event.kind === 'asset') {
+      this.newRecordForm.get('description')?.setValue(event.chip);
+    } else if (event.kind === 'liability') {
+      this.newRecordForm.get('description')?.setValue(event.chip);    
+    }
     
-    // this.newTransactionForm.get('date')?.setValue(this.today);
   }
 
   protected clearForm() {

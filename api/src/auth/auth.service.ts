@@ -105,8 +105,36 @@ export class AuthService {
             status VARCHAR(25) NOT NULL
         )`;
         const queryDb = await this.connection.query(sqlQuery);
-        // const results = Object.assign([{}], queryDb[0]);
-    }
+        const results = Object.assign([{}], queryDb[0]);
+
+        const sqlQuery2: string = `INSERT INTO user${userId}_chips (kind, chip, status) VALUES
+        ('asset', 'cash', 'active'),
+        ('asset', 'checking', 'active'),
+        ('asset', 'savings', 'active'),
+        ('asset', '401k', 'active'),
+        ('asset', 'roth', 'active'),
+        ('asset', 'fidelity', 'active'),
+        ('asset', 'vanguard', 'active'),
+        ('liability', 'mortgage', 'active'),
+        ('liability', 'auto loan', 'active'),
+        ('liability', 'visa', 'active'),
+        ('liability', 'capital one', 'active'),
+        ('category', 'discretionary', 'active'),
+        ('category', 'groceries', 'active'),
+        ('category', 'transportation', 'active'),
+        ('category', 'eating out', 'active'),
+        ('category', 'recurring', 'active'),
+        ('payee', 'amazon', 'active'),
+        ('payee', 'harris teeter', 'active'),
+        ('payee', 'trader joes', 'active'),
+        ('payee', 'target', 'active'),
+        ('payee', 'bp', 'active'),
+        ('payee', 'mint mobile', 'active'),
+        ('payee', 'bp', 'active');
+     `
+        const queryDb2 = await this.connection.query(sqlQuery2);
+        const results2 = Object.assign([{}], queryDb[0]);
+    };
 
     async validateLoginCredentials(loginUserDto: LoginUserDto): Promise<number> {
         const sqlQuery: string = `SELECT id, password FROM users WHERE username='${loginUserDto.username}'`;
@@ -119,8 +147,8 @@ export class AuthService {
             return 0;
         } else {
             return userId;
-        }
-    }
+        };
+    };
 
     async getUserDataOnSuccessfulValidation(userId: number): Promise<UserLoginData> {
         const userBasicProfile: UserBasicProfile = await this.getUserBasicProfile(userId);
@@ -141,37 +169,37 @@ export class AuthService {
             transactions: userTransactions,
             balanceSheetEntries: userBalanceSheetEntries,
             chips: userChips
-        }
+        };
         return userLoginData;
-    }
+    };
 
     async getUserBasicProfile(userId: number): Promise<UserBasicProfile> {
         const sqlQuery: string = `SELECT id, username, email, join_date FROM users WHERE id='${userId}'`;
         const basicUserData = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], basicUserData[0]);
         return results[0];
-    }
+    };
 
     async getUserTransactions(userId: number): Promise<UserTransaction[]> {
         const sqlQuery: string = `SELECT * FROM user${userId}_transactions`;
         const userTransactions = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], userTransactions[0]);
         return this.checkForReturnValues(results);
-    }
+    };
 
     async getUserBalanceSheetEntries(userId: number): Promise<UserBalanceSheetEntry[]> {
         const sqlQuery: string = `SELECT * FROM user${userId}_bal_sheet`;
         const userBalanceSheetEntries = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], userBalanceSheetEntries[0]);
         return this.checkForReturnValues(results);
-    }
+    };
 
     async getUserChips(userId: number): Promise<UserChip[]> {
         const sqlQuery: string = `SELECT * FROM user${userId}_chips`;
         const userChips = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], userChips[0]);
         return this.checkForReturnValues(results);
-    }
+    };
 
     private checkForReturnValues(results: any): UserTransaction[] | UserBalanceSheetEntry[] | UserChip[] | null | any {
         // if no values return(if table is empty will still return length of 1, but of an object with no key/value pairs)
@@ -180,5 +208,5 @@ export class AuthService {
         } else {
             return results;
         };
-    }
+    };
 }

@@ -6,7 +6,7 @@ import { InsertUser, LoginUserDto, RegisterUserDto, UserExist, UserLoginData } f
 
 @Controller('auth')
 export class AuthController {
-  protected cookieExpireTime: number = 3600000;
+  protected cookieExpireTime: number = 3600000 * 96; // in ms, 3600000 = 1 hr
 
   constructor(
     private jwtService: JwtService,

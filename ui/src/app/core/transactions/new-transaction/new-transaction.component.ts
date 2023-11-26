@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CoreApiService } from '../../../shared/api/core-api.service';
 import { TransactionBody } from '../../../model/transaction.model';
-import { first, take } from 'rxjs';
+import { Observable, first, take } from 'rxjs';
 import { UserActions } from '../../../store/user/userState.actions';
 import { Store } from '@ngxs/store';
 import { DropdownModule } from 'primeng/dropdown';
@@ -11,6 +11,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
+import { ChipSelectComponent } from '../../../shared/chip-select/chip-select.component';
+import { Chip } from '../../../model/chips.model';
 
 export interface TranactionCategory {
   category: string
@@ -21,29 +23,38 @@ export interface TranactionCategory {
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     DropdownModule,
     InputTextModule,
     InputNumberModule,
     ButtonModule,
-    CalendarModule
+    CalendarModule,
+    ChipSelectComponent
   ],
   templateUrl: './new-transaction.component.html',
   styleUrl: './new-transaction.component.scss'
 })
 export class NewTransactionComponent implements OnInit {
-  transactionCategories: TranactionCategory[] = [{ category: 'discretionary'}, { category: "recurring"}];
+  protected transactionCategories: TranactionCategory[] = [{ category: 'discretionary'}, { category: "recurring"}];
 
-  selectedTransactionType: TranactionCategory = this.transactionCategories[0];
+  protected selectedTransactionType: TranactionCategory = this.transactionCategories[0];
 
-  today: Date = new Date();
+  protected today: Date = new Date();
+
+  chips$: Observable<any> = this.store.select((state) => state.user.chips);
+  categoryChips: Chip[] = [];
+  categoryChipStrings: string[] = [];
+  payeeChips: Chip[] = [];
+  payeeChipStrings: string[] = [];
+
 
   newTransactionForm = this.fb.group({
     category: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
     date: [ this.today, [Validators.required]],
     payee: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(75)]],
     note: ['', [Validators.maxLength(100)]],
-    amount: ['', [Validators.required, Validators.min(-10000000), Validators.max(10000000)]]
+    amount: [null as unknown as number, [Validators.required, Validators.min(-10000000), Validators.max(10000000)]]
   })
 
   constructor (
@@ -54,9 +65,17 @@ export class NewTransactionComponent implements OnInit {
 
   ngOnInit(): void {
     this.today = new Date();
-    // console.log('todays date: ', this.today);
+    this.getAndSetChips();
+  }
+
+  protected handleChipSelect(event: any) {
+    console.log('handleChipSelect: ', event);
+    if (event.kind === 'category') {
+      this.newTransactionForm.get('category')?.setValue(event.chip);
+    } else if (event.kind === 'payee') {
+      this.newTransactionForm.get('payee')?.setValue(event.chip);    
+    }
     
-    // this.newTransactionForm.get('date')?.setValue(this.today);
   }
 
   protected clearForm() {
@@ -65,8 +84,33 @@ export class NewTransactionComponent implements OnInit {
       date: new Date(this.today),
       payee: '',
       note: '',
-      amount: ''
+      amount: null
     });
+  }
+
+  private getAndSetChips(): void {
+    this.chips$.subscribe((chips: Chip[]) => {
+      const categoryChips: Chip[] = [];
+      const categoryChipStrings: string[] = [];
+      const payeeChips: Chip[] = [];
+      const payeeChipStrings: string[] = [];
+
+      if (chips) {
+        chips.forEach((chip: Chip) => {
+          if (chip.kind === 'category') {
+            categoryChips.push(chip);
+            categoryChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
+          } else if (chip.kind === 'payee') {
+            payeeChips.push(chip);
+            payeeChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
+          };
+        });
+      };
+      this.categoryChipStrings = categoryChipStrings;
+      this.payeeChipStrings = payeeChipStrings;
+    },
+      (error: any )=> console.log(error)
+    );
   }
 
   protected onSubmit() {

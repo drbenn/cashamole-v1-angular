@@ -1,6 +1,6 @@
 export class ChipDto {
     id?: number;
-    kind: string | 'asset' | 'liability' | 'transaction';
+    kind: string | 'asset' | 'liability' | 'payee' | 'category';
     chip: string;
     status: string;
 }

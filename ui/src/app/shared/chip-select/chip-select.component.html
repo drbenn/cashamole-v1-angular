@@ -1,0 +1,11 @@
+
+<h3>{{ kind | titlecase }} Quick Select</h3>
+<p-chips
+    [(ngModel)]="chips"
+    [max]="maxChips"
+    (onChipClick)="onChipClick($event)"
+    (onRemove)="onChipRemove($event)"
+    (onAdd)="onChipAdd($event)"
+    [style]="{'min-width':'20rem'}"
+ ></p-chips>
+

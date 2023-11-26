@@ -1,6 +1,6 @@
 export interface Chip {
     id: number;
-    type: string;
+    kind: string | 'asset' | 'liability' | 'payee' | 'category';
     chip: string;
     status: string;
 }

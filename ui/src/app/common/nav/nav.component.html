@@ -15,7 +15,7 @@
             <!-- @if (loggedInUserVal) {
                 <li>{{ loggedInUserVal | async }}</li>
             } -->
-            <li>{{ loggedInUserVal }}</li>
+            <li>{{ loggedInUserVal | titlecase }}</li>
             <li><a (click)="logoutUser()">Logout</a></li>
         </ul>
     </div>

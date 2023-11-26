@@ -13,7 +13,6 @@ export class UserApiService {
 
   private apiUrl: string = environment.apiUrl;
 
-
   public getHello(): Observable<any> {
     return this.httpClient.get(this.apiUrl + '/', {withCredentials: true}) as Observable<any>;
   }
@@ -37,7 +36,6 @@ export class UserApiService {
     return this.httpClient.post(this.apiUrl + '/auth/register_user', registerBody, {withCredentials: true}) as Observable<any>;
   }
 
-
   public authenticateUser(loginBody: UserLogin): Observable<any> {
     return this.httpClient.post(this.apiUrl + '/auth/login_user', loginBody, {withCredentials: true }) as Observable<any>;
   }
@@ -47,8 +45,7 @@ export class UserApiService {
   }
 
   public loginCachedUser(userId: number): Observable<any> {
-    console.log('cache endpoint');
-    
     return this.httpClient.get(this.apiUrl + `/auth/cached_login_user/${userId}`, {withCredentials: true}) as Observable<any>;
   }
+  
 }

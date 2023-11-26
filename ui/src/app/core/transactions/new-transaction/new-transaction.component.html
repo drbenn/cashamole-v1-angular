@@ -3,12 +3,24 @@ class="w-full bg-white flex flex-column justify-content-center align-items-cente
 [ngStyle]="{'min-height': '5rem'}"
 >
     <h2 class="m-4 text-gray-800 text-start">New Transaction</h2>
-
         <form action="" [formGroup]="newTransactionForm" (ngSubmit)="onSubmit()">
 
-            <label for="category">category: </label>
-            <input id="category" type="text" formControlName="category">
-        
+            <div class="m-4 w-20rem">
+                <app-chip-select [chips]="categoryChipStrings" kind="category" (selectedChip)="handleChipSelect($event)"></app-chip-select>
+            </div>
+
+            <div class="m-4">
+                <span class="p-float-label">
+                    <input 
+                        pInputText
+                        id="category"
+                        formControlName="category"
+                        [style]="{'width':'20rem'}"
+                    />
+                <label htmlFor="category">Category</label>
+                </span>
+            </div>
+
             <div class="m-4">
                 <span class="p-float-label">
                     <p-calendar
@@ -21,9 +33,22 @@ class="w-full bg-white flex flex-column justify-content-center align-items-cente
                     <label htmlFor="description">Date</label>
                 </span>
             </div>
-        
-            <label for="payee">payee: </label>
-            <input id="payee" type="text" formControlName="payee">
+
+            <div class="m-4 w-20rem">
+                <app-chip-select [chips]="payeeChipStrings" kind="payee" (selectedChip)="handleChipSelect($event)"></app-chip-select>
+            </div>
+
+            <div class="m-4">
+                <span class="p-float-label">
+                    <input 
+                        pInputText
+                        id="payee"
+                        formControlName="payee"
+                        [style]="{'width':'20rem'}"
+                    />
+                <label htmlFor="payee">Payee</label>
+                </span>
+            </div>
         
             <div class="m-4">
                 <span class="p-float-label">
@@ -46,7 +71,6 @@ class="w-full bg-white flex flex-column justify-content-center align-items-cente
                         mode="decimal"
                         [minFractionDigits]="2"
                         [maxFractionDigits]="2"
-                        placeholder=0.00
                         [style]="{'width':'20rem'}"
                     > </p-inputNumber>
                     <label htmlFor="amount">$ Amount</label>
@@ -74,6 +98,5 @@ class="w-full bg-white flex flex-column justify-content-center align-items-cente
         </form>
 </main>
 
-<p-button label="Submit" icon="pi pi-check"></p-button>
 <p>Form Status: {{ newTransactionForm.status }}</p>
 <p>{{ newTransactionForm.value | json}}</p>
