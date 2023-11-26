@@ -31,9 +31,9 @@
             ],
             "styles": [
               "src/styles.scss",
-              "./node_modules/primeng/resources/themes/mdc-light-deeppurple/theme.css",
               "./node_modules/primeng/resources/primeng.min.css",
-              "./node_modules/primeflex/primeflex.css"
+              "./node_modules/primeflex/primeflex.css",
+              "src/assets/theme/theme.css"
             ],
             "scripts": [],
             "server": "src/main.server.ts",
