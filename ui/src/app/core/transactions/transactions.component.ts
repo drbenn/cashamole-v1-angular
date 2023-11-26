@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NewTransactionComponent } from './new-transaction/new-transaction.component';
 import { Observable } from 'rxjs';
 import { TransactionBody } from '../../model/transaction.model';
 import { Store } from '@ngxs/store';
 import { TransactionTableComponent } from './transaction-table/transaction-table.component';
+import { NewTransactionComponent } from './new-transaction/new-transaction.component';
 
 @Component({
   selector: 'app-transactions',
   standalone: true,
-  imports: [CommonModule, TransactionTableComponent],
+  imports: [CommonModule, TransactionTableComponent, NewTransactionComponent],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.scss'
 })

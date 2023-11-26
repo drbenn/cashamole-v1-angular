@@ -44,12 +44,12 @@ export class UserRegisterComponent {
         username: values.username,
         password: values.password
       }
-      console.log(registerBody);
+      // console.log(registerBody);
       this.userApi.registerUser(registerBody).pipe(take(1), first())
       .subscribe(
         {
           next: (value: any) => {
-            console.log(value);
+            // console.log(value);
             // todo: success notification
             this.router.navigate(['home']);
           },

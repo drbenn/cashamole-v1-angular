@@ -79,7 +79,7 @@ export class AuthService {
             status VARCHAR(25) NOT NULL
         )`;
         const queryDb = await this.connection.query(sqlQuery);
-        const results = Object.assign([{}], queryDb[0]);
+        // const results = Object.assign([{}], queryDb[0]);
     }
 
     async generateUserBalanceSheetTable(userId: number) {
@@ -93,19 +93,19 @@ export class AuthService {
             status VARCHAR(25) NOT NULL
         )`;
         const queryDb = await this.connection.query(sqlQuery);
-        const results = Object.assign([{}], queryDb[0]);
+        // const results = Object.assign([{}], queryDb[0]);
     }
 
     async generateUserChipsTable(userId: number) {
         const sqlQuery: string = `
             CREATE TABLE IF NOT EXISTS user${userId}_chips (
             id INT PRIMARY KEY AUTO_INCREMENT,
-            type VARCHAR(50) NOT NULL,
+            kind VARCHAR(50) NOT NULL,
             chip VARCHAR(200) NOT NULL,
             status VARCHAR(25) NOT NULL
         )`;
         const queryDb = await this.connection.query(sqlQuery);
-        const results = Object.assign([{}], queryDb[0]);
+        // const results = Object.assign([{}], queryDb[0]);
     }
 
     async validateLoginCredentials(loginUserDto: LoginUserDto): Promise<number> {

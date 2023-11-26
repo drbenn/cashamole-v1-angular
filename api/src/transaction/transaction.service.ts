@@ -2,17 +2,24 @@ import { Injectable } from '@nestjs/common';
 import { Connection } from 'mysql2';
 import { InjectClient } from 'nest-mysql';
 import { TransactionDto } from './transaction-dto/transaction-dto';
+import { ChipService } from 'src/chip/chip.service';
+import { ChipDto } from 'src/chip/chip-dto/chip-dto';
 
 @Injectable()
 export class TransactionService {
 
-    constructor(@InjectClient() private readonly connection: Connection) {}
+    constructor(
+        @InjectClient() private readonly connection: Connection,
+        private chipService: ChipService
+        ) {}
 
     async postNewTransaction(transactionDto: TransactionDto, userId: number): Promise<TransactionDto | 'insert error' | 'undefined userid' > {
         
         if (!userId) {
             return 'undefined userid';
         };
+        const chip: ChipDto = {kind: transactionDto.category, chip: transactionDto.payee, status: 'active'};
+        this.chipService.createNewChip(chip, userId);
         const sqlQuery: string = `INSERT INTO user${userId}_transactions (date, amount, category, payee, note, status) 
             VALUES (
                 \'${transactionDto.date}\', 

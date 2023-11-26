@@ -86,6 +86,8 @@ export class NewBsRecordComponent implements OnInit {
         amount: values.amount,
         status: 'active'
       }
+      console.log(balanceSheetEntryBody);
+      
       this.coreApi.submitNewBsRecord(balanceSheetEntryBody).pipe(take(1), first())
       .subscribe(
         {
