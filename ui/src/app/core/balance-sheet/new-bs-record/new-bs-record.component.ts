@@ -42,7 +42,7 @@ export class NewBsRecordComponent implements OnInit {
   today: Date = new Date();
 
   newRecordForm = this.fb.group({
-    type: [this.selectedBsType, [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
+    type: [this.selectedBsType.type, [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
     date: [this.today, [Validators.required]],
     description: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(75)]],
     amount: [null as unknown as number, [Validators.required, Validators.min(-10000000), Validators.max(10000000)]]
@@ -65,7 +65,7 @@ export class NewBsRecordComponent implements OnInit {
 
   protected clearForm() {
     this.newRecordForm.setValue({ 
-      type: this.selectedBsType,
+      type: this.selectedBsType.type,
       date: new Date(this.today),
       description: '',
       amount: null
@@ -80,7 +80,7 @@ export class NewBsRecordComponent implements OnInit {
     }
     else if (values) {
       const balanceSheetEntryBody: BalanceSheetEntryBody = {
-        type: values.type,
+        type: values.type.type.toLowerCase(),
         date: new Date(values.date),
         description: values.description,
         amount: values.amount,

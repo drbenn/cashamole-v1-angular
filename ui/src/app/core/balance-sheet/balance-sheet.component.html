@@ -1,1 +1,10 @@
-<p>balance-sheet works!</p>
+<main class="w-full flex flex-row flex-wrap justify-content-center align-items-center">
+    <section class="m-4">
+        <app-balance-sheet-table tableTitle="Assets" [tableData]="assets"></app-balance-sheet-table>
+    </section>
+    <section class="m-4">
+        <app-balance-sheet-table tableTitle="Liablities" [tableData]="liabilities"></app-balance-sheet-table>
+    </section>
+</main>
+
+<app-new-bs-record></app-new-bs-record>

@@ -20,9 +20,7 @@ export class CoreApiService {
     return this.httpClient.post(this.apiUrl + '/transaction', transactionBody, {withCredentials: true}) as Observable<any>;
   };
 
-  public submitNewBsRecord(balanceSheetEntryBody: BalanceSheetEntryBody): Observable<any> {
-    console.log('ioyiuh');
-    
+  public submitNewBsRecord(balanceSheetEntryBody: BalanceSheetEntryBody): Observable<any> {    
     return this.httpClient.post(this.apiUrl + '/balance-sheet', balanceSheetEntryBody, {withCredentials: true}) as Observable<any>;
   }
 }
