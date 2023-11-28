@@ -13,9 +13,14 @@ import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { ChipSelectComponent } from '../../../shared/chip-select/chip-select.component';
 import { Chip } from '../../../model/chips.model';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 export interface TranactionCategory {
   category: string
+}
+
+export interface TransactionType {
+  type: string
 }
 
 @Component({
@@ -30,15 +35,19 @@ export interface TranactionCategory {
     InputNumberModule,
     ButtonModule,
     CalendarModule,
-    ChipSelectComponent
+    ChipSelectComponent,
+    SelectButtonModule
   ],
   templateUrl: './new-transaction.component.html',
   styleUrl: './new-transaction.component.scss'
 })
 export class NewTransactionComponent implements OnInit {
+  protected transactionTypes: TransactionType[] = [{ type: 'expense'}, { type: "income"}];
+  protected selectedTransactionType: TransactionType = this.transactionTypes[0];
+
   protected transactionCategories: TranactionCategory[] = [{ category: 'discretionary'}, { category: "recurring"}];
 
-  protected selectedTransactionType: TranactionCategory = this.transactionCategories[0];
+  protected selectedTransactionCategory: TranactionCategory = this.transactionCategories[0];
 
   protected today: Date = new Date();
 
@@ -50,6 +59,7 @@ export class NewTransactionComponent implements OnInit {
 
 
   newTransactionForm = this.fb.group({
+    type: [this.selectedTransactionType.type, [Validators.required]],
     category: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
     date: [ this.today, [Validators.required]],
     payee: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(75)]],
@@ -80,6 +90,7 @@ export class NewTransactionComponent implements OnInit {
 
   protected clearForm() {
     this.newTransactionForm.setValue({ 
+      type: this.transactionTypes[0].type,
       category:'',
       date: new Date(this.today),
       payee: '',
@@ -106,6 +117,8 @@ export class NewTransactionComponent implements OnInit {
           };
         });
       };
+      this.categoryChips = categoryChips;
+      this.payeeChips = payeeChips;
       this.categoryChipStrings = categoryChipStrings;
       this.payeeChipStrings = payeeChipStrings;
     },

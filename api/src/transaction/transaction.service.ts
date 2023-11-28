@@ -20,9 +20,10 @@ export class TransactionService {
         };
         const chip: ChipDto = {kind: transactionDto.category, chip: transactionDto.payee, status: 'active'};
         this.chipService.createNewChip(chip, userId);
-        const sqlQuery: string = `INSERT INTO user${userId}_transactions (date, amount, category, payee, note, status) 
+        const sqlQuery: string = `INSERT INTO user${userId}_transactions (date, type, amount, category, payee, note, status) 
             VALUES (
-                \'${transactionDto.date}\', 
+                \'${transactionDto.date}\',
+                \'${transactionDto.type}\', 
                 \'${transactionDto.amount}\', 
                 \'${transactionDto.category}\',
                 \'${transactionDto.payee}\',

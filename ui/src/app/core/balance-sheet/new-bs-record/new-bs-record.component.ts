@@ -75,6 +75,8 @@ export class NewBsRecordComponent implements OnInit {
 
       if (chips) {
         chips.forEach((chip: Chip) => {
+          // console.log(chips);
+          
           if (chip.kind === 'asset') {
             assetChips.push(chip);
             assetChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
@@ -84,6 +86,8 @@ export class NewBsRecordComponent implements OnInit {
           };
         });
       }
+      this.assetChips = assetChips;
+      this.liabilityChips = liabilityChips;
       this.assetChipStrings = assetChipStrings;
       this.liabilityChipStrings = liabilityChipStrings;
     },

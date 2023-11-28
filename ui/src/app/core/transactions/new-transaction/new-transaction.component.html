@@ -5,8 +5,10 @@ class="w-full bg-white flex flex-column justify-content-center align-items-cente
     <h2 class="m-4 text-gray-800 text-start">New Transaction</h2>
         <form action="" [formGroup]="newTransactionForm" (ngSubmit)="onSubmit()">
 
+            <p-selectButton [options]="transactionTypes" formControlName="type" optionLabel="type" optionValue="type"></p-selectButton>
+
             <div class="m-4 w-20rem">
-                <app-chip-select [chips]="categoryChipStrings" kind="category" (selectedChip)="handleChipSelect($event)"></app-chip-select>
+                <app-chip-select [chips]="categoryChipStrings" [chipObjects]="categoryChips" kind="category" (selectedChip)="handleChipSelect($event)"></app-chip-select>
             </div>
 
             <div class="m-4">
@@ -35,7 +37,7 @@ class="w-full bg-white flex flex-column justify-content-center align-items-cente
             </div>
 
             <div class="m-4 w-20rem">
-                <app-chip-select [chips]="payeeChipStrings" kind="payee" (selectedChip)="handleChipSelect($event)"></app-chip-select>
+                <app-chip-select [chips]="payeeChipStrings" [chipObjects]="payeeChips" kind="payee" (selectedChip)="handleChipSelect($event)"></app-chip-select>
             </div>
 
             <div class="m-4">

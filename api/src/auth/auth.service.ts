@@ -71,6 +71,7 @@ export class AuthService {
         const sqlQuery: string = `
             CREATE TABLE IF NOT EXISTS user${userId}_transactions (
             trans_id INT PRIMARY KEY AUTO_INCREMENT,
+            type VARCHAR(20) NOT NULL,
             date VARCHAR(250) NOT NULL,
             amount DECIMAL(10,2) NOT NULL,
             category VARCHAR(250) NOT NULL,
@@ -106,8 +107,11 @@ export class AuthService {
         )`;
         const queryDb = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], queryDb[0]);
+        this.generateStarterChips(userId);
+    };
 
-        const sqlQuery2: string = `INSERT INTO user${userId}_chips (kind, chip, status) VALUES
+    async generateStarterChips(userId: number): Promise<void> {
+        const sqlQuery: string = `INSERT INTO user${userId}_chips (kind, chip, status) VALUES
         ('asset', 'cash', 'active'),
         ('asset', 'checking', 'active'),
         ('asset', 'savings', 'active'),
@@ -130,11 +134,15 @@ export class AuthService {
         ('payee', 'target', 'active'),
         ('payee', 'bp', 'active'),
         ('payee', 'mint mobile', 'active'),
-        ('payee', 'bp', 'active');
+        ('payee', 'bp', 'active'),
+        ('income', 'paycheck', 'active'),
+        ('income', 'interest', 'active'),
+        ('income', 'dividends', 'active'),
+        ('income', 'random', 'active');
      `
-        const queryDb2 = await this.connection.query(sqlQuery2);
-        const results2 = Object.assign([{}], queryDb[0]);
-    };
+        const queryDb = await this.connection.query(sqlQuery);
+        const results = Object.assign([{}], queryDb[0]);
+    }
 
     async validateLoginCredentials(loginUserDto: LoginUserDto): Promise<number> {
         const sqlQuery: string = `SELECT id, password FROM users WHERE username='${loginUserDto.username}'`;

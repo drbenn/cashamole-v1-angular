@@ -33,13 +33,13 @@ class="w-full bg-white flex flex-column justify-content-center align-items-cente
 
         @if (this.selectedBsType.type === 'asset') {
             <div class="m-4 w-20rem">
-                <app-chip-select [chips]="assetChipStrings" kind="asset" (selectedChip)="handleChipSelect($event)"></app-chip-select>
+                <app-chip-select [chips]="assetChipStrings" [chipObjects]="assetChips" kind="asset" (selectedChip)="handleChipSelect($event)"></app-chip-select>
             </div>
         }
 
         @if (this.selectedBsType.type === 'liability') {
         <div class="m-4 w-20rem">
-            <app-chip-select [chips]="liabilityChipStrings" kind="liability" (selectedChip)="handleChipSelect($event)"></app-chip-select>
+            <app-chip-select [chips]="liabilityChipStrings" [chipObjects]="liabilityChips" kind="liability" (selectedChip)="handleChipSelect($event)"></app-chip-select>
         </div>
         }
         
@@ -91,6 +91,6 @@ class="w-full bg-white flex flex-column justify-content-center align-items-cente
     </form>
 
     <p>Form Status: {{ newRecordForm.status }}</p>
-    <p>{{ newRecordForm.value | json}}</p>
+    <p>{{ newRecordForm.value | json }}</p>
 
 </main>

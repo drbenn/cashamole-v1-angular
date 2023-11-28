@@ -28,4 +28,20 @@ export class ChipService {
             return 'insert error';
         };
     };
+
+    async deleteChip(chipDto: ChipDto, userId: number): Promise<'delete successful' | 'delete error' | 'undefined userid' > {
+        if (!userId) {
+            return 'undefined userid';
+        };
+        const sqlQuery: string = `DELETE FROM user${userId}_chips WHERE chip = '${chipDto.chip}' AND kind = '${chipDto.kind}';`
+        const deletedChip = await this.connection.query(sqlQuery);
+        const results = Object.assign([{}], deletedChip[0]);
+        console.log(results);
+        
+        if (results.serverStatus === 34) {
+            return 'delete successful';
+        } else {
+            return 'delete error';
+        };
+    };
 }

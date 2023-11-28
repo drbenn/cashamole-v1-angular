@@ -7,6 +7,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { UserApiService } from '../../shared/api/user-api.service';
 import { Router } from '@angular/router';
 import { BalanceSheetEntryBody } from '../../model/balanceSheet.model';
+import { Chip } from '../../model/chips.model';
 
 
 export interface UserStateModel {
@@ -83,6 +84,10 @@ export class UserState implements NgxsOnInit {
     action: UserActions.AddUserTransaction
   ) {
     const updatedTransactions: TransactionBody[] = ctx.getState().transactions;
+    console.log('inst atet');
+    
+    console.log(updatedTransactions);
+    
     updatedTransactions.push(action.payload);
     console.log('in action');
     console.log(updatedTransactions);
@@ -99,6 +104,36 @@ export class UserState implements NgxsOnInit {
     const updatedBalanceRecords: BalanceSheetEntryBody[] = ctx.getState().balanceSheetEntries;
     updatedBalanceRecords.push(action.payload);
     ctx.patchState({ balanceSheetEntries: updatedBalanceRecords });
+  };
+
+  @Action(UserActions.AddUserChip)
+  addUserChip(
+    ctx: StateContext<UserStateModel>,
+    action: UserActions.AddUserChip
+  ) {
+    const updatedChips: Chip[] = ctx.getState().chips;
+    updatedChips.push(action.payload);
+    ctx.patchState({ chips: updatedChips });
+  };
+
+  @Action(UserActions.RemoveUserChip)
+  removeUserChip(
+    ctx: StateContext<UserStateModel>,
+    action: UserActions.RemoveUserChip
+  ) {
+    console.log('in remove user chip state');
+    console.log(action.payload);
+    console.log('AFTER PAYLOAD');
+    
+    
+    const stateChips: Chip[] = ctx.getState().chips;
+    const updatedChips: Chip[] = stateChips.filter((chip: Chip) => {
+      return action.payload.chip !== chip.chip && action.payload.kind !== chip.kind;
+    })
+    
+    console.log(updatedChips);
+    
+    ctx.patchState({ chips: updatedChips });
   };
 }
 
