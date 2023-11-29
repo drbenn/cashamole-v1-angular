@@ -15,8 +15,7 @@ import { first, take } from 'rxjs';
 })
 export class UserResetPasswordComponent {
   passwordResetForm = this.fb.group({
-    email: ['', [Validators.required, Validators.email, Validators.minLength(3), Validators.maxLength(75)]],
-    username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(75)]],
+    email: ['', [Validators.required, Validators.email, Validators.minLength(3), Validators.maxLength(75)]]
   })
 
   constructor (
@@ -25,7 +24,7 @@ export class UserResetPasswordComponent {
   ) {}
 
   protected clearForm() {
-    this.passwordResetForm.setValue({ email: '', username:'' });
+    this.passwordResetForm.setValue({ email: '' });
   }
 
   protected onSubmit() {
@@ -33,25 +32,25 @@ export class UserResetPasswordComponent {
     if (!values) {
       return;
     }
-    else if(values.email && values.username && values.password) {
-      const registerBody: any = {
-        email: values.email,
-        username: values.username
-      }
-      console.log(registerBody);
-      this.userApi.registerUser(registerBody).pipe(take(1), first())
-      .subscribe(
-        {
-          next: (value: any) => {
-            console.log(value);
-            // todo: success notification, check email?
-          },
-          error: (error: any) => {
-            console.error(error)
-            // todo: error notification 
-          }
-        }
-      )
+    else if(values.email) {
+      // const registerBody: any = {
+      //   email: values.email,
+      //   username: values.username
+      // }
+      // console.log(registerBody);
+      // this.userApi.registerUser(registerBody).pipe(take(1), first())
+      // .subscribe(
+      //   {
+      //     next: (value: any) => {
+      //       console.log(value);
+      //       // todo: success notification, check email?
+      //     },
+      //     error: (error: any) => {
+      //       console.error(error)
+      //       // todo: error notification 
+      //     }
+      //   }
+      // )
     }
   }
 

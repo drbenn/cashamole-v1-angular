@@ -15,7 +15,7 @@ export interface UserStateModel {
   loggedInUser: User,
   transactions: TransactionBody[],
   balanceSheetEntries: BalanceSheetEntryBody[],
-  chips: any,
+  chips: Chip[],
 }
 
 @State<UserStateModel>({
@@ -25,7 +25,7 @@ export interface UserStateModel {
     loggedInUser: {} as User,
     transactions: [],
     balanceSheetEntries: [],
-    chips: '',
+    chips: [],
   }
 })
 @Injectable()
@@ -50,7 +50,7 @@ export class UserState implements NgxsOnInit {
         error: (err: any) => console.log(err)
       });
     };
-  }
+  };
 
   @Action(UserActions.RegisterLoggedInUser)
   registerLoggedInUser(
@@ -58,14 +58,15 @@ export class UserState implements NgxsOnInit {
     action: UserActions.RegisterLoggedInUser
   ) {
     ctx.patchState({ loggedInUser: action.payload });
-  }
+  };
 
 
   @Action(UserActions.SetUserDataOnLogin)
   setUserDataOnLogin(
     ctx: StateContext<UserStateModel>,
     action: UserActions.SetUserDataOnLogin
-  ) {
+  ) {    
+
     console.log(action.payload);
     
     ctx.patchState({ 
@@ -75,8 +76,7 @@ export class UserState implements NgxsOnInit {
       balanceSheetEntries: action.payload.balanceSheetEntries,
       chips: action.payload.chips
     });
-  }
-
+  };
 
   @Action(UserActions.AddUserTransaction)
   addUserTransaction(
@@ -84,15 +84,7 @@ export class UserState implements NgxsOnInit {
     action: UserActions.AddUserTransaction
   ) {
     const updatedTransactions: TransactionBody[] = ctx.getState().transactions;
-    console.log('inst atet');
-    
-    console.log(updatedTransactions);
-    
     updatedTransactions.push(action.payload);
-    console.log('in action');
-    console.log(updatedTransactions);
-    
-    
     ctx.patchState({ transactions: updatedTransactions });
   };
 
@@ -111,7 +103,7 @@ export class UserState implements NgxsOnInit {
     ctx: StateContext<UserStateModel>,
     action: UserActions.AddUserChip
   ) {
-    const updatedChips: Chip[] = ctx.getState().chips;
+    const updatedChips: Chip[] = ctx.getState().chips;    
     updatedChips.push(action.payload);
     ctx.patchState({ chips: updatedChips });
   };
@@ -121,20 +113,32 @@ export class UserState implements NgxsOnInit {
     ctx: StateContext<UserStateModel>,
     action: UserActions.RemoveUserChip
   ) {
-    console.log('in remove user chip state');
-    console.log(action.payload);
-    console.log('AFTER PAYLOAD');
-    
-    
-    const stateChips: Chip[] = ctx.getState().chips;
-    const updatedChips: Chip[] = stateChips.filter((chip: Chip) => {
-      return action.payload.chip !== chip.chip && action.payload.kind !== chip.kind;
-    })
-    
-    console.log(updatedChips);
-    
+      const stateChips: Chip[] = ctx.getState().chips;
+      const updatedChips: Chip[] = stateChips.filter((chip: Chip) => {
+      const stateChipJoin: string = chip.chip + chip.kind;
+      const removeChipJoin: string = action.payload.chip + action.payload.kind;
+      if (removeChipJoin !== stateChipJoin) {
+        return true;
+      } else {
+        return false;
+      }
+    });
     ctx.patchState({ chips: updatedChips });
   };
+
+  @Action(UserActions.ClearUserStateOnLogout)
+  clearUserStateOnLogout(
+    ctx: StateContext<UserStateModel>
+  ) {
+    ctx.patchState({     
+      isInitUserDataLoaded: false,
+      loggedInUser: {} as User,
+      transactions: [],
+      balanceSheetEntries: [],
+      chips: []
+    });
+  };
+
 }
 
 

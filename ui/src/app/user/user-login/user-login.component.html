@@ -1,6 +1,7 @@
 <main
 class="w-full bg-white flex flex-column justify-content-center align-items-center"
 [ngStyle]="{'min-height': '5rem'}"
+pAnimateOnScroll enterClass="flipup" leaveClass="zoomin" animation-duration-1000 [once]=true
 >
 
     <form action="" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
@@ -14,6 +15,7 @@ class="w-full bg-white flex flex-column justify-content-center align-items-cente
                     id="username"
                     formControlName="username"
                     [style]="{'width':'20rem'}"
+                    [autofocus]="true"
                 />
             <label htmlFor="username">Username</label>
             </span>
@@ -49,7 +51,11 @@ class="w-full bg-white flex flex-column justify-content-center align-items-cente
             >Submit</button>
         </div>
     </form>
-
+    <div class="mt-5 text-right"
+    [style]="{'width':'20rem'}"
+    >
+        <a class="cursor-pointer" (click)="routeToForgetPassword()">Forget Password?</a>
+    </div>
 </main>
 
 <p>Form Status: {{ loginForm.status }}</p>

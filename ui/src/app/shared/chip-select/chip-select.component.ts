@@ -20,32 +20,36 @@ export class ChipSelectComponent {
   @Input() chipObjects: Chip[] | undefined;
   @Input() chips: string[] | undefined;
   @Output() selectedChip: EventEmitter<{ kind: string, chip: string }> = new EventEmitter();
-
-
-  protected maxChips: number = 30;
-
+  protected maxChips: number = 50;
 
   constructor(
     private coreApi: CoreApiService,
     private store: Store  
-  ) {}
+  ) {
+    console.log(this.kind);
+    
+    console.log(this.chipObjects);
+    
+  }
 
   protected onChipClick(event: ChipsClickEvent) {
     const clickedChip: string = event.value;
-    console.log('clicked in comp: ', clickedChip);
-    
     this.selectedChip.emit({ kind: this.kind, chip: clickedChip }); 
   };
 
   protected onChipRemove(event: ChipsRemoveEvent) {
     const removeChip: any = event.value.toLowerCase();
-    console.log('clicked remove in comp: ', removeChip);
     let fullChip: Chip | undefined;
-    
     if (this.chipObjects) {
-      fullChip = this.chipObjects.find((item: Chip) => item.chip === removeChip && item.kind === this.kind);
-    }
-    
+      fullChip = this.chipObjects.find((item: Chip) => item.chip === removeChip && item.kind === this.kind.toLowerCase());
+    } ;
+    if (fullChip === undefined) {
+      fullChip = {
+        kind: this.kind.toLowerCase(),
+        chip: removeChip.toLowerCase(),
+        status: 'delete'
+      };
+    };
     if (fullChip) {
       this.coreApi.deleteChip(fullChip).pipe(take(1), first())
       .subscribe(
@@ -54,43 +58,31 @@ export class ChipSelectComponent {
             console.log(value);
             // Updates state with new chip / no need for full data pull on db upon each update
             const removeChipIndex: number | undefined = this.chips?.findIndex((chip:string) => chip.toLowerCase() !== value.data.toLowerCase());
-            console.log('chipindex: ', removeChipIndex);
-            if (removeChipIndex) {
-              this.chips = this.chips?.splice(removeChipIndex, 1);
-            }
-            
-            this.store.dispatch(new UserActions.RemoveUserChip(JSON.parse(value.data)));
+            if (fullChip !== undefined) {
+              this.store.dispatch(new UserActions.RemoveUserChip(fullChip));
+            };
           },
           error: (error: any) => {
             console.error(error)
           }
-        }
-      )
-    }
-  }
+    })};};
 
   protected onChipAdd(event: ChipsAddEvent) {
     const chipToAdd: string = event.value.toLowerCase();
-    console.log('clicked add in comp: ', chipToAdd);
     const fullChip: Chip = {
-      kind: this.kind,
+      kind: this.kind.toLowerCase(),
       chip: chipToAdd,
       status: 'active',
-    }
-
+    };
     this.coreApi.submitNewChip(fullChip).pipe(take(1), first())
     .subscribe(
       {
         next: (value: any) => {
-          console.log(value);
-          // Updates state with new chip / no need for full data pull on db upon each update
           this.store.dispatch(new UserActions.AddUserChip(JSON.parse(value.data)));
         },
         error: (error: any) => {
           console.error(error)
         }
-      }
-    )
-  }
+    });};
 
 }

@@ -5,6 +5,7 @@ import { UserApiService } from '../../shared/api/user-api.service';
 import { Observable, first, take } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { UserStateModel } from '../../store/user/userState.state';
+import { UserActions } from '../../store/user/userState.actions';
 
 @Component({
   selector: 'app-nav',
@@ -40,10 +41,12 @@ export class NavComponent {
     .subscribe(
       {
         next: (value: any) => {
-
+          this.store.dispatch(new UserActions.ClearUserStateOnLogout());
+          this.router.navigate(['splash']);
         },
         error: (error: any) => {
-
+          console.log(error);
+          
         }
       }
     );

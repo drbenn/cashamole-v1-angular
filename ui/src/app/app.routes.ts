@@ -8,6 +8,7 @@ import { HowToComponent } from './common/how-to/how-to.component';
 import { AppComponent } from './app.component';
 import { NewTransactionComponent } from './core/transactions/new-transaction/new-transaction.component';
 import { NewBsRecordComponent } from './core/balance-sheet/new-bs-record/new-bs-record.component';
+import { SplashComponent } from './common/splash/splash.component';
 
 export const routes: Routes = [
     // { path: '', component: HomeComponent },
@@ -20,5 +21,5 @@ export const routes: Routes = [
     { path: 'new-transaction', component: NewTransactionComponent },
     { path: 'new-bs-record', component: NewBsRecordComponent },
     { path: 'home', component: HomeComponent },
-    
+    { path: 'splash', component: SplashComponent },
 ];

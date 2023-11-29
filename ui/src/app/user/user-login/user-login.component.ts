@@ -9,11 +9,12 @@ import { Store } from '@ngxs/store';
 import { UserActions } from '../../store/user/userState.actions';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
+import { AnimateOnScrollModule } from 'primeng/animateonscroll';
 
 @Component({
   selector: 'app-user-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, InputTextModule, ButtonModule],
+  imports: [CommonModule, ReactiveFormsModule, InputTextModule, ButtonModule, AnimateOnScrollModule],
   templateUrl: './user-login.component.html',
   styleUrl: './user-login.component.scss'
 })
@@ -30,6 +31,10 @@ export class UserLoginComponent {
     private store: Store
   ) {}
 
+  protected routeToForgetPassword() {
+    this.router.navigate(['password-reset']);
+  }
+  
   protected clearForm() {
     this.loginForm.setValue({ username:'',  password: '' });
   }

@@ -3,7 +3,7 @@
         <ng-template pTemplate="header">
             <tr>
                 <th pSortableColumn="date" style="width:15%">Date</th>
-                <th pSortableColumn="payee" style="width:20%">Payee</th>
+                <th pSortableColumn="vendor" style="width:20%">Vendor</th>
                 <th pSortableColumn="note" style="width:40%">Note</th>
                 <th pSortableColumn="amount" style="width:20%">Amount</th>
                 <th style="width:5%">Edit</th>
@@ -12,7 +12,7 @@
         <ng-template pTemplate="body" let-category>
             <tr>
                 <td style="width:15%">{{ category.date | date:'M/d/yy' }}</td>
-                <td style="width:20%">{{ category.payee }}</td>
+                <td style="width:20%">{{ category.vendor }}</td>
                 <td style="width:40%">{{ category.note }}</td>
                 <td style="width:20%">{{ category.amount | currency }}</td>
                 <td style="width:5%">

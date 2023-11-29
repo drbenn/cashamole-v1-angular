@@ -34,4 +34,8 @@ export namespace UserActions {
     static readonly type =  '[Chip] Remove user chip';
     constructor(public payload: Chip) {}
   }
+
+  export class ClearUserStateOnLogout {
+    static readonly type =  '[User] Clear user state data on logout';
+  }
 }

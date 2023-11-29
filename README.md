@@ -1,5 +1,9 @@
 npx @angular/cli@17 new ui
 
+# Angular 17 new html template decorators, ie @if {}
+- Although non-breaking, there will be an error 
+- in tsconfig.json must add "_enabledBlockTypes": ["if","for","switch","defer"] in "angularCompilerOptions"
+
 # JEST in Angular 17
 https://medium.com/@megha.d.parmar2018/angular-unit-testing-with-jest-2023-2676faa2e564
 npm uninstall @types/jasmine jasmine-core karma karma-chrome-launcher karma-coverage karma-jasmine karma-jasmine-html-reporter

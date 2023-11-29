@@ -37,11 +37,5 @@ export class BalanceSheetComponent implements OnInit {
     },
       (error: any )=> console.log(error)
     );
-
-  // this.sizes = [
-  //     { name: 'Small', class: 'p-datatable-sm' },
-  //     { name: 'Normal', class: '' },
-  //     { name: 'Large',  class: 'p-datatable-lg' }
-  // ];
   };
 }
