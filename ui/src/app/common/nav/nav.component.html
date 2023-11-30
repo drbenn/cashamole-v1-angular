@@ -12,13 +12,13 @@
                 <li><a routerLink="register" routerLinkActive="active">Register</a></li>
             }
             @if (!loggedInUserVal) {
-                <li><a routerLink="login" routerLinkActive="active">Login</a></li>
+                <li><a (click)="logoutUser(false) "routerLink="login" routerLinkActive="active">Login</a></li>
             }
             @if (loggedInUserVal) {
                 <li class="surface-100 p-3 text-bluegray-500 font-bold text-xl">{{ loggedInUserVal | titlecase }}</li>
             }
             @if (loggedInUserVal) {
-                <li><a (click)="logoutUser()">Logout</a></li>
+                <li><a (click)="logoutUser(true)">Logout</a></li>
             }
         </ul>
     </div>

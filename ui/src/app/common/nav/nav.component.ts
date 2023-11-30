@@ -36,13 +36,15 @@ export class NavComponent {
     this.router.navigate(['home']);
   };
 
-  protected logoutUser(): void {
+  protected logoutUser(navToSplash: boolean): void {
     this.userApi.logoutUser().pipe(take(1), first())
     .subscribe(
       {
         next: (value: any) => {
           this.store.dispatch(new UserActions.ClearUserStateOnLogout());
-          this.router.navigate(['splash']);
+          if (navToSplash) {
+            this.router.navigate(['splash']);
+          }
         },
         error: (error: any) => {
           console.log(error);

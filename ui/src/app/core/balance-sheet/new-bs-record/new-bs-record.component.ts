@@ -13,6 +13,7 @@ import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { ChipSelectComponent } from '../../../shared/chip-select/chip-select.component';
 import { Chip } from '../../../model/chips.model';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 
 export interface BalanceSheetType {
@@ -30,7 +31,8 @@ export interface BalanceSheetType {
     InputNumberModule,
     ButtonModule,
     CalendarModule,
-    ChipSelectComponent
+    ChipSelectComponent,
+    SelectButtonModule
   ],
   templateUrl: './new-bs-record.component.html',
   styleUrl: './new-bs-record.component.scss'
@@ -46,6 +48,7 @@ export class NewBsRecordComponent implements OnInit {
   assetChipStrings: string[] = [];
   liabilityChips: Chip[] = [];
   liabilityChipStrings: string[] = [];
+  assetLiabilityToggle: 'asset' | 'liability' = 'asset';
 
   newRecordForm = this.fb.group({
     type: [this.selectedBsType.type, [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
@@ -104,6 +107,16 @@ export class NewBsRecordComponent implements OnInit {
     }
     
   }
+
+  protected handleBsSelectClick(type: 'asset' | 'liability'): void {
+    console.log(type);
+    
+    if (type === 'asset') {
+      this.assetLiabilityToggle = 'asset';
+    } else {
+      this.assetLiabilityToggle = 'liability';
+    };
+  };
 
   protected clearForm() {
     this.newRecordForm.setValue({ 

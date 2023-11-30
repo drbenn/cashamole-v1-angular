@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BalanceSheetComponent } from '../core/balance-sheet/balance-sheet.component';
 import { TransactionsComponent } from '../core/transactions/transactions.component';
+import { ChartOneComponent } from "../viz/chart-one/chart-one.component";
 
 
 @Component({
@@ -9,7 +10,7 @@ import { TransactionsComponent } from '../core/transactions/transactions.compone
     standalone: true,
     templateUrl: './home.component.html',
     styleUrl: './home.component.scss',
-    imports: [CommonModule, BalanceSheetComponent, TransactionsComponent]
+    imports: [CommonModule, BalanceSheetComponent, TransactionsComponent, ChartOneComponent]
 })
 export class HomeComponent {
 

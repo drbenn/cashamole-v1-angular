@@ -6,6 +6,7 @@ import { NgxsModule } from '@ngxs/store';
 import { AppState } from './store/appState.state';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { UserState } from './store/user/userState.state';
+import { ChartModule } from 'primeng/chart';
 
 const serverConfig: ApplicationConfig = {
   providers: [

@@ -1,6 +1,7 @@
 <main
 class="w-full bg-white flex flex-column justify-content-center align-items-center"
 [ngStyle]="{'min-height': '5rem'}"
+pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-1000
 >
 
     <form action="" [formGroup]="registerForm" (ngSubmit)="onSubmit()">

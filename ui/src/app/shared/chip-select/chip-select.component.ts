@@ -25,12 +25,7 @@ export class ChipSelectComponent {
   constructor(
     private coreApi: CoreApiService,
     private store: Store  
-  ) {
-    console.log(this.kind);
-    
-    console.log(this.chipObjects);
-    
-  }
+  ) {}
 
   protected onChipClick(event: ChipsClickEvent) {
     const clickedChip: string = event.value;
