@@ -26,14 +26,16 @@ export class BalanceSheetComponent implements OnInit {
 
   ngOnInit(): void {
     this.balanceSheetEntries$.subscribe((entries: BalanceSheetEntryBody[]) => {
-      entries.forEach((entry: BalanceSheetEntryBody) => {
-        if (entry.type === 'asset') {
-          this.assets.push(entry);
-        }
-        if (entry.type === 'liability') {
-          this.liabilities.push(entry);
-        }
-      });
+      if (entries) {
+        entries.forEach((entry: BalanceSheetEntryBody) => {
+          if (entry.type === 'asset') {
+            this.assets.push(entry);
+          }
+          if (entry.type === 'liability') {
+            this.liabilities.push(entry);
+          }
+        });
+      }
     },
       (error: any )=> console.log(error)
     );

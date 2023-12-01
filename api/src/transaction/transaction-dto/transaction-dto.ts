@@ -1,6 +1,6 @@
 export class TransactionDto {
     trans_id?: number;
-    type: 'income' | 'expense';
+    type: string | 'income' | 'expense';
     date: Date;
     amount: number;
     category: string;

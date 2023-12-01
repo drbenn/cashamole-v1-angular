@@ -83,7 +83,8 @@ export class UserState implements NgxsOnInit {
     ctx: StateContext<UserStateModel>,
     action: UserActions.AddUserTransaction
   ) {
-    const updatedTransactions: TransactionBody[] = ctx.getState().transactions;
+    let updatedTransactions: TransactionBody[] = ctx.getState().transactions;
+    updatedTransactions === null ? updatedTransactions = [] : updatedTransactions = updatedTransactions; 
     updatedTransactions.push(action.payload);
     ctx.patchState({ transactions: updatedTransactions });
   };
@@ -93,7 +94,8 @@ export class UserState implements NgxsOnInit {
     ctx: StateContext<UserStateModel>,
     action: UserActions.AddUserBalanceRecord
   ) {
-    const updatedBalanceRecords: BalanceSheetEntryBody[] = ctx.getState().balanceSheetEntries;
+    let updatedBalanceRecords: BalanceSheetEntryBody[] = ctx.getState().balanceSheetEntries;
+    updatedBalanceRecords === null ? updatedBalanceRecords = [] : updatedBalanceRecords = updatedBalanceRecords; 
     updatedBalanceRecords.push(action.payload);
     ctx.patchState({ balanceSheetEntries: updatedBalanceRecords });
   };
@@ -103,7 +105,8 @@ export class UserState implements NgxsOnInit {
     ctx: StateContext<UserStateModel>,
     action: UserActions.AddUserChip
   ) {
-    const updatedChips: Chip[] = ctx.getState().chips;    
+    let updatedChips: Chip[] = ctx.getState().chips;   
+    updatedChips === null ? updatedChips = [] : updatedChips = updatedChips; 
     updatedChips.push(action.payload);
     ctx.patchState({ chips: updatedChips });
   };

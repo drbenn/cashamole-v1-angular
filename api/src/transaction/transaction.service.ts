@@ -29,7 +29,7 @@ export class TransactionService {
                 \'${transactionDto.vendor}\',
                 \'${transactionDto.note}\',
                 \'${transactionDto.status}\'
-            )`;
+            )`;        
         const newTransaction = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], newTransaction[0]);
         if (results.affectedRows === 1) {

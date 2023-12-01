@@ -12,7 +12,8 @@ export class ChipService {
         if (!userId) {
             return 'undefined userid';
         };
-        const sqlQuery: string = `INSERT INTO user${userId}_chips (kind, chip, status) 
+        
+        const sqlQuery: string = `INSERT IGNORE INTO user${userId}_chips (kind, chip, status) 
             VALUES (
                 \'${chipDto.kind}\', 
                 \'${chipDto.chip}\', 

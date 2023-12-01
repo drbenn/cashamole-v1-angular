@@ -66,7 +66,7 @@ export class ChipSelectComponent {
     const chipToAdd: string = event.value.toLowerCase();
     const fullChip: Chip = {
       kind: this.kind.toLowerCase(),
-      chip: chipToAdd,
+      chip: chipToAdd.toLowerCase(),
       status: 'active',
     };
     this.coreApi.submitNewChip(fullChip).pipe(take(1), first())
@@ -79,5 +79,19 @@ export class ChipSelectComponent {
           console.error(error)
         }
     });};
+
+  protected titleGenerator(type: string): string {
+    if (type === 'income') {
+      return 'Income Source';
+    } else if (type === 'vendor') {
+      return 'Vendor';
+    } else if (type === 'category') {
+      return 'Category'
+    }
+    else {
+      return '[ERROR]';
+    }
+    
+  }
 
 }
