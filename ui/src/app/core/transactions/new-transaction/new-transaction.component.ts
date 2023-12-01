@@ -51,8 +51,10 @@ export class NewTransactionComponent implements OnInit {
   protected today: Date = new Date();
 
   chips$: Observable<any> = this.store.select((state) => state.user.chips);
-  categoryChips: Chip[] = [];
-  categoryChipStrings: string[] = [];
+  expenseCategoryChips: Chip[] = [];
+  expenseCategoryChipStrings: string[] = [];
+  expenseVendorChips: Chip[] = [];
+  expenseVendorChipStrings: string[] = [];
   // vendorChips: Chip[] = [];
   // vendorChipStrings: string[] = [];
   incomeChips: Chip[] = [];
@@ -88,17 +90,21 @@ export class NewTransactionComponent implements OnInit {
       this.newTransactionForm.get('category')?.setValue(event.chip);
     } else if (event.kind === 'income') {
       this.newTransactionForm.get('vendor')?.setValue(event.chip);    
-    }  else if (event.kind === 'expense') {
+    }  else if (event.kind === 'vendor') {
       this.newTransactionForm.get('vendor')?.setValue(event.chip);    
     }
     
   }
 
-  protected handleSelectClick(type: 'income' | 'expense'): void {
+  protected handleIncomeExpenseSelectClick(type: 'income' | 'expense'): void {
+    // todo: clear form only if alternative expense type is clicked
+    this.clearForm();
     if (type === 'income') {
-      this.incomeExpenseChipToggle = 'expense';
-    } else {
+      this.newTransactionForm.get('category')?.setValue('income');
       this.incomeExpenseChipToggle = 'income';
+    } else {
+      this.newTransactionForm.get('category')?.setValue('');
+      this.incomeExpenseChipToggle = 'expense';
     };
   };
 
@@ -111,36 +117,47 @@ export class NewTransactionComponent implements OnInit {
       note: '',
       amount: null
     });
+    this.newTransactionForm.markAsPristine();
   }
 
   private getAndSetChips(): void {
     this.chips$.subscribe((chips: Chip[]) => {
-      const categoryChips: Chip[] = [];
-      const categoryChipStrings: string[] = [];
+      const expenseCategoryChips: Chip[] = [];
+      const expenseCategoryChipStrings: string[] = [];
       const incomeChips: Chip[] = [];
       const incomeChipStrings: string[] = [];
       const expenseChips: Chip[] = [];
       const expenseChipStrings: string[] = [];
+      const expenseVendorChips: Chip[] = [];
+      const expenseVendorChipStrings: string[] = [];
 
       if (chips) {
         chips.forEach((chip: Chip) => {
           if (chip.kind === 'category') {
-            categoryChips.push(chip);
-            categoryChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
+            expenseCategoryChips.push(chip);
+            expenseCategoryChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
           } else if (chip.kind === 'income') {
             incomeChips.push(chip);
             incomeChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
           } else if (chip.kind === 'expense') {
             expenseChips.push(chip);
             expenseChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
+          } else if (chip.kind === 'vendor') {
+            expenseVendorChips.push(chip);
+            expenseVendorChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
           };
         });
       };
-      this.categoryChips = categoryChips;
+      this.expenseCategoryChips = expenseCategoryChips;
+      this.expenseCategoryChipStrings = expenseCategoryChipStrings;
+
+      this.expenseVendorChips = expenseVendorChips;
+      this.expenseVendorChipStrings = expenseVendorChipStrings;
+
       this.incomeChips = incomeChips;
-      this.expenseChips = expenseChips;
-      this.categoryChipStrings = categoryChipStrings;
       this.incomeChipStrings = incomeChipStrings;
+
+      this.expenseChips = expenseChips;
       this.expenseChipStrings = expenseChipStrings;
     },
       (error: any )=> console.log(error)
@@ -155,17 +172,22 @@ export class NewTransactionComponent implements OnInit {
     }
     else if (values) {
       const transactionBody: TransactionBody = {
-        category: values.category,
+        type: values.type.toLowerCase(),
+        category: values.type === 'income' ? 'income' : values.category.toLowerCase(),
         date: new Date(values.date),
-        vendor: values.vendor,
-        note: values.note,
+        vendor: values.vendor.toLowerCase(),
+        note: values.note.toLowerCase(),
         amount: values.amount,
         status: 'active'
       }
+      console.log(transactionBody);
+      
       this.coreApi.submitNewTransaction(transactionBody).pipe(take(1), first())
       .subscribe(
         {
           next: (value: any) => {
+            console.log(value);
+            
             // Updates state with new transaction / no need for full data pull on db upon each update
             this.store.dispatch(new UserActions.AddUserTransaction(JSON.parse(value.data)));
           },

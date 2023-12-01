@@ -1,11 +1,20 @@
-<main class="w-full flex flex-row flex-wrap justify-content-center align-items-start">
-    @for (table of tableCategories; track transactionSets[table].trans_id) {
+<main class="w-11 flex flex-row flex-wrap justify-content-center align-items-start">
+  <section class="bg-green-300 flex flex-row flex-wrap justify-content-center align-items-start">
         <section class="m-4">
-            <app-transaction-table [tableTitle]="table" [tableData]="transactionSets[table]"></app-transaction-table>
+            <app-income-table tableTitle="income" [tableData]="incomeTransactionObjects"></app-income-table>
         </section>
-      } @empty {
-        No Transactions Available
-      }
+  </section>
+  
+  
+  <section class="bg-red-300 flex flex-row flex-wrap justify-content-center align-items-start">
+      @for (expense of expenseCategoryArray; track expenseTransactionObjects[expense].trans_id) {
+          <section class="m-4">
+              <app-expense-table [tableTitle]="expense" [tableData]="expenseTransactionObjects[expense]"></app-expense-table>
+          </section>
+        } @empty {
+          No Transactions Available
+        }
+  </section>
 </main>
 
 <app-new-transaction></app-new-transaction>

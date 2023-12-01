@@ -5,13 +5,13 @@ import { TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
 
 @Component({
-  selector: 'app-transaction-table',
+  selector: 'app-expense-table',
   standalone: true,
   imports: [CommonModule, TableModule, CardModule],
-  templateUrl: './transaction-table.component.html',
-  styleUrl: './transaction-table.component.scss'
+  templateUrl: './expense-table.component.html',
+  styleUrl: './expense-table.component.scss'
 })
-export class TransactionTableComponent implements OnInit {
+export class ExpenseTableComponent implements OnInit {
   @Input() tableTitle!: string;
   @Input() tableData!: TransactionBody[];
 
@@ -27,5 +27,4 @@ export class TransactionTableComponent implements OnInit {
   protected editTransactionRecord(transaction: TransactionBody) {
     console.log(transaction);
   }
-
 }
