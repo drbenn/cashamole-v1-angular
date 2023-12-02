@@ -5,6 +5,15 @@
     <div class="text-right text-lg">
         <ul>
             <li><a routerLink="/home" routerLinkActive="active">Home</a></li>
+            @if (loggedInUserVal) {
+                <li><a routerLink="expense" routerLinkActive="active">+Expense</a></li>
+            }
+            @if (loggedInUserVal) {
+                <li><a routerLink="income" routerLinkActive="active">+Income</a></li>
+            }
+            @if (loggedInUserVal) {
+                <li><a routerLink="new-bs-record" routerLinkActive="active">Balance Sheet</a></li>
+            }
             <li><a routerLink="/how-to" routerLinkActive="active">How-to</a></li>
             <li><a routerLink="/donate" routerLinkActive="active">Donate</a></li>
 
@@ -12,7 +21,7 @@
                 <li><a routerLink="register" routerLinkActive="active">Register</a></li>
             }
             @if (!loggedInUserVal) {
-                <li><a (click)="logoutUser(false) "routerLink="login" routerLinkActive="active">Login</a></li>
+                <li><a (click)="logoutUser(false)" routerLink="login" routerLinkActive="active">Login</a></li>
             }
             @if (loggedInUserVal) {
                 <li class="surface-100 p-3 text-bluegray-500 font-bold text-xl">{{ loggedInUserVal | titlecase }}</li>

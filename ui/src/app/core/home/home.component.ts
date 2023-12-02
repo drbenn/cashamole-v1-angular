@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BalanceSheetComponent } from '../core/balance-sheet/balance-sheet.component';
-import { TransactionsComponent } from '../core/transactions/transactions.component';
-import { ChartOneComponent } from "../viz/chart-one/chart-one.component";
+import { BalanceSheetComponent } from '../balance-sheet/balance-sheet.component';
+import { TransactionsComponent } from '../transactions/transactions.component';
+import { ChartOneComponent } from '../viz/chart-one/chart-one.component';
+
 
 
 @Component({

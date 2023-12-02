@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { User } from '../model/user.models';
-import { UserStateModel } from '../store/user/userState.state';
-import { UserActions } from '../store/user/userState.actions';
+import { User } from '../../model/user.models';
+import { UserStateModel } from '../../store/user/userState.state';
+import { UserActions } from '../../store/user/userState.actions';
 
 
 @Component({

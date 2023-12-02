@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { UserApiService } from '../../shared/api/user-api.service';
+import { UserApiService } from '../api/user-api.service';
 import { Observable, first, take } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { UserStateModel } from '../../store/user/userState.state';

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UserApiService } from '../../shared/api/user-api.service';
+import { UserApiService } from '../api/user-api.service';
 import { first, take } from 'rxjs';
 
 @Component({
