@@ -1,4 +1,6 @@
-<p-card [header]="tableTitle" class="bg-red-600">
+<p-card [header]="tableTitle"
+pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-1000
+>
     <p-table [value]="tableData" [tableStyle]="{ 'width': 'fit-content' }" styleClass="p-datatable-sm">
         <ng-template pTemplate="header">
             <tr>

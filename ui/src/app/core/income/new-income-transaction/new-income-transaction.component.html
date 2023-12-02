@@ -1,9 +1,10 @@
 <main
 class="w-full bg-white flex flex-column justify-content-center align-items-center"
 [ngStyle]="{'min-height': '5rem'}"
+pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-1000
 >
-    <h2 class="m-4 text-gray-800 text-start">New Expense</h2>
-        <form action="" [formGroup]="newExpenseForm" (ngSubmit)="onSubmit()">
+    <h2 class="m-4 text-gray-800 text-start">New Transaction</h2>
+        <form action="" [formGroup]="newIncomeForm" (ngSubmit)="onSubmit()">
 
             <!-- <div class="m-4 w-20rem">
                 <p-selectButton
@@ -18,18 +19,17 @@ class="w-full bg-white flex flex-column justify-content-center align-items-cente
 
 
             <div class="m-4 w-20rem">
-                <app-chip-select [chips]="expenseVendorChipStrings" [chipObjects]="expenseVendorChips" kind="vendor" (selectedChip)="handleChipSelect($event)"></app-chip-select>
                 <!-- @if (incomeExpenseChipToggle === 'expense') {
                     <app-chip-select [chips]="expenseVendorChipStrings" [chipObjects]="expenseVendorChips" kind="vendor" (selectedChip)="handleChipSelect($event)"></app-chip-select>
                 }
-                @if (incomeExpenseChipToggle === 'income') {
+                @if (incomeExpenseChipToggle === 'income') { -->
                     <app-chip-select [chips]="incomeChipStrings" [chipObjects]="incomeChips" kind="income" (selectedChip)="handleChipSelect($event)"></app-chip-select>
-                } -->
+                <!-- } -->
             </div>
 
 
             <div class="m-4">
-                <!-- @if (incomeExpenseChipToggle === 'expense') { -->
+                <!-- @if (incomeExpenseChipToggle === 'expense') {
                     <span class="p-float-label">
                         <input 
                             pInputText
@@ -39,8 +39,8 @@ class="w-full bg-white flex flex-column justify-content-center align-items-cente
                         />
                     <label htmlFor="vendor">Vendor</label>
                     </span>
-                <!-- }
-                @if (incomeExpenseChipToggle === 'income') {
+                }
+                @if (incomeExpenseChipToggle === 'income') { -->
                     <span class="p-float-label">
                         <input 
                             pInputText
@@ -50,9 +50,9 @@ class="w-full bg-white flex flex-column justify-content-center align-items-cente
                         />
                     <label htmlFor="vendor">Payee</label>
                     </span>
-                } -->
+                <!-- } -->
             </div>
-            <!-- @if (incomeExpenseChipToggle === 'expense') { -->
+            <!-- @if (incomeExpenseChipToggle === 'expense') {
                 <div class="m-4 w-20rem">
                     <app-chip-select [chips]="expenseCategoryChipStrings" [chipObjects]="expenseCategoryChips" kind="category" (selectedChip)="handleChipSelect($event)"></app-chip-select>
                 </div>
@@ -68,7 +68,7 @@ class="w-full bg-white flex flex-column justify-content-center align-items-cente
                     <label htmlFor="category">Category</label>
                     </span>
                 </div>
-            <!-- } -->
+            } -->
 
             <div class="m-4">
                 <span class="p-float-label">
@@ -123,7 +123,7 @@ class="w-full bg-white flex flex-column justify-content-center align-items-cente
                     pButton
                     pRipple
                     type="submit"
-                    [disabled]="!newExpenseForm.valid"
+                    [disabled]="!newIncomeForm.valid"
                     class="px-4"
                 >Submit</button>
             </div>
@@ -131,5 +131,5 @@ class="w-full bg-white flex flex-column justify-content-center align-items-cente
         </form>
 </main>
 
-<p>Form Status: {{ newExpenseForm.status }}</p>
-<p>{{ newExpenseForm.value | json}}</p>
+<p>Form Status: {{ newIncomeForm.status }}</p>
+<p>{{ newIncomeForm.value | json}}</p>
