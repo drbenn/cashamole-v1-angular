@@ -5,7 +5,7 @@
         >
         Assets
         </div>
-        <p-table [value]="tableData.assets" [tableStyle]="{ 'width': 'fit-content' }" styleClass="p-datatable-sm">
+        <p-table [value]="balanceSheet.assets" [tableStyle]="{ 'width': 'fit-content' }" styleClass="p-datatable-sm">
             <ng-template pTemplate="header">
                 <tr>
                     <th pSortableColumn="date" style="width:15%">Date</th>
@@ -39,7 +39,7 @@
         >
         Liabilities
         </div>
-        <p-table [value]="tableData.liabilities" [tableStyle]="{ 'width': 'fit-content' }" styleClass="p-datatable-sm">
+        <p-table [value]="balanceSheet.liabilities" [tableStyle]="{ 'width': 'fit-content' }" styleClass="p-datatable-sm">
             <ng-template pTemplate="header">
                 <tr>
                     <th pSortableColumn="date" style="width:15%">Date</th>

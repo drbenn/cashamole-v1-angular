@@ -2,6 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
+
+import { Observable } from 'rxjs';
+import { Store } from '@ngxs/store';
 import { BalanceSheetEntry } from '../../../model/models.model';
 
 @Component({
@@ -12,12 +15,34 @@ import { BalanceSheetEntry } from '../../../model/models.model';
   styleUrl: './balance-sheet-table.component.scss'
 })
 export class BalanceSheetTableComponent implements OnInit {
-  @Input() tableTitle!: string;
-  @Input() tableData!: { assets: BalanceSheetEntry[], liabilities: BalanceSheetEntry[] };
+  balanceSheetData$: Observable<BalanceSheetEntry[]> = this.store.select((state) => state.user.balanceSheetEntries);
+// ableData!: { assets: BalanceSheetEntry[], liabilities: BalanceSheetEntry[] };
+  balanceSheet: { assets: BalanceSheetEntry[], liabilities: BalanceSheetEntry[] } = {
+    assets: [],
+    liabilities: []
+  }
 
 
+  constructor(
+    private store: Store
+  ) {}
   ngOnInit(): void {
-      console.log(this.tableData);
+    this.balanceSheetData$.subscribe((data: BalanceSheetEntry[]) => {
+      if (data) {
+        console.log('bs table data');
+        console.log(data);
+        
+        
+        data.forEach((entry: BalanceSheetEntry) => {
+          if (entry.type === 'asset') {
+            this.balanceSheet.assets.push(entry);
+          }
+          if (entry.type === 'liability') {
+            this.balanceSheet.liabilities.push(entry);
+          }
+        });
+      }
+    })
       
   }
 

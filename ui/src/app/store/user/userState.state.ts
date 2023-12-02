@@ -94,6 +94,9 @@ export class UserState implements NgxsOnInit {
     ctx: StateContext<UserStateModel>,
     action: UserActions.AddUserBalanceRecord
   ) {
+    console.log('in BS STATE');
+    console.log(action.payload);
+    
     let updatedBalanceRecords: BalanceSheetEntry[] = ctx.getState().balanceSheetEntries;
     updatedBalanceRecords === null ? updatedBalanceRecords = [] : updatedBalanceRecords = updatedBalanceRecords; 
     updatedBalanceRecords.push(action.payload);

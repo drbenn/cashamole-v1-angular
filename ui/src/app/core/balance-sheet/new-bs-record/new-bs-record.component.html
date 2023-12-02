@@ -17,18 +17,6 @@ class="w-full bg-white flex flex-column justify-content-center align-items-cente
             ></p-selectButton>
         </div>
 
-        <!-- <div class="m-4">
-            <p-dropdown
-                formControlName="type"
-                [(ngModel)]="selectedBsType"
-                [options]="bsTypes"
-                optionLabel="type"
-                placeholder="Select Type"
-                [style]="{'width':'20rem'}"
-            >
-            </p-dropdown>
-        </div> -->
-
         <div class="m-4">
             <span class="p-float-label">
                 <p-calendar
@@ -50,18 +38,6 @@ class="w-full bg-white flex flex-column justify-content-center align-items-cente
                 <app-chip-select [chips]="liabilityChipStrings" [chipObjects]="liabilityChips" kind="liability" (selectedChip)="handleChipSelect($event)"></app-chip-select>
             }
         </div>
-
-        <!-- @if (this.selectedBsType.type === 'asset') {
-            <div class="m-4 w-20rem">
-                <app-chip-select [chips]="assetChipStrings" [chipObjects]="assetChips" kind="asset" (selectedChip)="handleChipSelect($event)"></app-chip-select>
-            </div>
-        }
-
-        @if (this.selectedBsType.type === 'liability') {
-        <div class="m-4 w-20rem">
-            <app-chip-select [chips]="liabilityChipStrings" [chipObjects]="liabilityChips" kind="liability" (selectedChip)="handleChipSelect($event)"></app-chip-select>
-        </div>
-        } -->
         
         <div class="m-4">
             <span class="p-float-label">

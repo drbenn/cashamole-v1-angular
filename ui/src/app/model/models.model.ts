@@ -21,7 +21,7 @@ export interface BalanceSheetEntry {
     record_id?: number,
     date: Date;
     amount: number;
-    type: 'asset' | 'liability';
+    type: string | 'asset' | 'liability';
     description: string;
     status?: string;
 }
