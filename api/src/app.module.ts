@@ -9,6 +9,8 @@ import { TransactionModule } from './transaction/transaction.module';
 import { BalanceSheetModule } from './balance_sheet/balance_sheet.module';
 import { ChipService } from './chip/chip.service';
 import { ChipController } from './chip/chip.controller';
+import { ExpenseModule } from './expense/expense.module';
+import { IncomeModule } from './income/income.module';
 
 
 
@@ -33,7 +35,9 @@ import { ChipController } from './chip/chip.controller';
     }),
     AuthModule,
     TransactionModule,
-    BalanceSheetModule
+    BalanceSheetModule,
+    ExpenseModule,
+    IncomeModule
   ],
   controllers: [AppController, ChipController],
   providers: [AppService, ChipService],

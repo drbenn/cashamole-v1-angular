@@ -182,20 +182,20 @@ export class NewTransactionComponent implements OnInit {
       }
       console.log(transactionBody);
       
-      this.coreApi.submitNewTransaction(transactionBody).pipe(take(1), first())
-      .subscribe(
-        {
-          next: (value: any) => {
-            console.log(value);
+      // this.coreApi.submitNewTransaction(transactionBody).pipe(take(1), first())
+      // .subscribe(
+      //   {
+      //     next: (value: any) => {
+      //       console.log(value);
             
-            // Updates state with new transaction / no need for full data pull on db upon each update
-            this.store.dispatch(new UserActions.AddUserTransaction(JSON.parse(value.data)));
-          },
-          error: (error: any) => {
-            console.error(error)
-          }
-        }
-      )
+      //       // Updates state with new transaction / no need for full data pull on db upon each update
+      //       this.store.dispatch(new UserActions.AddUserTransaction(JSON.parse(value.data)));
+      //     },
+      //     error: (error: any) => {
+      //       console.error(error)
+      //     }
+      //   }
+      // )
     }
   }
 }

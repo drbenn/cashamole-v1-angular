@@ -62,16 +62,31 @@ export class AuthService {
     }
 
     async generateDbTablesForNewUser(userId: number) {
-        this.generateUserTransactionsTable(userId);
+        // this.generateUserTransactionsTable(userId);
+        this.generateUserExpenseTable(userId);
+        this.generateUserIncomeTable(userId);
         this.generateUserBalanceSheetTable(userId);
         this.generateUserChipsTable(userId);
     }
 
-    async generateUserTransactionsTable(userId: number) {
+    async generateUserIncomeTable(userId: number) {
         const sqlQuery: string = `
-            CREATE TABLE IF NOT EXISTS user${userId}_transactions (
-            trans_id INT PRIMARY KEY AUTO_INCREMENT,
-            type VARCHAR(20) NOT NULL,
+            CREATE TABLE IF NOT EXISTS user${userId}_expenses (
+            inc_id INT PRIMARY KEY AUTO_INCREMENT,
+            date VARCHAR(250) NOT NULL,
+            amount DECIMAL(10,2) NOT NULL,
+            source VARCHAR(100) NOT NULL,
+            note VARCHAR(100),
+            status VARCHAR(25) NOT NULL
+        )`;
+        const queryDb = await this.connection.query(sqlQuery);
+        // const results = Object.assign([{}], queryDb[0]);
+    }
+
+    async generateUserExpenseTable(userId: number) {
+        const sqlQuery: string = `
+            CREATE TABLE IF NOT EXISTS user${userId}_income (
+            exp_id INT PRIMARY KEY AUTO_INCREMENT,
             date VARCHAR(250) NOT NULL,
             amount DECIMAL(10,2) NOT NULL,
             category VARCHAR(250) NOT NULL,
@@ -82,6 +97,22 @@ export class AuthService {
         const queryDb = await this.connection.query(sqlQuery);
         // const results = Object.assign([{}], queryDb[0]);
     }
+
+    // async generateUserTransactionsTable(userId: number) {
+    //     const sqlQuery: string = `
+    //         CREATE TABLE IF NOT EXISTS user${userId}_transactions (
+    //         trans_id INT PRIMARY KEY AUTO_INCREMENT,
+    //         type VARCHAR(20) NOT NULL,
+    //         date VARCHAR(250) NOT NULL,
+    //         amount DECIMAL(10,2) NOT NULL,
+    //         category VARCHAR(250) NOT NULL,
+    //         vendor VARCHAR(100) NOT NULL,
+    //         note VARCHAR(100),
+    //         status VARCHAR(25) NOT NULL
+    //     )`;
+    //     const queryDb = await this.connection.query(sqlQuery);
+    //     // const results = Object.assign([{}], queryDb[0]);
+    // }
 
     async generateUserBalanceSheetTable(userId: number) {
         const sqlQuery: string = `
@@ -123,21 +154,21 @@ export class AuthService {
         ('liability', 'auto loan', 'active'),
         ('liability', 'visa', 'active'),
         ('liability', 'capital one', 'active'),
-        ('category', 'discretionary', 'active'),
-        ('category', 'groceries', 'active'),
-        ('category', 'transportation', 'active'),
-        ('category', 'eating out', 'active'),
-        ('category', 'recurring', 'active'),
-        ('vendor', 'amazon', 'active'),
-        ('vendor', 'harris teeter', 'active'),
-        ('vendor', 'trader joes', 'active'),
-        ('vendor', 'target', 'active'),
-        ('vendor', 'bp', 'active'),
-        ('vendor', 'mint mobile', 'active'),
-        ('income', 'paycheck', 'active'),
-        ('income', 'interest', 'active'),
-        ('income', 'dividends', 'active'),
-        ('income', 'random', 'active');
+        ('expense_category', 'discretionary', 'active'),
+        ('expense_category', 'groceries', 'active'),
+        ('expense_category', 'transportation', 'active'),
+        ('expense_category', 'eating out', 'active'),
+        ('expense_category', 'recurring', 'active'),
+        ('expense_vendor', 'amazon', 'active'),
+        ('expense_vendor', 'harris teeter', 'active'),
+        ('expense_vendor', 'trader joes', 'active'),
+        ('expense_vendor', 'target', 'active'),
+        ('expense_vendor', 'bp', 'active'),
+        ('expense_vendor', 'mint mobile', 'active'),
+        ('income_source', 'paycheck', 'active'),
+        ('income_source', 'interest', 'active'),
+        ('income_source', 'dividends', 'active'),
+        ('income_source', 'random', 'active');
      `
         const queryDb = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], queryDb[0]);
