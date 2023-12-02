@@ -1,71 +1,78 @@
-<main class="flex flex-row flex-nowrap justify-content-center align-items-start">
-    <section class="border-noround border-right-2 border-pink-300 pr-3">
-        <div class="bg-white p-3"
-            [ngStyle]="{'font-size': '1.5rem', 'font-weight': '700', 'padding-left': '0.4rem'}"
-        >
-        Assets
-        </div>
-        <p-table [value]="balanceSheet.assets" [tableStyle]="{ 'width': 'fit-content' }" styleClass="p-datatable-sm">
-            <ng-template pTemplate="header">
-                <tr>
-                    <th pSortableColumn="date" style="width:15%">Date</th>
-                    <th pSortableColumn="description" style="width:60%">Description</th>
-                    <th pSortableColumn="amount" style="width:20%">Amount</th>
-                    <th style="width:5%">Edit</th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-type>
-                <tr>
-                    <td style="width:15%">{{ type.date | date:'M/d/yy' }}</td>
-                    <td style="width:60%">{{ type.description }}</td>
-                    <td style="width:20%">{{ type.amount | currency }}</td>
-                    <td style="width:5%">
-                        <div 
-                            class="text-center flex flex-row justify-content-center align-items-center border-circle"
-                            (click)="editBalanceRecord(type)"
-                        >
-                            <div>
-                                <i class="pi pi-file-edit icon-hover"></i>
+<div class="w-full bg-green-200 flex flex-column flex-nowrap justify-content-start align-items-start">
+    <div class="p-3">
+        <span class="text-2xl">Balance Sheet</span><span class="text-sm">&nbsp;as of XX/XX/0000</span>
+    </div>
+    <main class="flex flex-row flex-nowrap justify-content-center align-items-start">
+        <section class="border-noround border-right-2 border-pink-300 pr-3">
+            <div class="bg-white p-3"
+                [ngStyle]="{'font-size': '1.5rem', 'font-weight': '700', 'padding-left': '0.4rem'}"
+            >
+            Assets
+            </div>
+            <p-table [value]="balanceSheet.assets" [tableStyle]="{ 'width': 'fit-content' }" styleClass="p-datatable-sm">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="date" style="width:15%">Date</th>
+                        <th pSortableColumn="description" style="width:60%">Description</th>
+                        <th pSortableColumn="amount" style="width:20%">Amount</th>
+                        <th style="width:5%">Edit</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-type>
+                    <tr>
+                        <td style="width:15%">{{ type.date | date:'M/d/yy' }}</td>
+                        <td style="width:60%">{{ type.description }}</td>
+                        <td style="width:20%">{{ type.amount | currency }}</td>
+                        <td style="width:5%">
+                            <div 
+                                class="text-center flex flex-row justify-content-center align-items-center border-circle"
+                                (click)="editBalanceRecord(type)"
+                            >
+                                <div>
+                                    <i class="pi pi-file-edit icon-hover"></i>
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </section>
-    <section class="pl-3">
-        <div class="bg-white p-3"
-            [ngStyle]="{'font-size': '1.5rem', 'font-weight': '700', 'padding-left': '0.4rem'}"
-        >
-        Liabilities
-        </div>
-        <p-table [value]="balanceSheet.liabilities" [tableStyle]="{ 'width': 'fit-content' }" styleClass="p-datatable-sm">
-            <ng-template pTemplate="header">
-                <tr>
-                    <th pSortableColumn="date" style="width:15%">Date</th>
-                    <th pSortableColumn="description" style="width:60%">Description</th>
-                    <th pSortableColumn="amount" style="width:20%">Amount</th>
-                    <th style="width:5%">Edit</th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-type>
-                <tr>
-                    <td style="width:15%">{{ type.date | date:'M/d/yy' }}</td>
-                    <td style="width:60%">{{ type.description }}</td>
-                    <td style="width:20%">{{ type.amount | currency }}</td>
-                    <td style="width:5%">
-                        <div 
-                            class="text-center flex flex-row justify-content-center align-items-center border-circle"
-                            (click)="editBalanceRecord(type)"
-                        >
-                            <div>
-                                <i class="pi pi-file-edit icon-hover"></i>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </section>
+        <section class="pl-3">
+            <div class="bg-white p-3"
+                [ngStyle]="{'font-size': '1.5rem', 'font-weight': '700', 'padding-left': '0.4rem'}"
+            >
+            Liabilities
+            </div>
+            <p-table [value]="balanceSheet.liabilities" [tableStyle]="{ 'width': 'fit-content' }" styleClass="p-datatable-sm">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="date" style="width:15%">Date</th>
+                        <th pSortableColumn="description" style="width:60%">Description</th>
+                        <th pSortableColumn="amount" style="width:20%">Amount</th>
+                        <th style="width:5%">Edit</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-type>
+                    <tr>
+                        <td style="width:15%">{{ type.date | date:'M/d/yy' }}</td>
+                        <td style="width:60%">{{ type.description }}</td>
+                        <td style="width:20%">{{ type.amount | currency }}</td>
+                        <td style="width:5%">
+                            <div 
+                                class="text-center flex flex-row justify-content-center align-items-center border-circle"
+                                (click)="editBalanceRecord(type)"
+                            >
+                                <div>
+                                    <i class="pi pi-file-edit icon-hover"></i>
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </section>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </section>
+    
+    </main>
+</div>
 
-</main>
+

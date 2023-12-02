@@ -27,6 +27,7 @@ export class ChipSelectComponent {
     private store: Store  
   ) {}
 
+  
   protected onChipClick(event: ChipsClickEvent) {
     const clickedChip: string = event.value;
     this.selectedChip.emit({ kind: this.kind, chip: clickedChip }); 
@@ -64,6 +65,8 @@ export class ChipSelectComponent {
 
   protected onChipAdd(event: ChipsAddEvent) {
     const chipToAdd: string = event.value.toLowerCase();
+
+
     const fullChip: Chip = {
       kind: this.kind.toLowerCase(),
       chip: chipToAdd.toLowerCase(),

@@ -1,3 +1,5 @@
+import { Chip } from "./chips.model";
+
 export interface Income {
     inc_id?: number;
     date: Date;
@@ -25,6 +27,14 @@ export interface BalanceSheetEntry {
     description: string;
     status?: string;
 }
+
+export interface ChipStateStructure {
+    asset: Chip[],
+    liability: Chip[],
+    expense_category: Chip[],
+    expense_vendor: Chip[],
+    income_source: Chip[] 
+  }
 
 
 export interface TransactionBody {

@@ -29,7 +29,11 @@ export class BalanceSheetTableComponent implements OnInit {
   ngOnInit(): void {
     this.balanceSheetData$.subscribe((data: BalanceSheetEntry[]) => {
       if (data) {
-        console.log('bs table data');
+        this.balanceSheet = {
+          assets: [],
+          liabilities: []
+        }
+        console.log('================= bs table data  ===================');
         console.log(data);
         
         

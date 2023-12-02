@@ -12,23 +12,42 @@ export class ChipService {
         if (!userId) {
             return 'undefined userid';
         };
+
+        const isChipExist: boolean = await this.checkForExistingChip(chipDto.kind, chipDto.chip, userId);
         
-        const sqlQuery: string = `INSERT IGNORE INTO user${userId}_chips (kind, chip, status) 
-            VALUES (
-                \'${chipDto.kind}\', 
-                \'${chipDto.chip}\', 
-                \'${chipDto.status}\'
-            )`;
-        const newChip = await this.connection.query(sqlQuery);
-        const results = Object.assign([{}], newChip[0]);
-        if (results.affectedRows === 1) {
-            const completeChip: ChipDto = chipDto;
-            completeChip.id = results.insertId;
-            return completeChip;
+        if (!isChipExist) {
+            const sqlQuery: string = `INSERT IGNORE INTO user${userId}_chips (kind, chip, status) 
+                VALUES (
+                    \'${chipDto.kind}\', 
+                    \'${chipDto.chip}\', 
+                    \'${chipDto.status}\'
+                )`;
+            const newChip = await this.connection.query(sqlQuery);
+            const results = Object.assign([{}], newChip[0]);
+            if (results.affectedRows === 1) {
+                const completeChip: ChipDto = chipDto;
+                completeChip.id = results.insertId;
+                return completeChip;
+            } else {
+                return 'insert error';
+            };
         } else {
             return 'insert error';
-        };
+        }
     };
+
+    async checkForExistingChip(kind: string, chip: string, userId: number): Promise<boolean> {
+        const sqlQuery: string = `
+        SELECT * FROM user${userId}_chips WHERE kind = '${kind}' AND chip = '${chip}';`
+        const chipCheck = await this.connection.query(sqlQuery);
+        const results = Object.assign([{}], chipCheck[0]);
+        if (results[0].id) {   
+            return true;
+        } else {
+            return false;
+        }
+    };
+    
 
     async deleteChip(chipDto: ChipDto, userId: number): Promise<'delete successful' | 'delete error' | 'undefined userid' > {
         if (!userId) {

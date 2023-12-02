@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Action, NgxsOnInit, State, StateContext, Store } from '@ngxs/store';
+import { Action, NgxsOnInit, Selector, State, StateContext, Store } from '@ngxs/store';
 import { User, UserLoginData } from '../../model/user.models';
 import { UserActions } from './userState.actions';
 import { TransactionBody } from '../../model/transaction.model';
@@ -7,7 +7,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { UserApiService } from '../../shared/api/user-api.service';
 import { Router } from '@angular/router';
 import { Chip } from '../../model/chips.model';
-import { BalanceSheetEntry } from '../../model/models.model';
+import { BalanceSheetEntry, ChipStateStructure } from '../../model/models.model';
 
 
 export interface UserStateModel {
@@ -15,7 +15,7 @@ export interface UserStateModel {
   loggedInUser: User,
   transactions: TransactionBody[],
   balanceSheetEntries: BalanceSheetEntry[],
-  chips: Chip[],
+  chips: ChipStateStructure
 }
 
 @State<UserStateModel>({
@@ -25,7 +25,13 @@ export interface UserStateModel {
     loggedInUser: {} as User,
     transactions: [],
     balanceSheetEntries: [],
-    chips: [],
+    chips: {
+      asset: [],
+      liability: [],
+      expense_category: [],
+      expense_vendor: [],
+      income_source: [] 
+    },
   }
 })
 @Injectable()
@@ -52,6 +58,31 @@ export class UserState implements NgxsOnInit {
     };
   };
 
+  @Selector() 
+  static assetChips(state: UserStateModel): Chip[] {
+    return state.chips.asset;
+  }
+
+  @Selector() 
+  static liabilityChips(state: UserStateModel): Chip[] {
+    return state.chips.liability;
+  }
+
+  @Selector() 
+  static incomeSourceChips(state: UserStateModel): Chip[] {
+    return state.chips.income_source;
+  }
+
+  @Selector() 
+  static expenseCategoryChips(state: UserStateModel): Chip[] {
+    return state.chips.expense_category;
+  }
+
+  @Selector() 
+  static expenseVendorChips(state: UserStateModel): Chip[] {
+    return state.chips.expense_vendor;
+  }
+
   @Action(UserActions.RegisterLoggedInUser)
   registerLoggedInUser(
     ctx: StateContext<UserStateModel>,
@@ -68,15 +99,49 @@ export class UserState implements NgxsOnInit {
   ) {    
 
     console.log(action.payload);
+    const organizedChips: ChipStateStructure = this.organizeChips(action.payload.chips);
+    console.log(organizedChips);
     
     ctx.patchState({ 
       isInitUserDataLoaded: true,
       loggedInUser: action.payload.basicProfile,
       transactions: action.payload.transactions,
       balanceSheetEntries: action.payload.balanceSheetEntries,
-      chips: action.payload.chips
+      chips: organizedChips
     });
   };
+
+  organizeChips(chips: any): ChipStateStructure {
+    console.log('in sort chips');
+    console.log(chips);
+    const organizedChips: ChipStateStructure = {
+      asset: [],
+      liability: [],
+      expense_category: [],
+      expense_vendor: [],
+      income_source: [] 
+    }
+    chips.forEach((chip: Chip) => {
+      if (chip.kind === 'asset') {
+        organizedChips.asset.push(chip);
+      };
+      if (chip.kind === 'liability') {
+        organizedChips.liability.push(chip);
+      };
+      if (chip.kind === 'category') {
+        organizedChips.expense_category.push(chip);
+      };
+      if (chip.kind === 'vendor') {
+        organizedChips.expense_vendor.push(chip);
+      };
+      if (chip.kind === 'income') {
+        organizedChips.income_source.push(chip);
+      };
+    });
+
+    return organizedChips;
+    
+  }
 
   @Action(UserActions.AddUserTransaction)
   addUserTransaction(
@@ -94,12 +159,10 @@ export class UserState implements NgxsOnInit {
     ctx: StateContext<UserStateModel>,
     action: UserActions.AddUserBalanceRecord
   ) {
-    console.log('in BS STATE');
-    console.log(action.payload);
-    
-    let updatedBalanceRecords: BalanceSheetEntry[] = ctx.getState().balanceSheetEntries;
-    updatedBalanceRecords === null ? updatedBalanceRecords = [] : updatedBalanceRecords = updatedBalanceRecords; 
-    updatedBalanceRecords.push(action.payload);
+    let currentBalanceRecords: BalanceSheetEntry[] = ctx.getState().balanceSheetEntries;
+    currentBalanceRecords === null ? currentBalanceRecords = [] : currentBalanceRecords = currentBalanceRecords; 
+    currentBalanceRecords.push(action.payload);
+    const updatedBalanceRecords: BalanceSheetEntry[] = currentBalanceRecords.map((obj: BalanceSheetEntry) => obj);
     ctx.patchState({ balanceSheetEntries: updatedBalanceRecords });
   };
 
@@ -108,10 +171,10 @@ export class UserState implements NgxsOnInit {
     ctx: StateContext<UserStateModel>,
     action: UserActions.AddUserChip
   ) {
-    let updatedChips: Chip[] = ctx.getState().chips;   
-    updatedChips === null ? updatedChips = [] : updatedChips = updatedChips; 
-    updatedChips.push(action.payload);
-    ctx.patchState({ chips: updatedChips });
+    // let updatedChips: Chip[] = ctx.getState().chips;   
+    // updatedChips === null ? updatedChips = [] : updatedChips = updatedChips; 
+    // updatedChips.push(action.payload);
+    // ctx.patchState({ chips: updatedChips });
   };
 
   @Action(UserActions.RemoveUserChip)
@@ -119,17 +182,17 @@ export class UserState implements NgxsOnInit {
     ctx: StateContext<UserStateModel>,
     action: UserActions.RemoveUserChip
   ) {
-      const stateChips: Chip[] = ctx.getState().chips;
-      const updatedChips: Chip[] = stateChips.filter((chip: Chip) => {
-      const stateChipJoin: string = chip.chip + chip.kind;
-      const removeChipJoin: string = action.payload.chip + action.payload.kind;
-      if (removeChipJoin !== stateChipJoin) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-    ctx.patchState({ chips: updatedChips });
+    //   const stateChips: Chip[] = ctx.getState().chips;
+    //   const updatedChips: Chip[] = stateChips.filter((chip: Chip) => {
+    //   const stateChipJoin: string = chip.chip + chip.kind;
+    //   const removeChipJoin: string = action.payload.chip + action.payload.kind;
+    //   if (removeChipJoin !== stateChipJoin) {
+    //     return true;
+    //   } else {
+    //     return false;
+    //   }
+    // });
+    // ctx.patchState({ chips: updatedChips });
   };
 
   @Action(UserActions.ClearUserStateOnLogout)
@@ -141,7 +204,13 @@ export class UserState implements NgxsOnInit {
       loggedInUser: {} as User,
       transactions: [],
       balanceSheetEntries: [],
-      chips: []
+      chips:  {
+        asset: [],
+        liability: [],
+        expense_category: [],
+        expense_vendor: [],
+        income_source: [] 
+      }
     });
   };
 

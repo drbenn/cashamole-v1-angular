@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CoreApiService } from '../../../shared/api/core-api.service';
 import { Observable, first, take } from 'rxjs';
-import { Store } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { UserActions } from '../../../store/user/userState.actions';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
@@ -13,7 +13,8 @@ import { CalendarModule } from 'primeng/calendar';
 import { ChipSelectComponent } from '../../../shared/chip-select/chip-select.component';
 import { Chip } from '../../../model/chips.model';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { BalanceSheetEntry } from '../../../model/models.model';
+import { BalanceSheetEntry, ChipStateStructure } from '../../../model/models.model';
+import { UserState } from '../../../store/user/userState.state';
 
 
 export interface BalanceSheetType {
@@ -63,39 +64,73 @@ export class NewBsRecordComponent implements OnInit {
     private store: Store
   ) {}
 
+  @Select(UserState.assetChips) assetChips$!:Observable<Chip[]>;
+  @Select(UserState.assetChips) liabilityChips$!:Observable<Chip[]>;
 
   ngOnInit(): void {
     this.today = new Date();
     this.getAndSetChips();
+    this.getAndSetAssetChips();
+    this.getAndSetLiablityChips();
   }
 
-  private getAndSetChips(): void {
-    this.chips$.subscribe((chips: Chip[]) => {
-      const assetChips: Chip[] = [];
+  private getAndSetAssetChips(): void {
+    this.assetChips$.subscribe((chips: Chip[]) => {
       const assetChipStrings: string[] = [];
-      const liabilityChips: Chip[] = [];
-      const liabilityChipStrings: string[] = [];
-
       if (chips) {
+        this.assetChips = chips;
         chips.forEach((chip: Chip) => {
-          // console.log(chips);
+          assetChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
+        })
+        this.assetChipStrings = assetChipStrings;
+      }},
+        (error:any) => console.error(error)
+  )}
+
+  private getAndSetLiablityChips(): void {
+    this.liabilityChips$.subscribe((chips: Chip[]) => {
+      const liabilityChipStrings: string[] = [];
+      if (chips) {
+        this.liabilityChips = chips;
+        chips.forEach((chip: Chip) => {
+          liabilityChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
+        })
+        this.liabilityChipStrings = liabilityChipStrings;
+      }},
+        (error:any) => console.error(error)
+  )}
+
+  private getAndSetChips(): void {
+    // this.chips$.subscribe((chips: Chip[]) => {
+    //   const assetChips: Chip[] = [];
+    //   const assetChipStrings: string[] = [];
+    //   const liabilityChips: Chip[] = [];
+    //   const liabilityChipStrings: string[] = [];
+
+    //   if (chips) {
+    //     console.log(chips);
+        
+    //     chips.forEach((chip: Chip) => {
+    //       console.log('========= CHIPS =========');
           
-          if (chip.kind === 'asset') {
-            assetChips.push(chip);
-            assetChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
-          } else if (chip.kind === 'liability') {
-            liabilityChips.push(chip);
-            liabilityChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
-          };
-        });
-      }
-      this.assetChips = assetChips;
-      this.liabilityChips = liabilityChips;
-      this.assetChipStrings = assetChipStrings;
-      this.liabilityChipStrings = liabilityChipStrings;
-    },
-      (error: any )=> console.log(error)
-    );
+    //       console.log(chips);
+          
+    //       if (chip.kind === 'asset') {
+    //         assetChips.push(chip);
+    //         assetChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
+    //       } else if (chip.kind === 'liability') {
+    //         liabilityChips.push(chip);
+    //         liabilityChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
+    //       };
+    //     });
+    //   }
+    //   this.assetChips = assetChips;
+    //   this.liabilityChips = liabilityChips;
+    //   this.assetChipStrings = assetChipStrings;
+    //   this.liabilityChipStrings = liabilityChipStrings;
+    // },
+    //   (error: any )=> console.log(error)
+    // );
   }
 
   protected handleChipSelect(event: any) {
@@ -128,7 +163,7 @@ export class NewBsRecordComponent implements OnInit {
   }
 
   protected onSubmit() {
-    console.log("SHITBAG");
+
     
     const values: any = this.newRecordForm.value;
 
