@@ -2,12 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { UserState } from '../../store/user/userState.state';
-import { BalanceSheetEntryBody } from '../../model/balanceSheet.model';
+
 import { NewBsRecordComponent } from './new-bs-record/new-bs-record.component';
-import { TableModule } from 'primeng/table';
-import { CardModule } from 'primeng/card';
 import { BalanceSheetTableComponent } from './balance-sheet-table/balance-sheet-table.component';
+import { BalanceSheetEntry } from '../../model/models.model';
 
 
 @Component({
@@ -19,20 +17,24 @@ import { BalanceSheetTableComponent } from './balance-sheet-table/balance-sheet-
 })
 export class BalanceSheetComponent implements OnInit {
   balanceSheetEntries$: Observable<any> = this.store.select((state) => state.user.balanceSheetEntries);
-  assets: BalanceSheetEntryBody[] = [];
-  liabilities: BalanceSheetEntryBody[] = [];
+  balanceSheet: { assets: BalanceSheetEntry[], liabilities: BalanceSheetEntry[] } = {
+    assets: [],
+    liabilities: []
+  }
 
   constructor(private store: Store) {}
 
   ngOnInit(): void {
-    this.balanceSheetEntries$.subscribe((entries: BalanceSheetEntryBody[]) => {
+    this.balanceSheetEntries$.subscribe((entries: BalanceSheetEntry[]) => {
+      console.log(entries);
+      
       if (entries) {
-        entries.forEach((entry: BalanceSheetEntryBody) => {
+        entries.forEach((entry: BalanceSheetEntry) => {
           if (entry.type === 'asset') {
-            this.assets.push(entry);
+            this.balanceSheet.assets.push(entry);
           }
           if (entry.type === 'liability') {
-            this.liabilities.push(entry);
+            this.balanceSheet.liabilities.push(entry);
           }
         });
       }

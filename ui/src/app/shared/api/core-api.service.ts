@@ -2,10 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
-import { TransactionBody } from '../../model/transaction.model';
-import { BalanceSheetEntryBody } from '../../model/balanceSheet.model';
 import { Chip } from '../../model/chips.model';
-import { Expense, Income } from '../../model/models.model';
+import { BalanceSheetEntry, Expense, Income } from '../../model/models.model';
 
 
 @Injectable({
@@ -30,7 +28,7 @@ export class CoreApiService {
     return this.httpClient.post(this.apiUrl + '/expense', expenseBody, {withCredentials: true}) as Observable<any>;
   };
 
-  public submitNewBsRecord(balanceSheetEntryBody: BalanceSheetEntryBody): Observable<any> {    
+  public submitNewBsRecord(balanceSheetEntryBody: BalanceSheetEntry): Observable<any> {    
     return this.httpClient.post(this.apiUrl + '/balance-sheet', balanceSheetEntryBody, {withCredentials: true}) as Observable<any>;
   }
 

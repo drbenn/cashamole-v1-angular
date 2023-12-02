@@ -6,15 +6,15 @@ import { TransactionBody } from '../../model/transaction.model';
 import { CookieService } from 'ngx-cookie-service';
 import { UserApiService } from '../../shared/api/user-api.service';
 import { Router } from '@angular/router';
-import { BalanceSheetEntryBody } from '../../model/balanceSheet.model';
 import { Chip } from '../../model/chips.model';
+import { BalanceSheetEntry } from '../../model/models.model';
 
 
 export interface UserStateModel {
   isInitUserDataLoaded: boolean,
   loggedInUser: User,
   transactions: TransactionBody[],
-  balanceSheetEntries: BalanceSheetEntryBody[],
+  balanceSheetEntries: BalanceSheetEntry[],
   chips: Chip[],
 }
 
@@ -94,7 +94,7 @@ export class UserState implements NgxsOnInit {
     ctx: StateContext<UserStateModel>,
     action: UserActions.AddUserBalanceRecord
   ) {
-    let updatedBalanceRecords: BalanceSheetEntryBody[] = ctx.getState().balanceSheetEntries;
+    let updatedBalanceRecords: BalanceSheetEntry[] = ctx.getState().balanceSheetEntries;
     updatedBalanceRecords === null ? updatedBalanceRecords = [] : updatedBalanceRecords = updatedBalanceRecords; 
     updatedBalanceRecords.push(action.payload);
     ctx.patchState({ balanceSheetEntries: updatedBalanceRecords });

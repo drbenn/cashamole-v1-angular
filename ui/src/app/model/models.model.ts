@@ -17,7 +17,14 @@ export interface Expense {
     status?: string | 'active' | 'cancelled';
 }
 
-
+export interface BalanceSheetEntry {
+    record_id?: number,
+    date: Date;
+    amount: number;
+    type: 'asset' | 'liability';
+    description: string;
+    status?: string;
+}
 
 
 export interface TransactionBody {

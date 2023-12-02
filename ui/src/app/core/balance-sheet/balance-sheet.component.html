@@ -1,18 +1,10 @@
-<main class="w-full flex flex-row flex-wrap justify-content-center align-items-center">
-    @if (assets) {
-        <section class="m-4">
-            <app-balance-sheet-table tableTitle="Assets" [tableData]="assets"></app-balance-sheet-table>
-        </section>
-      } @else {
-        No assets posted
-      }
-      @if (liabilities) {
-        <section class="m-4">
-            <app-balance-sheet-table tableTitle="Liablities" [tableData]="liabilities"></app-balance-sheet-table>
-        </section>
-      } @else {
-        No liabilities posted
-      }
+<main class="w-screen flex flex-row flex-wrap-reverse justify-content-evenly align-items-end pt-8"
+    [ngStyle]="{'max-width': '140rem', 'background': 'linear-gradient(45deg, red, blue)'}"
+>
+   <section class="my-3">
+       <app-new-bs-record></app-new-bs-record>
+   </section>
+    <section class="my-4">
+        <app-balance-sheet-table [tableData]="balanceSheet"></app-balance-sheet-table>
+    </section>
 </main>
-
-<app-new-bs-record></app-new-bs-record>

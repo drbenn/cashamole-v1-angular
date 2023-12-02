@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BalanceSheetEntryBody } from '../../../model/balanceSheet.model';
 import { TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
+import { BalanceSheetEntry } from '../../../model/models.model';
 
 @Component({
   selector: 'app-balance-sheet-table',
@@ -11,11 +11,17 @@ import { CardModule } from 'primeng/card';
   templateUrl: './balance-sheet-table.component.html',
   styleUrl: './balance-sheet-table.component.scss'
 })
-export class BalanceSheetTableComponent {
+export class BalanceSheetTableComponent implements OnInit {
   @Input() tableTitle!: string;
-  @Input() tableData!: BalanceSheetEntryBody[];
+  @Input() tableData!: { assets: BalanceSheetEntry[], liabilities: BalanceSheetEntry[] };
 
-  protected editBalanceRecord(entry: BalanceSheetEntryBody) {
+
+  ngOnInit(): void {
+      console.log(this.tableData);
+      
+  }
+
+  protected editBalanceRecord(entry: BalanceSheetEntry) {
     console.log(entry);
   }
 }

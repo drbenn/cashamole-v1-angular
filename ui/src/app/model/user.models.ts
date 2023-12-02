@@ -1,5 +1,5 @@
-import { BalanceSheetEntryBody } from "./balanceSheet.model";
 import { Chip } from "./chips.model";
+import { BalanceSheetEntry } from "./models.model";
 import { TransactionBody } from "./transaction.model";
 
 export interface UserRegister {
@@ -28,6 +28,6 @@ export interface User {
 export interface UserLoginData {
     basicProfile: User,
     transactions: TransactionBody[],
-    balanceSheetEntries: BalanceSheetEntryBody[],
+    balanceSheetEntries: BalanceSheetEntry[],
     chips: Chip[],
 }

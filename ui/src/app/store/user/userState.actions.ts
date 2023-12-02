@@ -1,5 +1,5 @@
-import { BalanceSheetEntryBody } from "../../model/balanceSheet.model";
 import { Chip } from "../../model/chips.model";
+import { BalanceSheetEntry } from "../../model/models.model";
 import { TransactionBody } from "../../model/transaction.model";
 import { User, UserLoginData } from "../../model/user.models";
 
@@ -22,7 +22,7 @@ export namespace UserActions {
 
   export class AddUserBalanceRecord {
     static readonly type =  '[Balance Record] Add user balance record';
-    constructor(public payload: BalanceSheetEntryBody) {}
+    constructor(public payload: BalanceSheetEntry) {}
   }
 
   export class AddUserChip {

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CoreApiService } from '../../../shared/api/core-api.service';
-import { BalanceSheetEntryBody } from '../../../model/balanceSheet.model';
 import { Observable, first, take } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { UserActions } from '../../../store/user/userState.actions';
@@ -14,6 +13,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { ChipSelectComponent } from '../../../shared/chip-select/chip-select.component';
 import { Chip } from '../../../model/chips.model';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { BalanceSheetEntry } from '../../../model/models.model';
 
 
 export interface BalanceSheetType {
@@ -51,7 +51,7 @@ export class NewBsRecordComponent implements OnInit {
   assetLiabilityToggle: 'asset' | 'liability' = 'asset';
 
   newRecordForm = this.fb.group({
-    type: [this.selectedBsType.type, [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
+    type: ['asset', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
     date: [this.today, [Validators.required]],
     description: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(75)]],
     amount: [null as unknown as number, [Validators.required, Validators.min(-10000000), Validators.max(10000000)]]
@@ -128,22 +128,26 @@ export class NewBsRecordComponent implements OnInit {
   }
 
   protected onSubmit() {
-    const values: any = this.newRecordForm.value;
+    console.log("SHITBAG");
     
+    const values: any = this.newRecordForm.value;
+
     if (!values) {
       return;
     }
     else if (values) {
-      const balanceSheetEntryBody: BalanceSheetEntryBody = {
-        type: values.type.type.toLowerCase(),
+      console.log(values);
+      
+      const balanceSheetEntry: BalanceSheetEntry = {
+        type: values.type,
         date: new Date(values.date),
         description: values.description,
         amount: values.amount,
         status: 'active'
       }
-      console.log(balanceSheetEntryBody);
+      console.log(balanceSheetEntry);
       
-      this.coreApi.submitNewBsRecord(balanceSheetEntryBody).pipe(take(1), first())
+      this.coreApi.submitNewBsRecord(balanceSheetEntry).pipe(take(1), first())
       .subscribe(
         {
           next: (value: any) => {
