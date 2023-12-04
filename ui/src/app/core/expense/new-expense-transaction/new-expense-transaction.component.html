@@ -19,7 +19,7 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
 
 
             <div class="m-4 w-20rem">
-                <app-chip-select [chips]="expenseVendorChipStrings" [chipObjects]="expenseVendorChips" kind="vendor" (selectedChip)="handleChipSelect($event)"></app-chip-select>
+                <app-chip-select kind="vendor" (selectedChip)="handleChipSelect($event)"></app-chip-select>
                 <!-- @if (incomeExpenseChipToggle === 'expense') {
                     <app-chip-select [chips]="expenseVendorChipStrings" [chipObjects]="expenseVendorChips" kind="vendor" (selectedChip)="handleChipSelect($event)"></app-chip-select>
                 }
@@ -55,7 +55,7 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
             </div>
             <!-- @if (incomeExpenseChipToggle === 'expense') { -->
                 <div class="m-4 w-20rem">
-                    <app-chip-select [chips]="expenseCategoryChipStrings" [chipObjects]="expenseCategoryChips" kind="category" (selectedChip)="handleChipSelect($event)"></app-chip-select>
+                    <app-chip-select kind="category" (selectedChip)="handleChipSelect($event)"></app-chip-select>
                 </div>
 
                 <div class="m-4">

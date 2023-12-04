@@ -1,7 +1,7 @@
 
-<h3>{{ titleGenerator(kind)  | titlecase }} Saved Tags</h3>
+<h3>{{ titleGenerator(kind)  | titlecase }} Quick Tags</h3>
 <p-chips
-    [(ngModel)]="chips"
+    [(ngModel)]="chipStrings"
     [max]="maxChips"
     (onChipClick)="onChipClick($event)"
     (onRemove)="onChipRemove($event)"

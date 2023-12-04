@@ -171,10 +171,29 @@ export class UserState implements NgxsOnInit {
     ctx: StateContext<UserStateModel>,
     action: UserActions.AddUserChip
   ) {
-    // let updatedChips: Chip[] = ctx.getState().chips;   
-    // updatedChips === null ? updatedChips = [] : updatedChips = updatedChips; 
-    // updatedChips.push(action.payload);
-    // ctx.patchState({ chips: updatedChips });
+    console.log('state chip payload');
+    console.log(action.payload);
+    const blankChipsObject: ChipStateStructure = {
+      asset: [],
+      liability: [],
+      expense_category: [],
+      expense_vendor: [],
+      income_source: [] 
+    };
+    const chipKind: string = action.payload.kind;
+    console.log(chipKind);
+    
+    let currentChips: ChipStateStructure = ctx.getState().chips;   
+    currentChips === null ? currentChips = blankChipsObject: currentChips = currentChips;
+    const nonRefChips: ChipStateStructure = currentChips;
+    console.log(currentChips.asset);
+    if (chipKind === 'asset') {
+      nonRefChips.asset.push(action.payload);
+    } else if (chipKind === 'liabilty') {
+      nonRefChips.liability.push(action.payload);
+    }
+    // todo: need to add other if options
+    ctx.patchState({ chips: nonRefChips });
   };
 
   @Action(UserActions.RemoveUserChip)
@@ -182,7 +201,17 @@ export class UserState implements NgxsOnInit {
     ctx: StateContext<UserStateModel>,
     action: UserActions.RemoveUserChip
   ) {
-    //   const stateChips: Chip[] = ctx.getState().chips;
+    console.log('remove paylo0ad');
+    console.log(action.payload);
+    
+    
+      let currentChips: ChipStateStructure = ctx.getState().chips;
+      // if (chipKind === 'asset') {
+      //   nonRefChips.asset.push(action.payload);
+      // } else if (chipKind === 'liabilty') {
+      //   nonRefChips.liability.push(action.payload);
+      // }
+      // todo: need to add other if options
     //   const updatedChips: Chip[] = stateChips.filter((chip: Chip) => {
     //   const stateChipJoin: string = chip.chip + chip.kind;
     //   const removeChipJoin: string = action.payload.chip + action.payload.kind;

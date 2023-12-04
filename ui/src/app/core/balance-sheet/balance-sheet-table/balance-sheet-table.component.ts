@@ -32,11 +32,7 @@ export class BalanceSheetTableComponent implements OnInit {
         this.balanceSheet = {
           assets: [],
           liabilities: []
-        }
-        console.log('================= bs table data  ===================');
-        console.log(data);
-        
-        
+        };
         data.forEach((entry: BalanceSheetEntry) => {
           if (entry.type === 'asset') {
             this.balanceSheet.assets.push(entry);

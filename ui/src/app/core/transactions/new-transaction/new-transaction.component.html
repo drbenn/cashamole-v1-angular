@@ -18,17 +18,17 @@ class="w-full bg-white flex flex-column justify-content-center align-items-cente
 
 
             <div class="m-4 w-20rem">
-                @if (incomeExpenseChipToggle === 'expense') {
+                <!-- @if (incomeExpenseChipToggle === 'expense') {
                     <app-chip-select [chips]="expenseVendorChipStrings" [chipObjects]="expenseVendorChips" kind="vendor" (selectedChip)="handleChipSelect($event)"></app-chip-select>
                 }
                 @if (incomeExpenseChipToggle === 'income') {
-                    <app-chip-select [chips]="incomeChipStrings" [chipObjects]="incomeChips" kind="income" (selectedChip)="handleChipSelect($event)"></app-chip-select>
-                }
+                    <app-chip-select ="incomeChipStrings" [chipObjects]="incomeChips" kind="income" (selectedChip)="handleChipSelect($event)"></app-chip-select>
+                } -->
             </div>
 
 
             <div class="m-4">
-                @if (incomeExpenseChipToggle === 'expense') {
+                <!-- @if (incomeExpenseChipToggle === 'expense') {
                     <span class="p-float-label">
                         <input 
                             pInputText
@@ -49,11 +49,11 @@ class="w-full bg-white flex flex-column justify-content-center align-items-cente
                         />
                     <label htmlFor="vendor">Payee</label>
                     </span>
-                }
+                } -->
             </div>
             @if (incomeExpenseChipToggle === 'expense') {
                 <div class="m-4 w-20rem">
-                    <app-chip-select [chips]="expenseCategoryChipStrings" [chipObjects]="expenseCategoryChips" kind="category" (selectedChip)="handleChipSelect($event)"></app-chip-select>
+                    <!-- <app-chip-select [chips]="expenseCategoryChipStrings" [chipObjects]="expenseCategoryChips" kind="category" (selectedChip)="handleChipSelect($event)"></app-chip-select> -->
                 </div>
 
                 <div class="m-4">

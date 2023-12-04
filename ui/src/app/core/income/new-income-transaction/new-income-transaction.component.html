@@ -23,7 +23,7 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
                     <app-chip-select [chips]="expenseVendorChipStrings" [chipObjects]="expenseVendorChips" kind="vendor" (selectedChip)="handleChipSelect($event)"></app-chip-select>
                 }
                 @if (incomeExpenseChipToggle === 'income') { -->
-                    <app-chip-select [chips]="incomeChipStrings" [chipObjects]="incomeChips" kind="income" (selectedChip)="handleChipSelect($event)"></app-chip-select>
+                    <app-chip-select [chipStrings]="incomeSourceChipStrings" [chipObjects]="incomeSourceChips" kind="income_source" (selectedChip)="handleChipSelect($event)"></app-chip-select>
                 <!-- } -->
             </div>
 

@@ -13,7 +13,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { ChipSelectComponent } from '../../../shared/chip-select/chip-select.component';
 import { Chip } from '../../../model/chips.model';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { BalanceSheetEntry, ChipStateStructure } from '../../../model/models.model';
+import { BalanceSheetEntry } from '../../../model/models.model';
 import { UserState } from '../../../store/user/userState.state';
 
 
@@ -39,18 +39,17 @@ export interface BalanceSheetType {
   styleUrl: './new-bs-record.component.scss'
 })
 export class NewBsRecordComponent implements OnInit {
-  bsTypes: BalanceSheetType[] = [{ type: 'asset'}, { type: "liability"}];
-  selectedBsType: BalanceSheetType = this.bsTypes[0];
-  
-  today: Date = new Date();
-
-  chips$: Observable<any> = this.store.select((state) => state.user.chips);
+  @Select(UserState.assetChips) assetChips$!: Observable<Chip[]>;
+  @Select(UserState.liabilityChips) liabilityChips$!: Observable<Chip[]>;
   assetChips: Chip[] = [];
   assetChipStrings: string[] = [];
   liabilityChips: Chip[] = [];
   liabilityChipStrings: string[] = [];
   assetLiabilityToggle: 'asset' | 'liability' = 'asset';
-
+  bsTypes: BalanceSheetType[] = [{ type: 'asset'}, { type: "liability"}];
+  selectedBsType: BalanceSheetType = this.bsTypes[0];
+  today: Date = new Date();
+  
   newRecordForm = this.fb.group({
     type: ['asset', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
     date: [this.today, [Validators.required]],
@@ -64,88 +63,47 @@ export class NewBsRecordComponent implements OnInit {
     private store: Store
   ) {}
 
-  @Select(UserState.assetChips) assetChips$!:Observable<Chip[]>;
-  @Select(UserState.assetChips) liabilityChips$!:Observable<Chip[]>;
 
   ngOnInit(): void {
     this.today = new Date();
-    this.getAndSetChips();
-    this.getAndSetAssetChips();
-    this.getAndSetLiablityChips();
-  }
-
-  private getAndSetAssetChips(): void {
     this.assetChips$.subscribe((chips: Chip[]) => {
-      const assetChipStrings: string[] = [];
-      if (chips) {
-        this.assetChips = chips;
-        chips.forEach((chip: Chip) => {
-          assetChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
-        })
-        this.assetChipStrings = assetChipStrings;
-      }},
-        (error:any) => console.error(error)
-  )}
-
-  private getAndSetLiablityChips(): void {
+      if (chips) {        
+        this.setBsChips('asset', chips);
+      };
+    });
     this.liabilityChips$.subscribe((chips: Chip[]) => {
-      const liabilityChipStrings: string[] = [];
       if (chips) {
-        this.liabilityChips = chips;
-        chips.forEach((chip: Chip) => {
-          liabilityChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
-        })
-        this.liabilityChipStrings = liabilityChipStrings;
-      }},
-        (error:any) => console.error(error)
-  )}
+        this.setBsChips('liability', chips);
+      };
+    });
+  };
 
-  private getAndSetChips(): void {
-    // this.chips$.subscribe((chips: Chip[]) => {
-    //   const assetChips: Chip[] = [];
-    //   const assetChipStrings: string[] = [];
-    //   const liabilityChips: Chip[] = [];
-    //   const liabilityChipStrings: string[] = [];
+  private setBsChips(type: 'asset' | 'liability', chips: Chip[]) {
+    if (type === 'asset') {
+      this.assetChips = chips;
+      this.assetChipStrings = [];
+      chips.forEach((chip: Chip) => {
+        this.assetChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
+      });
+    };
+    if (type === 'liability') {
+      this.liabilityChips = chips;
+      this.liabilityChipStrings = [];
+      chips.forEach((chip: Chip) => {
+        this.assetChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
+      });
+    };
+  };
 
-    //   if (chips) {
-    //     console.log(chips);
-        
-    //     chips.forEach((chip: Chip) => {
-    //       console.log('========= CHIPS =========');
-          
-    //       console.log(chips);
-          
-    //       if (chip.kind === 'asset') {
-    //         assetChips.push(chip);
-    //         assetChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
-    //       } else if (chip.kind === 'liability') {
-    //         liabilityChips.push(chip);
-    //         liabilityChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
-    //       };
-    //     });
-    //   }
-    //   this.assetChips = assetChips;
-    //   this.liabilityChips = liabilityChips;
-    //   this.assetChipStrings = assetChipStrings;
-    //   this.liabilityChipStrings = liabilityChipStrings;
-    // },
-    //   (error: any )=> console.log(error)
-    // );
-  }
-
-  protected handleChipSelect(event: any) {
-    console.log('handleChipSelect: ', event);
+  protected handleChipSelect(event: any): void {
     if (event.kind === 'asset') {
       this.newRecordForm.get('description')?.setValue(event.chip);
     } else if (event.kind === 'liability') {
       this.newRecordForm.get('description')?.setValue(event.chip);    
-    }
-    
-  }
+    };
+  };
 
-  protected handleBsSelectClick(type: 'asset' | 'liability'): void {
-    console.log(type);
-    
+  protected handleBsSelectClick(type: 'asset' | 'liability'): void {   
     if (type === 'asset') {
       this.assetLiabilityToggle = 'asset';
     } else {
@@ -153,7 +111,7 @@ export class NewBsRecordComponent implements OnInit {
     };
   };
 
-  protected clearForm() {
+  protected clearForm(): void {
     this.newRecordForm.setValue({ 
       type: this.selectedBsType.type,
       date: new Date(this.today),
@@ -162,25 +120,20 @@ export class NewBsRecordComponent implements OnInit {
     });
   }
 
-  protected onSubmit() {
-
-    
+  protected onSubmit(): void {
     const values: any = this.newRecordForm.value;
 
     if (!values) {
       return;
     }
     else if (values) {
-      console.log(values);
-      
       const balanceSheetEntry: BalanceSheetEntry = {
         type: values.type,
         date: new Date(values.date),
         description: values.description,
         amount: values.amount,
         status: 'active'
-      }
-      console.log(balanceSheetEntry);
+      };
       
       this.coreApi.submitNewBsRecord(balanceSheetEntry).pipe(take(1), first())
       .subscribe(
@@ -190,10 +143,10 @@ export class NewBsRecordComponent implements OnInit {
             this.store.dispatch(new UserActions.AddUserBalanceRecord(JSON.parse(value.data)));
           },
           error: (error: any) => {
-            console.error(error)
+            console.error(error);
           }
         }
-      )
-    }
-  }
+      );
+    };
+  };
 }

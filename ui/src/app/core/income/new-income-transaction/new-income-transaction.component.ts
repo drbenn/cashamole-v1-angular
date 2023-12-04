@@ -4,7 +4,7 @@ import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import { CoreApiService } from '../../../shared/api/core-api.service';
 import { Observable, first, take } from 'rxjs';
 import { UserActions } from '../../../store/user/userState.actions';
-import { Store } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -14,6 +14,7 @@ import { ChipSelectComponent } from '../../../shared/chip-select/chip-select.com
 import { Chip } from '../../../model/chips.model';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { Income } from '../../../model/models.model';
+import { UserState } from '../../../store/user/userState.state';
 
 export interface TranactionCategory {
   category: string
@@ -45,6 +46,9 @@ export interface TransactionType {
   styleUrl: './new-income-transaction.component.scss'
 })
 export class NewIncomeTransactionComponent implements OnInit {
+  @Select(UserState.incomeSourceChips) incomeSourceChips$!: Observable<Chip[]>;
+  incomeSourceChips: Chip[] = [];
+  incomeSourceChipStrings: string[] = [];
   protected transactionTypes: TransactionType[] = [{ type: 'expense'}, { type: "income"}];
   protected selectedTransactionType: TransactionType = this.transactionTypes[0];
 
@@ -53,18 +57,7 @@ export class NewIncomeTransactionComponent implements OnInit {
 
   protected today: Date = new Date();
 
-  chips$: Observable<any> = this.store.select((state) => state.user.chips);
-  expenseCategoryChips: Chip[] = [];
-  expenseCategoryChipStrings: string[] = [];
-  expenseVendorChips: Chip[] = [];
-  expenseVendorChipStrings: string[] = [];
-  // vendorChips: Chip[] = [];
-  // vendorChipStrings: string[] = [];
-  incomeChips: Chip[] = [];
-  incomeChipStrings: string[] = [];
-  expenseChips: Chip[] = [];
-  expenseChipStrings: string[] = [];
-  incomeExpenseChipToggle: 'income' | 'expense' = 'expense';
+
 
 
   newIncomeForm = this.fb.group({

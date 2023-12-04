@@ -10,6 +10,7 @@ import { HomeComponent } from './core/home/home.component';
 import { SplashComponent } from './shared/splash/splash.component';
 import { NewIncomeTransactionComponent } from './core/income/new-income-transaction/new-income-transaction.component';
 import { NewExpenseTransactionComponent } from './core/expense/new-expense-transaction/new-expense-transaction.component';
+import { BalanceSheetComponent } from './core/balance-sheet/balance-sheet.component';
 
 
 export const routes: Routes = [
@@ -21,7 +22,7 @@ export const routes: Routes = [
     { path: 'donate', component: DonateComponent },
     { path: 'how-to', component: HowToComponent },
     { path: 'new-transaction', component: NewTransactionComponent },
-    { path: 'new-bs-record', component: NewBsRecordComponent },
+    { path: 'balance-sheeet', component: BalanceSheetComponent },
     { path: 'home', component: HomeComponent },
     { path: 'splash', component: SplashComponent },
     { path: 'income', component: NewIncomeTransactionComponent },
