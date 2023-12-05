@@ -6,26 +6,10 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
     <h2 class="m-4 text-gray-800 text-start">New Expense</h2>
         <form action="" [formGroup]="newExpenseForm" (ngSubmit)="onSubmit()">
 
-            <!-- <div class="m-4 w-20rem">
-                <p-selectButton
-                    [options]="transactionTypes"
-                    formControlName="type"
-                    optionLabel="type"
-                    optionValue="type"
-                    #type
-                    (click)="handleIncomeExpenseSelectClick(type.value)"
-                ></p-selectButton>
-            </div> -->
-
 
             <div class="m-4 w-20rem">
                 <app-chip-select kind="vendor" (selectedChip)="handleChipSelect($event)"></app-chip-select>
-                <!-- @if (incomeExpenseChipToggle === 'expense') {
-                    <app-chip-select [chips]="expenseVendorChipStrings" [chipObjects]="expenseVendorChips" kind="vendor" (selectedChip)="handleChipSelect($event)"></app-chip-select>
-                }
-                @if (incomeExpenseChipToggle === 'income') {
                     <app-chip-select [chips]="incomeChipStrings" [chipObjects]="incomeChips" kind="income" (selectedChip)="handleChipSelect($event)"></app-chip-select>
-                } -->
             </div>
 
 

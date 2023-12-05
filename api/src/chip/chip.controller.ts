@@ -19,9 +19,7 @@ export class ChipController {
             // todo: throw error
         }  else {
             const userId: number = req.cookies.cashamole_uid;
-            
             const newInsertedChip: ChipDto | 'insert error' | 'undefined userid' = await this.chipService.createNewChip(chipDto, userId);
-
             if (newInsertedChip === 'insert error' || newInsertedChip ===  'undefined userid') {
                 throw new HttpException('new chip insert failed', HttpStatus.BAD_REQUEST);
             } else {
@@ -35,17 +33,13 @@ export class ChipController {
         @Req() req: Request, 
         @Res() res: Response, 
         @Body() chipDto: ChipDto
-        ) {  
-            console.log('delete chip hit');
-            
+        ) {
         if (!req.cookies) {
             console.log('throw no cookie error');
             // todo: throw error
         }  else {
             const userId: number = req.cookies.cashamole_uid;
-            
             const deleteChip: 'delete successful' | 'delete error' | 'undefined userid' = await this.chipService.deleteChip(chipDto, userId);
-
             if (deleteChip === 'delete error' || deleteChip ===  'undefined userid') {
                 throw new HttpException('chip delete failed', HttpStatus.BAD_REQUEST);
             } else {

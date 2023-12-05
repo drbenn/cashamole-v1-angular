@@ -6,69 +6,24 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
     <h2 class="m-4 text-gray-800 text-start">New Transaction</h2>
         <form action="" [formGroup]="newIncomeForm" (ngSubmit)="onSubmit()">
 
-            <!-- <div class="m-4 w-20rem">
-                <p-selectButton
-                    [options]="transactionTypes"
-                    formControlName="type"
-                    optionLabel="type"
-                    optionValue="type"
-                    #type
-                    (click)="handleIncomeExpenseSelectClick(type.value)"
-                ></p-selectButton>
-            </div> -->
-
-
             <div class="m-4 w-20rem">
-                <!-- @if (incomeExpenseChipToggle === 'expense') {
-                    <app-chip-select [chips]="expenseVendorChipStrings" [chipObjects]="expenseVendorChips" kind="vendor" (selectedChip)="handleChipSelect($event)"></app-chip-select>
-                }
-                @if (incomeExpenseChipToggle === 'income') { -->
-                    <app-chip-select [chipStrings]="incomeSourceChipStrings" [chipObjects]="incomeSourceChips" kind="income_source" (selectedChip)="handleChipSelect($event)"></app-chip-select>
-                <!-- } -->
+                    <app-chip-select 
+                        [chipStrings]="incomeSourceChipStrings" [chipObjects]="incomeSourceChips" kind="income_source" 
+                        (selectedChip)="handleIncomeChipSelect($event)"
+                    ></app-chip-select>
             </div>
-
 
             <div class="m-4">
-                <!-- @if (incomeExpenseChipToggle === 'expense') {
-                    <span class="p-float-label">
-                        <input 
-                            pInputText
-                            id="vendor"
-                            formControlName="vendor"
-                            [style]="{'width':'20rem'}"
-                        />
-                    <label htmlFor="vendor">Vendor</label>
-                    </span>
-                }
-                @if (incomeExpenseChipToggle === 'income') { -->
-                    <span class="p-float-label">
-                        <input 
-                            pInputText
-                            id="vendor"
-                            formControlName="vendor"
-                            [style]="{'width':'20rem'}"
-                        />
-                    <label htmlFor="vendor">Payee</label>
-                    </span>
-                <!-- } -->
+                <span class="p-float-label">
+                    <input 
+                        pInputText
+                        id="source"
+                        formControlName="source"
+                        [style]="{'width':'20rem'}"
+                    />
+                <label htmlFor="source">Source</label>
+                </span>
             </div>
-            <!-- @if (incomeExpenseChipToggle === 'expense') {
-                <div class="m-4 w-20rem">
-                    <app-chip-select [chips]="expenseCategoryChipStrings" [chipObjects]="expenseCategoryChips" kind="category" (selectedChip)="handleChipSelect($event)"></app-chip-select>
-                </div>
-
-                <div class="m-4">
-                    <span class="p-float-label">
-                        <input 
-                            pInputText
-                            id="category"
-                            formControlName="category"
-                            [style]="{'width':'20rem'}"
-                        />
-                    <label htmlFor="category">Category</label>
-                    </span>
-                </div>
-            } -->
 
             <div class="m-4">
                 <span class="p-float-label">

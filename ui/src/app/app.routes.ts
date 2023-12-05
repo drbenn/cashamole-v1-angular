@@ -11,20 +11,22 @@ import { SplashComponent } from './shared/splash/splash.component';
 import { NewIncomeTransactionComponent } from './core/income/new-income-transaction/new-income-transaction.component';
 import { NewExpenseTransactionComponent } from './core/expense/new-expense-transaction/new-expense-transaction.component';
 import { BalanceSheetComponent } from './core/balance-sheet/balance-sheet.component';
+import { IncomeComponent } from './core/income/income.component';
+import { ExpenseComponent } from './core/expense/expense.component';
 
 
 export const routes: Routes = [
     // { path: '', component: HomeComponent },
     { path: '', component: UserRegisterComponent },
+    { path: 'home', component: HomeComponent },
+    { path: 'balance-sheeet', component: BalanceSheetComponent },
+    { path: 'new-transaction', component: NewTransactionComponent },
+    { path: 'income', component: IncomeComponent },
+    { path: 'expense', component: ExpenseComponent },
     { path: 'login', component: UserLoginComponent },
     { path: 'register', component: UserRegisterComponent },
     { path: 'password-reset', component: UserResetPasswordComponent },
     { path: 'donate', component: DonateComponent },
     { path: 'how-to', component: HowToComponent },
-    { path: 'new-transaction', component: NewTransactionComponent },
-    { path: 'balance-sheeet', component: BalanceSheetComponent },
-    { path: 'home', component: HomeComponent },
     { path: 'splash', component: SplashComponent },
-    { path: 'income', component: NewIncomeTransactionComponent },
-    { path: 'expense', component: NewExpenseTransactionComponent },
 ];

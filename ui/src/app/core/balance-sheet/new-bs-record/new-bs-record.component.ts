@@ -15,6 +15,7 @@ import { Chip } from '../../../model/chips.model';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { BalanceSheetEntry } from '../../../model/models.model';
 import { UserState } from '../../../store/user/userState.state';
+import { ChipState } from '../../../store/chip/chipState.state';
 
 
 export interface BalanceSheetType {
@@ -39,8 +40,8 @@ export interface BalanceSheetType {
   styleUrl: './new-bs-record.component.scss'
 })
 export class NewBsRecordComponent implements OnInit {
-  @Select(UserState.assetChips) assetChips$!: Observable<Chip[]>;
-  @Select(UserState.liabilityChips) liabilityChips$!: Observable<Chip[]>;
+  @Select(ChipState.assetChips) assetChips$!: Observable<Chip[]>;
+  @Select(ChipState.liabilityChips) liabilityChips$!: Observable<Chip[]>;
   assetChips: Chip[] = [];
   assetChipStrings: string[] = [];
   liabilityChips: Chip[] = [];

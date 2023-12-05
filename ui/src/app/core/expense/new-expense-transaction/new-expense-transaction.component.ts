@@ -5,7 +5,7 @@ import { CoreApiService } from '../../../shared/api/core-api.service';
 
 import { Observable, first, take } from 'rxjs';
 import { UserActions } from '../../../store/user/userState.actions';
-import { Store } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -15,6 +15,7 @@ import { ChipSelectComponent } from '../../../shared/chip-select/chip-select.com
 import { Chip } from '../../../model/chips.model';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { Expense } from '../../../model/models.model';
+import { ChipState } from '../../../store/chip/chipState.state';
 
 export interface TranactionCategory {
   category: string
@@ -45,26 +46,32 @@ export interface TransactionType {
   styleUrl: './new-expense-transaction.component.scss'
 })
 export class NewExpenseTransactionComponent implements OnInit {
-  protected transactionTypes: TransactionType[] = [{ type: 'expense'}, { type: "income"}];
-  protected selectedTransactionType: TransactionType = this.transactionTypes[0];
+  @Select(ChipState.expenseVendorChips) expenseVendorChips$!: Observable<Chip[]>;
+  @Select(ChipState.expenseCategoryChips) expenseCategoryChips$!: Observable<Chip[]>;
+  expenseVendorChips: Chip[] = [];
+  expenseVendorChipStrings: string[] = [];
+  expenseCategoryChips: Chip[] = [];
+  expenseCategoryChipStrings: string[] = [];
+  // protected transactionTypes: TransactionType[] = [{ type: 'expense'}, { type: "income"}];
+  // protected selectedTransactionType: TransactionType = this.transactionTypes[0];
 
-  protected transactionCategories: TranactionCategory[] = [{ category: 'discretionary'}, { category: "recurring"}];
-  protected selectedTransactionCategory: TranactionCategory = this.transactionCategories[0];
+  // protected transactionCategories: TranactionCategory[] = [{ category: 'discretionary'}, { category: "recurring"}];
+  // protected selectedTransactionCategory: TranactionCategory = this.transactionCategories[0];
 
   protected today: Date = new Date();
 
-  chips$: Observable<any> = this.store.select((state) => state.user.chips);
-  expenseCategoryChips: Chip[] = [];
-  expenseCategoryChipStrings: string[] = [];
-  expenseVendorChips: Chip[] = [];
-  expenseVendorChipStrings: string[] = [];
+  // chips$: Observable<any> = this.store.select((state) => state.user.chips);
+  // expenseCategoryChips: Chip[] = [];
+  // expenseCategoryChipStrings: string[] = [];
+  // expenseVendorChips: Chip[] = [];
+  // expenseVendorChipStrings: string[] = [];
   // vendorChips: Chip[] = [];
   // vendorChipStrings: string[] = [];
-  incomeChips: Chip[] = [];
-  incomeChipStrings: string[] = [];
-  expenseChips: Chip[] = [];
-  expenseChipStrings: string[] = [];
-  incomeExpenseChipToggle: 'income' | 'expense' = 'expense';
+  // incomeChips: Chip[] = [];
+  // incomeChipStrings: string[] = [];
+  // expenseChips: Chip[] = [];
+  // expenseChipStrings: string[] = [];
+  // incomeExpenseChipToggle: 'income' | 'expense' = 'expense';
 
 
   newExpenseForm = this.fb.group({
@@ -83,32 +90,42 @@ export class NewExpenseTransactionComponent implements OnInit {
 
   ngOnInit(): void {
     this.today = new Date();
-    this.getAndSetChips();
+    this.expenseVendorChips$.subscribe((chips: Chip[]) => {
+      if (chips) {        
+        this.setExpenseChips('vendor', chips);
+      };
+    });
+    this.expenseCategoryChips$.subscribe((chips: Chip[]) => {
+      if (chips) {
+        this.setExpenseChips('category', chips);
+      };
+    });
   }
+
+  private setExpenseChips(type: 'vendor' | 'category', chips: Chip[]): void {
+    if (type === 'vendor') {
+      this.expenseVendorChips = chips;
+      this.expenseVendorChipStrings = [];
+      chips.forEach((chip: Chip) => {
+        this.expenseVendorChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
+      });
+    };
+    if (type === 'category') {
+      this.expenseVendorChips = chips;
+      this.expenseVendorChipStrings = [];
+      chips.forEach((chip: Chip) => {
+        this.expenseVendorChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
+      });
+    };
+  };
 
   protected handleChipSelect(event: any): void  {
-    console.log('handleChipSelect: ', event);
-    // if (event.kind === 'category') {
-    //   this.newExpenseForm.get('category')?.setValue(event.chip);
-    // } else if (event.kind === 'income') {
-    //   this.newExpenseForm.get('vendor')?.setValue(event.chip);    
-    // }  else if (event.kind === 'vendor') {
-    //   this.newExpenseForm.get('vendor')?.setValue(event.chip);    
-    // }
-    
-  }
-
-  // protected handleIncomeExpenseSelectClick(type: 'income' | 'expense'): void {
-  //   // todo: clear form only if alternative expense type is clicked
-  //   this.clearForm();
-  //   if (type === 'income') {
-  //     this.newExpenseForm.get('category')?.setValue('income');
-  //     this.incomeExpenseChipToggle = 'income';
-  //   } else {
-  //     this.newExpenseForm.get('category')?.setValue('');
-  //     this.incomeExpenseChipToggle = 'expense';
-  //   };
-  // };
+    if (event.kind === 'category') {
+      this.newExpenseForm.get('category')?.setValue(event.chip);
+    } else if (event.kind === 'vendor') {
+      this.newExpenseForm.get('vendor')?.setValue(event.chip);    
+    };
+  };
 
   protected clearForm(): void  {
     this.newExpenseForm.setValue({ 
@@ -119,51 +136,8 @@ export class NewExpenseTransactionComponent implements OnInit {
       note: ''
     });
     this.newExpenseForm.markAsPristine();
-  }
+  };
 
-  private getAndSetChips(): void {
-    // this.chips$.subscribe((chips: Chip[]) => {
-    //   const expenseCategoryChips: Chip[] = [];
-    //   const expenseCategoryChipStrings: string[] = [];
-    //   const incomeChips: Chip[] = [];
-    //   const incomeChipStrings: string[] = [];
-    //   const expenseChips: Chip[] = [];
-    //   const expenseChipStrings: string[] = [];
-    //   const expenseVendorChips: Chip[] = [];
-    //   const expenseVendorChipStrings: string[] = [];
-
-    //   if (chips) {
-    //     chips.forEach((chip: Chip) => {
-    //       if (chip.kind === 'category') {
-    //         expenseCategoryChips.push(chip);
-    //         expenseCategoryChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
-    //       } else if (chip.kind === 'income') {
-    //         incomeChips.push(chip);
-    //         incomeChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
-    //       } else if (chip.kind === 'expense') {
-    //         expenseChips.push(chip);
-    //         expenseChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
-    //       } else if (chip.kind === 'vendor') {
-    //         expenseVendorChips.push(chip);
-    //         expenseVendorChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
-    //       };
-    //     });
-    //   };
-    //   this.expenseCategoryChips = expenseCategoryChips;
-    //   this.expenseCategoryChipStrings = expenseCategoryChipStrings;
-
-    //   this.expenseVendorChips = expenseVendorChips;
-    //   this.expenseVendorChipStrings = expenseVendorChipStrings;
-
-    //   this.incomeChips = incomeChips;
-    //   this.incomeChipStrings = incomeChipStrings;
-
-    //   this.expenseChips = expenseChips;
-    //   this.expenseChipStrings = expenseChipStrings;
-    // },
-    //   (error: any )=> console.log(error)
-    // );
-  }
 
   protected onSubmit(): void  {
     const values: any = this.newExpenseForm.value;
@@ -179,8 +153,7 @@ export class NewExpenseTransactionComponent implements OnInit {
         vendor: values.vendor.toLowerCase(),
         note: values.note.toLowerCase(),
         status: 'active'
-      }
-      console.log(expenseBody);
+      };
       
       this.coreApi.submitNewExpense(expenseBody).pipe(take(1), first())
       .subscribe(

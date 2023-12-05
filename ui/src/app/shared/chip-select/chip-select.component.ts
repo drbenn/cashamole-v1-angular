@@ -29,6 +29,12 @@ export class ChipSelectComponent implements OnInit {
   ) {}
 
     ngOnInit(): void {
+      console.log('chipinit kind: ', this.kind);
+      console.log(this.chipObjects);
+      console.log(this.chipStrings);
+      
+      
+      
       if (this.chipObjects?.length) {
         this.setChips(this.chipObjects);
       };

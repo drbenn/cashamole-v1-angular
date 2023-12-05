@@ -7,6 +7,7 @@ import { AppState } from './store/appState.state';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { UserState } from './store/user/userState.state';
 import { ChartModule } from 'primeng/chart';
+import { ChipState } from './store/chip/chipState.state';
 
 const serverConfig: ApplicationConfig = {
   providers: [
@@ -14,7 +15,7 @@ const serverConfig: ApplicationConfig = {
     provideHttpClient(withFetch()),
     importProvidersFrom(
       NgxsModule.forRoot(
-        [AppState, UserState]
+        [AppState, UserState, ChipState]
       ),
       // devtools always last
       NgxsReduxDevtoolsPluginModule.forRoot()

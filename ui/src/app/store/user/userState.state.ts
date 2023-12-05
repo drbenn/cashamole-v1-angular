@@ -8,6 +8,7 @@ import { UserApiService } from '../../shared/api/user-api.service';
 import { Router } from '@angular/router';
 import { Chip } from '../../model/chips.model';
 import { BalanceSheetEntry, ChipStateStructure } from '../../model/models.model';
+import { ChipActions } from '../chip/chipState.actions';
 
 
 export interface UserStateModel {
@@ -96,52 +97,17 @@ export class UserState implements NgxsOnInit {
   setUserDataOnLogin(
     ctx: StateContext<UserStateModel>,
     action: UserActions.SetUserDataOnLogin
-  ) {    
-
-    console.log(action.payload);
-    const organizedChips: ChipStateStructure = this.organizeChips(action.payload.chips);
-    console.log(organizedChips);
-    
+  ) {       
+    this.store.dispatch(new ChipActions.SetChipsOnLogin(action.payload.chips));
     ctx.patchState({ 
       isInitUserDataLoaded: true,
       loggedInUser: action.payload.basicProfile,
       transactions: action.payload.transactions,
-      balanceSheetEntries: action.payload.balanceSheetEntries,
-      chips: organizedChips
+      balanceSheetEntries: action.payload.balanceSheetEntries
     });
   };
 
-  organizeChips(chips: any): ChipStateStructure {
-    console.log('in sort chips');
-    console.log(chips);
-    const organizedChips: ChipStateStructure = {
-      asset: [],
-      liability: [],
-      expense_category: [],
-      expense_vendor: [],
-      income_source: [] 
-    }
-    chips.forEach((chip: Chip) => {
-      if (chip.kind === 'asset') {
-        organizedChips.asset.push(chip);
-      };
-      if (chip.kind === 'liability') {
-        organizedChips.liability.push(chip);
-      };
-      if (chip.kind === 'category') {
-        organizedChips.expense_category.push(chip);
-      };
-      if (chip.kind === 'vendor') {
-        organizedChips.expense_vendor.push(chip);
-      };
-      if (chip.kind === 'income') {
-        organizedChips.income_source.push(chip);
-      };
-    });
 
-    return organizedChips;
-    
-  }
 
   @Action(UserActions.AddUserTransaction)
   addUserTransaction(
@@ -166,68 +132,14 @@ export class UserState implements NgxsOnInit {
     ctx.patchState({ balanceSheetEntries: updatedBalanceRecords });
   };
 
-  @Action(UserActions.AddUserChip)
-  addUserChip(
-    ctx: StateContext<UserStateModel>,
-    action: UserActions.AddUserChip
-  ) {
-    console.log('state chip payload');
-    console.log(action.payload);
-    const blankChipsObject: ChipStateStructure = {
-      asset: [],
-      liability: [],
-      expense_category: [],
-      expense_vendor: [],
-      income_source: [] 
-    };
-    const chipKind: string = action.payload.kind;
-    console.log(chipKind);
-    
-    let currentChips: ChipStateStructure = ctx.getState().chips;   
-    currentChips === null ? currentChips = blankChipsObject: currentChips = currentChips;
-    const nonRefChips: ChipStateStructure = currentChips;
-    console.log(currentChips.asset);
-    if (chipKind === 'asset') {
-      nonRefChips.asset.push(action.payload);
-    } else if (chipKind === 'liabilty') {
-      nonRefChips.liability.push(action.payload);
-    }
-    // todo: need to add other if options
-    ctx.patchState({ chips: nonRefChips });
-  };
 
-  @Action(UserActions.RemoveUserChip)
-  removeUserChip(
-    ctx: StateContext<UserStateModel>,
-    action: UserActions.RemoveUserChip
-  ) {
-    console.log('remove paylo0ad');
-    console.log(action.payload);
-    
-    
-      let currentChips: ChipStateStructure = ctx.getState().chips;
-      // if (chipKind === 'asset') {
-      //   nonRefChips.asset.push(action.payload);
-      // } else if (chipKind === 'liabilty') {
-      //   nonRefChips.liability.push(action.payload);
-      // }
-      // todo: need to add other if options
-    //   const updatedChips: Chip[] = stateChips.filter((chip: Chip) => {
-    //   const stateChipJoin: string = chip.chip + chip.kind;
-    //   const removeChipJoin: string = action.payload.chip + action.payload.kind;
-    //   if (removeChipJoin !== stateChipJoin) {
-    //     return true;
-    //   } else {
-    //     return false;
-    //   }
-    // });
-    // ctx.patchState({ chips: updatedChips });
-  };
+
 
   @Action(UserActions.ClearUserStateOnLogout)
   clearUserStateOnLogout(
     ctx: StateContext<UserStateModel>
   ) {
+    this.store.dispatch(new ChipActions.ClearChipStateOnLogout());
     ctx.patchState({     
       isInitUserDataLoaded: false,
       loggedInUser: {} as User,

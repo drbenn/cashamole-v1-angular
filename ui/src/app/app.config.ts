@@ -11,6 +11,7 @@ import { UserState } from './store/user/userState.state';
 import { CookieService } from 'ngx-cookie-service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChartModule } from 'primeng/chart';
+import { ChipState } from './store/chip/chipState.state';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,7 +20,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     importProvidersFrom(
       NgxsModule.forRoot(
-        [AppState, UserState]
+        [AppState, UserState, ChipState]
       ),
       // devtools always last
       NgxsReduxDevtoolsPluginModule.forRoot(),

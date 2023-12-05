@@ -33,7 +33,7 @@ export class ChipService {
             };
         } else {
             return 'insert error';
-        }
+        };
     };
 
     async checkForExistingChip(kind: string, chip: string, userId: number): Promise<boolean> {
@@ -45,7 +45,7 @@ export class ChipService {
             return true;
         } else {
             return false;
-        }
+        };
     };
     
 
@@ -56,8 +56,6 @@ export class ChipService {
         const sqlQuery: string = `DELETE FROM user${userId}_chips WHERE chip = '${chipDto.chip}' AND kind = '${chipDto.kind}';`
         const deletedChip = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], deletedChip[0]);
-        console.log(results);
-        
         if (results.serverStatus === 34) {
             return 'delete successful';
         } else {
