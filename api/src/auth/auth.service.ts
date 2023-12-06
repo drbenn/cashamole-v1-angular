@@ -3,6 +3,8 @@ import { Connection } from 'mysql2';
 import { InjectClient } from 'nest-mysql';
 import { InsertUser, LoginUserDto, RegisterUserDto, UserBalanceSheetEntry, UserBasicProfile, UserChip, UserExist, UserLoginData, UserTransaction } from './auth-dto/auth-dto';
 import * as bcrypt from 'bcrypt';
+import { IncomeDto } from 'src/income/income-dto/income-dto';
+import { ExpenseDto } from 'src/expense/expense-dto/expense-dto';
 
 @Injectable()
 export class AuthService {
@@ -71,7 +73,7 @@ export class AuthService {
 
     async generateUserIncomeTable(userId: number) {
         const sqlQuery: string = `
-            CREATE TABLE IF NOT EXISTS user${userId}_expenses (
+            CREATE TABLE IF NOT EXISTS user${userId}_income (
             inc_id INT PRIMARY KEY AUTO_INCREMENT,
             date VARCHAR(250) NOT NULL,
             amount DECIMAL(10,2) NOT NULL,
@@ -85,7 +87,7 @@ export class AuthService {
 
     async generateUserExpenseTable(userId: number) {
         const sqlQuery: string = `
-            CREATE TABLE IF NOT EXISTS user${userId}_income (
+            CREATE TABLE IF NOT EXISTS user${userId}_expenses (
             exp_id INT PRIMARY KEY AUTO_INCREMENT,
             date VARCHAR(250) NOT NULL,
             amount DECIMAL(10,2) NOT NULL,
@@ -98,21 +100,6 @@ export class AuthService {
         // const results = Object.assign([{}], queryDb[0]);
     }
 
-    // async generateUserTransactionsTable(userId: number) {
-    //     const sqlQuery: string = `
-    //         CREATE TABLE IF NOT EXISTS user${userId}_transactions (
-    //         trans_id INT PRIMARY KEY AUTO_INCREMENT,
-    //         type VARCHAR(20) NOT NULL,
-    //         date VARCHAR(250) NOT NULL,
-    //         amount DECIMAL(10,2) NOT NULL,
-    //         category VARCHAR(250) NOT NULL,
-    //         vendor VARCHAR(100) NOT NULL,
-    //         note VARCHAR(100),
-    //         status VARCHAR(25) NOT NULL
-    //     )`;
-    //     const queryDb = await this.connection.query(sqlQuery);
-    //     // const results = Object.assign([{}], queryDb[0]);
-    // }
 
     async generateUserBalanceSheetTable(userId: number) {
         const sqlQuery: string = `
@@ -190,13 +177,18 @@ export class AuthService {
 
     async getUserDataOnSuccessfulValidation(userId: number): Promise<UserLoginData> {
         const userBasicProfile: UserBasicProfile = await this.getUserBasicProfile(userId);
-        const userTransactions: UserTransaction[] = await this.getUserTransactions(userBasicProfile.id);
+        const userIncome: IncomeDto[] = await this.getUserIncome(userBasicProfile.id);
+        const userExpenses: ExpenseDto[] = await this.getUserExpenses(userBasicProfile.id);
         const userBalanceSheetEntries: UserBalanceSheetEntry[] = await this.getUserBalanceSheetEntries(userBasicProfile.id);
         const userChips: UserChip[] = await this.getUserChips(userBasicProfile.id);
 
         // mysql float values are stored strings and must therefore be transformed to numbers after retrieved for application use
-        if (userTransactions) {
-            userTransactions.map((transaction: UserTransaction) => transaction.amount = Number(transaction.amount));
+ 
+        if (userIncome) {
+            userIncome.map((income: IncomeDto) => income.amount = Number(income.amount));
+        };
+        if (userExpenses) {
+            userExpenses.map((expense: ExpenseDto) => expense.amount = Number(expense.amount));
         };
         if (userBalanceSheetEntries) {
             userBalanceSheetEntries.map((entry: UserBalanceSheetEntry) => entry.amount = Number(entry.amount));
@@ -204,7 +196,8 @@ export class AuthService {
 
         const userLoginData: UserLoginData = {
             basicProfile: userBasicProfile,
-            transactions: userTransactions,
+            income: userIncome,
+            expenses: userExpenses,
             balanceSheetEntries: userBalanceSheetEntries,
             chips: userChips
         };
@@ -218,10 +211,17 @@ export class AuthService {
         return results[0];
     };
 
-    async getUserTransactions(userId: number): Promise<UserTransaction[]> {
-        const sqlQuery: string = `SELECT * FROM user${userId}_transactions`;
-        const userTransactions = await this.connection.query(sqlQuery);
-        const results = Object.assign([{}], userTransactions[0]);
+    async getUserIncome(userId: number): Promise<IncomeDto[]> {
+        const sqlQuery: string = `SELECT * FROM user${userId}_income`;
+        const userIncome = await this.connection.query(sqlQuery);
+        const results = Object.assign([{}], userIncome[0]);
+        return this.checkForReturnValues(results);
+    };
+
+    async getUserExpenses(userId: number): Promise<ExpenseDto[]> {
+        const sqlQuery: string = `SELECT * FROM user${userId}_expenses`;
+        const userExpenses = await this.connection.query(sqlQuery);
+        const results = Object.assign([{}], userExpenses[0]);
         return this.checkForReturnValues(results);
     };
 

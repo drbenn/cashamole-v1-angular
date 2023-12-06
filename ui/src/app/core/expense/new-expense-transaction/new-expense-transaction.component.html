@@ -6,54 +6,40 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
     <h2 class="m-4 text-gray-800 text-start">New Expense</h2>
         <form action="" [formGroup]="newExpenseForm" (ngSubmit)="onSubmit()">
 
+            <div class="m-4 w-20rem">
+                <app-chip-select [chipStrings]="expenseCategoryChipStrings" [chipObjects]="expenseCategoryChips" kind="category" (selectedChip)="handleChipSelect($event)"
+                ></app-chip-select>
+            </div>
+
+            <div class="m-4">
+                <span class="p-float-label">
+                    <input 
+                        pInputText
+                        id="category"
+                        formControlName="category"
+                        [style]="{'width':'20rem'}"
+                    />
+                <label htmlFor="category">Category</label>
+                </span>
+            </div>
 
             <div class="m-4 w-20rem">
-                <app-chip-select kind="vendor" (selectedChip)="handleChipSelect($event)"></app-chip-select>
-                    <app-chip-select [chips]="incomeChipStrings" [chipObjects]="incomeChips" kind="income" (selectedChip)="handleChipSelect($event)"></app-chip-select>
+                    <app-chip-select [chipStrings]="expenseVendorChipStrings" [chipObjects]="expenseVendorChips" kind="vendor" (selectedChip)="handleChipSelect($event)"
+                    ></app-chip-select>
             </div>
 
 
             <div class="m-4">
-                <!-- @if (incomeExpenseChipToggle === 'expense') { -->
-                    <span class="p-float-label">
-                        <input 
-                            pInputText
-                            id="vendor"
-                            formControlName="vendor"
-                            [style]="{'width':'20rem'}"
-                        />
-                    <label htmlFor="vendor">Vendor</label>
-                    </span>
-                <!-- }
-                @if (incomeExpenseChipToggle === 'income') {
-                    <span class="p-float-label">
-                        <input 
-                            pInputText
-                            id="vendor"
-                            formControlName="vendor"
-                            [style]="{'width':'20rem'}"
-                        />
-                    <label htmlFor="vendor">Payee</label>
-                    </span>
-                } -->
+                <span class="p-float-label">
+                    <input 
+                        pInputText
+                        id="vendor"
+                        formControlName="vendor"
+                        [style]="{'width':'20rem'}"
+                    />
+                <label htmlFor="vendor">Vendor</label>
+                </span>
             </div>
-            <!-- @if (incomeExpenseChipToggle === 'expense') { -->
-                <div class="m-4 w-20rem">
-                    <app-chip-select kind="category" (selectedChip)="handleChipSelect($event)"></app-chip-select>
-                </div>
-
-                <div class="m-4">
-                    <span class="p-float-label">
-                        <input 
-                            pInputText
-                            id="category"
-                            formControlName="category"
-                            [style]="{'width':'20rem'}"
-                        />
-                    <label htmlFor="category">Category</label>
-                    </span>
-                </div>
-            <!-- } -->
 
             <div class="m-4">
                 <span class="p-float-label">
@@ -67,7 +53,7 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
                     <label htmlFor="date">Date</label>
                 </span>
             </div>
-        
+    
             <div class="m-4">
                 <span class="p-float-label">
                     <input 
@@ -79,7 +65,7 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
                 <label htmlFor="note">Note</label>
                 </span>
             </div>
-        
+            
             <div class="m-4">
                 <span class="p-float-label">
                     <p-inputNumber 

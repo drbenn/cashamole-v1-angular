@@ -16,9 +16,7 @@ export class IncomeTableComponent implements OnInit {
   @Input() tableData!: TransactionBody[];
 
   ngOnInit(): void {
-    console.log('INCOME trans table');
-    console.log(this.tableTitle);
-    console.log(this.tableData);
+
     
     
     

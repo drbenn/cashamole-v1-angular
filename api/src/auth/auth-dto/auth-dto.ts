@@ -1,3 +1,6 @@
+import { ExpenseDto } from "src/expense/expense-dto/expense-dto";
+import { IncomeDto } from "src/income/income-dto/income-dto";
+
 export class RegisterUserDto {
     email: string;
     username: string;
@@ -58,7 +61,9 @@ export class UserChip {
 
 export class UserLoginData {
     basicProfile: UserBasicProfile;
-    transactions: UserTransaction[] | null;
+    // transactions: UserTransaction[] | null;
+    income: IncomeDto[];
+    expenses: ExpenseDto[];
     balanceSheetEntries: UserBalanceSheetEntry[] | null;
     chips: UserChip[] | null;
 }

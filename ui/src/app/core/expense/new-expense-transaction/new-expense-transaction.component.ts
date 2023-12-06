@@ -52,27 +52,8 @@ export class NewExpenseTransactionComponent implements OnInit {
   expenseVendorChipStrings: string[] = [];
   expenseCategoryChips: Chip[] = [];
   expenseCategoryChipStrings: string[] = [];
-  // protected transactionTypes: TransactionType[] = [{ type: 'expense'}, { type: "income"}];
-  // protected selectedTransactionType: TransactionType = this.transactionTypes[0];
-
-  // protected transactionCategories: TranactionCategory[] = [{ category: 'discretionary'}, { category: "recurring"}];
-  // protected selectedTransactionCategory: TranactionCategory = this.transactionCategories[0];
 
   protected today: Date = new Date();
-
-  // chips$: Observable<any> = this.store.select((state) => state.user.chips);
-  // expenseCategoryChips: Chip[] = [];
-  // expenseCategoryChipStrings: string[] = [];
-  // expenseVendorChips: Chip[] = [];
-  // expenseVendorChipStrings: string[] = [];
-  // vendorChips: Chip[] = [];
-  // vendorChipStrings: string[] = [];
-  // incomeChips: Chip[] = [];
-  // incomeChipStrings: string[] = [];
-  // expenseChips: Chip[] = [];
-  // expenseChipStrings: string[] = [];
-  // incomeExpenseChipToggle: 'income' | 'expense' = 'expense';
-
 
   newExpenseForm = this.fb.group({
     date: [ this.today, [Validators.required]],
@@ -91,12 +72,15 @@ export class NewExpenseTransactionComponent implements OnInit {
   ngOnInit(): void {
     this.today = new Date();
     this.expenseVendorChips$.subscribe((chips: Chip[]) => {
-      if (chips) {        
+      if (chips) {
+        console.log(chips);
+        
         this.setExpenseChips('vendor', chips);
       };
     });
     this.expenseCategoryChips$.subscribe((chips: Chip[]) => {
       if (chips) {
+        console.log(chips);
         this.setExpenseChips('category', chips);
       };
     });
@@ -111,12 +95,14 @@ export class NewExpenseTransactionComponent implements OnInit {
       });
     };
     if (type === 'category') {
-      this.expenseVendorChips = chips;
-      this.expenseVendorChipStrings = [];
+      this.expenseCategoryChips = chips;
+      this.expenseCategoryChipStrings = [];
+      console.log(chips);
+      
       chips.forEach((chip: Chip) => {
-        this.expenseVendorChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
+        this.expenseCategoryChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
       });
-    };
+    };    
   };
 
   protected handleChipSelect(event: any): void  {

@@ -33,14 +33,12 @@ export class ChipSelectComponent implements OnInit {
       console.log(this.chipObjects);
       console.log(this.chipStrings);
       
-      
-      
       if (this.chipObjects?.length) {
         this.setChips(this.chipObjects);
       };
     };
 
-  private setChips(chips: Chip[]) {
+  private setChips(chips: Chip[]): void {
     this.chipObjects = chips;
     this.chipStrings = [];
     chips.forEach((chip: Chip) => {
@@ -56,9 +54,7 @@ export class ChipSelectComponent implements OnInit {
   protected onChipRemove(event: ChipsRemoveEvent): void {
     const removeChip: any = event.value.toLowerCase();
     let fullChip: Chip | undefined;
-    console.log('on remove chip');
-    
-    
+
     if (this.chipObjects) {
       fullChip = this.chipObjects.find((item: Chip) => item.chip === removeChip && item.kind === this.kind.toLowerCase());
     };
@@ -73,7 +69,6 @@ export class ChipSelectComponent implements OnInit {
           next: (value: any) => {
             console.log(value);
             // Updates state with new chip / no need for full data pull on db upon each update
-            // const removeChipIndex: number | undefined = this.chips?.findIndex((chip:string) => chip.toLowerCase() !== value.data.toLowerCase());
             if (fullChip !== undefined) {
               this.store.dispatch(new UserActions.RemoveUserChip(fullChip));
             };
@@ -86,14 +81,10 @@ export class ChipSelectComponent implements OnInit {
   protected onChipAdd(event: ChipsAddEvent): void {
     const chipToAdd: string = event.value.toLowerCase();
     const fullChip: Chip = this.creatFullChipObjectForSubmit(chipToAdd, 'active');
-    console.log('ON CHIP ADD');
-    
     this.coreApi.submitNewChip(fullChip).pipe(take(1), first())
     .subscribe(
       {
         next: (value: any) => {
-          console.log('to dispatch');
-          
           this.store.dispatch(new UserActions.AddUserChip(JSON.parse(value.data)));
         },
         error: (error: any) => {
@@ -109,19 +100,20 @@ export class ChipSelectComponent implements OnInit {
     };
   };
 
-  protected titleGenerator(type: string): string {
-    if (type === 'expense_category') {
-      return 'Category';
-    } else if (type === 'expense_vendor') {
-      return 'Vendor';
-    } else if (type === 'asset') {
-      return 'Asset';
-    } else if (type === 'liability') {
-      return 'Liaiblity';
-    } else if (type === 'income_source') {
-      return 'Income Source'
-    } else {
-      return '[ERROR]';
+  protected titleGenerator(kind: string): string {
+    switch (kind) {
+      case 'category': 
+        return 'Expense Category';
+      case 'vendor': 
+        return 'Vendor';
+      case 'income_source': 
+        return 'Income Source';
+      case 'asset':
+        return 'Asset Account';
+      case 'liability': 
+        return 'Liaibility Account';
+      default:
+        return 'error';
     };
   };
 
