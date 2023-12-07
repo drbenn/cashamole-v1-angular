@@ -4,7 +4,6 @@ import { UserLoginComponent } from './auth/user-login/user-login.component';
 import { UserResetPasswordComponent } from './auth/user-reset-password/user-reset-password.component';
 import { DonateComponent } from './shared/donate/donate.component';
 import { HowToComponent } from './shared/how-to/how-to.component';
-import { NewTransactionComponent } from './core/transactions/new-transaction/new-transaction.component';
 import { HomeComponent } from './core/home/home.component';
 import { SplashComponent } from './shared/splash/splash.component'
 import { BalanceSheetComponent } from './core/balance-sheet/balance-sheet.component';
@@ -17,7 +16,6 @@ export const routes: Routes = [
     { path: '', component: UserRegisterComponent },
     { path: 'home', component: HomeComponent },
     { path: 'balance-sheeet', component: BalanceSheetComponent },
-    { path: 'new-transaction', component: NewTransactionComponent },
     { path: 'income', component: IncomeComponent },
     { path: 'expense', component: ExpenseComponent },
     { path: 'login', component: UserLoginComponent },

@@ -19,8 +19,6 @@ export class IncomeController {
             console.log('throw error');
             // todo: throw error
         }  else {
-            console.log('in income controller');
-            
             const userId: number = req.cookies.cashamole_uid;    
             const newIncome: IncomeDto | 'insert error' | 'undefined userid' = await this.incomeService.postNewIncome(incomeDto, userId);
             
