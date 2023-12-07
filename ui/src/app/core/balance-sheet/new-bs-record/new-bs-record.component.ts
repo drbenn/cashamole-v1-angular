@@ -14,8 +14,8 @@ import { ChipSelectComponent } from '../../../shared/chip-select/chip-select.com
 import { Chip } from '../../../model/chips.model';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { BalanceSheetEntry } from '../../../model/models.model';
-import { UserState } from '../../../store/user/userState.state';
 import { ChipState } from '../../../store/chip/chipState.state';
+import { BalancSheetActions } from '../../../store/balanceSheet/bsState.actions';
 
 
 export interface BalanceSheetType {
@@ -79,7 +79,7 @@ export class NewBsRecordComponent implements OnInit {
     });
   };
 
-  private setBsChips(type: 'asset' | 'liability', chips: Chip[]) {
+  private setBsChips(type: 'asset' | 'liability', chips: Chip[]): void {
     if (type === 'asset') {
       this.assetChips = chips;
       this.assetChipStrings = [];
@@ -141,7 +141,7 @@ export class NewBsRecordComponent implements OnInit {
         {
           next: (value: any) => {
             // Updates state with new transaction / no need for full data pull on db upon each update
-            this.store.dispatch(new UserActions.AddUserBalanceRecord(JSON.parse(value.data)));
+            this.store.dispatch(new BalancSheetActions.AddUserBalanceRecord(JSON.parse(value.data)));
           },
           error: (error: any) => {
             console.error(error);

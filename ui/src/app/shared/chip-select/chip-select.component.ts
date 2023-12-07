@@ -1,12 +1,12 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChipsAddEvent, ChipsClickEvent, ChipsModule, ChipsRemoveEvent } from 'primeng/chips';
 import { FormsModule } from '@angular/forms';
 import { CoreApiService } from '../api/core-api.service';
 import { Chip } from '../../model/chips.model';
-import { Observable, first, take } from 'rxjs';
 import { Store } from '@ngxs/store';
-import { UserActions } from '../../store/user/userState.actions';
+import { ChipActions } from '../../store/chip/chipState.actions';
+import { first, take } from 'rxjs';
 
 @Component({
   selector: 'app-chip-select',
@@ -29,10 +29,6 @@ export class ChipSelectComponent implements OnInit {
   ) {}
 
     ngOnInit(): void {
-      console.log('chipinit kind: ', this.kind);
-      console.log(this.chipObjects);
-      console.log(this.chipStrings);
-      
       if (this.chipObjects?.length) {
         this.setChips(this.chipObjects);
       };
@@ -67,10 +63,9 @@ export class ChipSelectComponent implements OnInit {
       .subscribe(
         {
           next: (value: any) => {
-            console.log(value);
             // Updates state with new chip / no need for full data pull on db upon each update
             if (fullChip !== undefined) {
-              this.store.dispatch(new UserActions.RemoveUserChip(fullChip));
+              this.store.dispatch(new ChipActions.RemoveUserChip(fullChip));
             };
           },
           error: (error: any) => {
@@ -85,7 +80,7 @@ export class ChipSelectComponent implements OnInit {
     .subscribe(
       {
         next: (value: any) => {
-          this.store.dispatch(new UserActions.AddUserChip(JSON.parse(value.data)));
+          this.store.dispatch(new ChipActions.AddUserChip(JSON.parse(value.data)));
         },
         error: (error: any) => {
           console.error(error)

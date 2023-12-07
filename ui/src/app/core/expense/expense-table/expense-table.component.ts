@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TransactionBody } from '../../../model/transaction.model';
 import { TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
+import { Expense } from '../../../model/models.model';
 
 @Component({
   selector: 'app-expense-table',
@@ -13,14 +14,9 @@ import { CardModule } from 'primeng/card';
 })
 export class ExpenseTableComponent implements OnInit {
   @Input() tableTitle!: string;
-  @Input() tableData!: TransactionBody[];
+  @Input() tableData!: Expense[];
 
   ngOnInit(): void {
-    console.log('trans table');
-    console.log(this.tableTitle);
-    console.log(this.tableData);
-    
-    
     
   }
 

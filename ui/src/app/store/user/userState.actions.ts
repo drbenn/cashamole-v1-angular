@@ -15,25 +15,25 @@ export namespace UserActions {
     constructor(public payload: UserLoginData) {}
   }
 
-  export class AddUserTransaction {
-    static readonly type =  '[Transaction] Add user transaction';
-    constructor(public payload: TransactionBody) {}
-  }
+  // export class AddUserTransaction {
+  //   static readonly type =  '[Transaction] Add user transaction';
+  //   constructor(public payload: TransactionBody) {}
+  // }
 
-  export class AddUserBalanceRecord {
-    static readonly type =  '[Balance Record] Add user balance record';
-    constructor(public payload: BalanceSheetEntry) {}
-  }
+  // export class AddUserBalanceRecord {
+  //   static readonly type =  '[Balance Record] Add user balance record';
+  //   constructor(public payload: BalanceSheetEntry) {}
+  // }
 
-  export class AddUserChip {
-    static readonly type =  '[Chip] Add user chip';
-    constructor(public payload: Chip) {}
-  }
+  // export class AddUserChip {
+  //   static readonly type =  '[Chip] Add user chip';
+  //   constructor(public payload: Chip) {}
+  // }
 
-  export class RemoveUserChip {
-    static readonly type =  '[Chip] Remove user chip';
-    constructor(public payload: Chip) {}
-  }
+  // export class RemoveUserChip {
+  //   static readonly type =  '[Chip] Remove user chip';
+  //   constructor(public payload: Chip) {}
+  // }
 
   export class ClearUserStateOnLogout {
     static readonly type =  '[User] Clear user state data on logout';

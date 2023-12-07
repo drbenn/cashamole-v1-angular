@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TransactionBody } from '../../../model/transaction.model';
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
+import { Income } from '../../../model/models.model';
 
 @Component({
   selector: 'app-income-table',
@@ -13,7 +14,7 @@ import { TableModule } from 'primeng/table';
 })
 export class IncomeTableComponent implements OnInit {
   @Input() tableTitle!: string;
-  @Input() tableData!: TransactionBody[];
+  @Input() tableData!: Income[];
 
   ngOnInit(): void {
 

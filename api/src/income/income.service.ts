@@ -12,6 +12,7 @@ export class IncomeService {
         ) {}
 
     async postNewIncome(incomeDto: IncomeDto, userId: number): Promise<IncomeDto | 'insert error' | 'undefined userid' > {
+        console.log('in post income');
         
         if (!userId) {
             return 'undefined userid';

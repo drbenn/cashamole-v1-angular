@@ -15,6 +15,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { Income } from '../../../model/models.model';
 import { ChipState } from '../../../store/chip/chipState.state';
 import { ChipSelectComponent } from '../../../shared/chip-select/chip-select.component';
+import { IncomeActions } from '../../../store/income/income.actions';
 
 
 @Component({
@@ -107,7 +108,7 @@ export class NewIncomeTransactionComponent implements OnInit {
             console.log(value);
             
             // Updates state with new transaction / no need for full data pull on db upon each update
-            this.store.dispatch(new UserActions.AddUserTransaction(JSON.parse(value.data)));
+            this.store.dispatch(new IncomeActions.AddIncome(JSON.parse(value.data)));
           },
           error: (error: any) => {
             console.error(error)

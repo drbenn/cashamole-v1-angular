@@ -27,36 +27,37 @@ export interface ChipStateModel {
 )
 @Injectable()
 export class ChipState {
+  
   constructor(
     private store: Store,
     private router: Router
-    ) {}
+  ) {}
 
 
   @Selector() 
   static assetChips(state: ChipStateModel): Chip[] {
     return state.asset;
-  }
+  };
 
   @Selector() 
   static liabilityChips(state: ChipStateModel): Chip[] {
     return state.liability;
-  }
+  };
 
   @Selector() 
   static incomeSourceChips(state: ChipStateModel): Chip[] {
     return state.income_source;
-  }
+  };
 
   @Selector() 
   static expenseCategoryChips(state: ChipStateModel): Chip[] {
     return state.expense_category;
-  }
+  };
 
   @Selector() 
   static expenseVendorChips(state: ChipStateModel): Chip[] {
     return state.expense_vendor;
-  }
+  };
 
 
   @Action(ChipActions.SetChipsOnLogin)
@@ -64,8 +65,6 @@ export class ChipState {
     ctx: StateContext<ChipStateModel>,
     action: ChipActions.SetChipsOnLogin
   ) {
-    console.log(action.payload);
-    
     const organizedChips: ChipStateStructure = this.organizeChips(action.payload);
     ctx.patchState({ 
       asset: organizedChips.asset,
@@ -74,7 +73,7 @@ export class ChipState {
       expense_vendor: organizedChips.expense_vendor,
       income_source: organizedChips.income_source
     });
-  }
+  };
 
 
   @Action(ChipActions.AddUserChip)
@@ -167,13 +166,13 @@ export class ChipState {
       if (chip.kind === 'liability') {
         organizedChips.liability.push(chip);
       };
-      if (chip.kind === 'category') {
+      if (chip.kind === 'expense_category') {
         organizedChips.expense_category.push(chip);
       };
-      if (chip.kind === 'vendor') {
+      if (chip.kind === 'expense_vendor') {
         organizedChips.expense_vendor.push(chip);
       };
-      if (chip.kind === 'income') {
+      if (chip.kind === 'income_source') {
         organizedChips.income_source.push(chip);
       };
     });

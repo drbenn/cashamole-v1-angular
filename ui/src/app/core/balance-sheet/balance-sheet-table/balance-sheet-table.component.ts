@@ -15,7 +15,7 @@ import { BalanceSheetEntry } from '../../../model/models.model';
   styleUrl: './balance-sheet-table.component.scss'
 })
 export class BalanceSheetTableComponent implements OnInit {
-  balanceSheetData$: Observable<BalanceSheetEntry[]> = this.store.select((state) => state.user.balanceSheetEntries);
+  balanceSheetData$: Observable<BalanceSheetEntry[]> = this.store.select((state) => state.balanceSheet.entries);
 // ableData!: { assets: BalanceSheetEntry[], liabilities: BalanceSheetEntry[] };
   balanceSheet: { assets: BalanceSheetEntry[], liabilities: BalanceSheetEntry[] } = {
     assets: [],

@@ -4,7 +4,6 @@ import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import { CoreApiService } from '../../../shared/api/core-api.service';
 
 import { Observable, first, take } from 'rxjs';
-import { UserActions } from '../../../store/user/userState.actions';
 import { Select, Store } from '@ngxs/store';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
@@ -16,6 +15,7 @@ import { Chip } from '../../../model/chips.model';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { Expense } from '../../../model/models.model';
 import { ChipState } from '../../../store/chip/chipState.state';
+import { ExpenseActions } from '../../../store/expense/expese.actions';
 
 export interface TranactionCategory {
   category: string
@@ -73,14 +73,11 @@ export class NewExpenseTransactionComponent implements OnInit {
     this.today = new Date();
     this.expenseVendorChips$.subscribe((chips: Chip[]) => {
       if (chips) {
-        console.log(chips);
-        
         this.setExpenseChips('vendor', chips);
       };
     });
     this.expenseCategoryChips$.subscribe((chips: Chip[]) => {
       if (chips) {
-        console.log(chips);
         this.setExpenseChips('category', chips);
       };
     });
@@ -97,7 +94,6 @@ export class NewExpenseTransactionComponent implements OnInit {
     if (type === 'category') {
       this.expenseCategoryChips = chips;
       this.expenseCategoryChipStrings = [];
-      console.log(chips);
       
       chips.forEach((chip: Chip) => {
         this.expenseCategoryChipStrings.push(chip.chip.charAt(0).toUpperCase() + chip.chip.slice(1));
@@ -148,7 +144,7 @@ export class NewExpenseTransactionComponent implements OnInit {
             console.log(value);
             
             // Updates state with new transaction / no need for full data pull on db upon each update
-            this.store.dispatch(new UserActions.AddUserTransaction(JSON.parse(value.data)));
+            this.store.dispatch(new ExpenseActions.AddExpense(JSON.parse(value.data)));
           },
           error: (error: any) => {
             console.error(error)
