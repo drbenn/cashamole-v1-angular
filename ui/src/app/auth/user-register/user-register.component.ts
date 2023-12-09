@@ -17,7 +17,7 @@ import { ButtonModule } from 'primeng/button';
   styleUrl: './user-register.component.scss'
 })
 export class UserRegisterComponent {
-  registerForm = this.fb.group({
+  protected registerForm = this.fb.group({
     email: ['', [Validators.required, Validators.email, Validators.minLength(3), Validators.maxLength(75)]],
     username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(75)]],
     password: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(75)]]

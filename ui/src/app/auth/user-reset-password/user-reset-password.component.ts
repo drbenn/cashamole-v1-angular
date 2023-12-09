@@ -14,7 +14,7 @@ import { first, take } from 'rxjs';
   styleUrl: './user-reset-password.component.scss'
 })
 export class UserResetPasswordComponent {
-  passwordResetForm = this.fb.group({
+  protected passwordResetForm = this.fb.group({
     email: ['', [Validators.required, Validators.email, Validators.minLength(3), Validators.maxLength(75)]]
   })
 

@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CoreApiService } from '../../../shared/api/core-api.service';
 import { Observable, first, take } from 'rxjs';
-import { UserActions } from '../../../store/user/userState.actions';
 import { Select, Store } from '@ngxs/store';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
@@ -12,10 +11,10 @@ import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { Chip } from '../../../model/chips.model';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { Income } from '../../../model/models.model';
 import { ChipState } from '../../../store/chip/chipState.state';
 import { ChipSelectComponent } from '../../../shared/chip-select/chip-select.component';
 import { IncomeActions } from '../../../store/income/income.actions';
+import { Income } from '../../../model/core.model';
 
 
 @Component({
@@ -38,16 +37,16 @@ import { IncomeActions } from '../../../store/income/income.actions';
 })
 export class NewIncomeTransactionComponent implements OnInit {
   @Select(ChipState.incomeSourceChips) incomeSourceChips$!: Observable<Chip[]>;
-  incomeSourceChips: Chip[] = [];
-  incomeSourceChipStrings: string[] = [];
+  protected incomeSourceChips: Chip[] = [];
+  protected incomeSourceChipStrings: string[] = [];
   protected today: Date = new Date();
 
-  newIncomeForm = this.fb.group({
+  protected newIncomeForm = this.fb.group({
     date: [ this.today, [Validators.required]],
     amount: [null as unknown as number, [Validators.required, Validators.min(-10000000), Validators.max(10000000)]],
     source: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(75)]],
     note: ['', [Validators.maxLength(100)]]
-  })
+  });
 
   constructor (
     private fb: FormBuilder,
@@ -62,7 +61,7 @@ export class NewIncomeTransactionComponent implements OnInit {
         this.setIncomeChips(chips);
       };
     });
-  }
+  };
 
   private setIncomeChips(chips: Chip[]): void {
     this.incomeSourceChips = chips;
@@ -116,5 +115,5 @@ export class NewIncomeTransactionComponent implements OnInit {
         }
       )
     }
-  }
+  };
 }

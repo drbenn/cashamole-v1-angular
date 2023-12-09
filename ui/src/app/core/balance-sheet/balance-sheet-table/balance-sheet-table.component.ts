@@ -1,11 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
-
 import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
-import { BalanceSheetEntry } from '../../../model/models.model';
+import { BalanceSheetEntry } from '../../../model/core.model';
+
 
 @Component({
   selector: 'app-balance-sheet-table',
@@ -15,17 +15,16 @@ import { BalanceSheetEntry } from '../../../model/models.model';
   styleUrl: './balance-sheet-table.component.scss'
 })
 export class BalanceSheetTableComponent implements OnInit {
-  balanceSheetData$: Observable<BalanceSheetEntry[]> = this.store.select((state) => state.balanceSheet.entries);
-// ableData!: { assets: BalanceSheetEntry[], liabilities: BalanceSheetEntry[] };
-  balanceSheet: { assets: BalanceSheetEntry[], liabilities: BalanceSheetEntry[] } = {
+  protected balanceSheetData$: Observable<BalanceSheetEntry[]> = this.store.select((state) => state.balanceSheet.entries);
+  protected balanceSheet: { assets: BalanceSheetEntry[], liabilities: BalanceSheetEntry[] } = {
     assets: [],
     liabilities: []
-  }
-
+  };
 
   constructor(
     private store: Store
   ) {}
+
   ngOnInit(): void {
     this.balanceSheetData$.subscribe((data: BalanceSheetEntry[]) => {
       if (data) {

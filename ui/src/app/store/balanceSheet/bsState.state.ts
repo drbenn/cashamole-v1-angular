@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Action, State, StateContext, Store } from '@ngxs/store';
 import { Router } from '@angular/router';
-import { BalanceSheetEntry } from '../../model/models.model';
 import { BalancSheetActions } from './bsState.actions';
+import { BalanceSheetEntry } from '../../model/core.model';
 
 
 export interface BalanceSheetStateModel {

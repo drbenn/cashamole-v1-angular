@@ -12,7 +12,6 @@ import { ExpenseComponent } from './core/expense/expense.component';
 
 
 export const routes: Routes = [
-    // { path: '', component: HomeComponent },
     { path: '', component: UserRegisterComponent },
     { path: 'home', component: HomeComponent },
     { path: 'balance-sheeet', component: BalanceSheetComponent },

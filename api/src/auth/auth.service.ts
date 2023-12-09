@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Connection } from 'mysql2';
 import { InjectClient } from 'nest-mysql';
-import { InsertUser, LoginUserDto, RegisterUserDto, UserBalanceSheetEntry, UserBasicProfile, UserChip, UserExist, UserLoginData, UserTransaction } from './auth-dto/auth-dto';
+import { InsertUser, LoginUserDto, RegisterUserDto, UserBasicProfile, UserExist, UserLoginData } from './auth-dto/auth-dto';
 import * as bcrypt from 'bcrypt';
 import { IncomeDto } from 'src/income/income-dto/income-dto';
 import { ExpenseDto } from 'src/expense/expense-dto/expense-dto';
+import { BalanceRecordDto } from 'src/balance_sheet/balance_sheet-dto/balance_sheet-dto';
+import { ChipDto } from 'src/chip/chip-dto/chip-dto';
 
 @Injectable()
 export class AuthService {
@@ -64,7 +66,6 @@ export class AuthService {
     }
 
     async generateDbTablesForNewUser(userId: number) {
-        // this.generateUserTransactionsTable(userId);
         this.generateUserExpenseTable(userId);
         this.generateUserIncomeTable(userId);
         this.generateUserBalanceSheetTable(userId);
@@ -179,8 +180,8 @@ export class AuthService {
         const userBasicProfile: UserBasicProfile = await this.getUserBasicProfile(userId);
         const userIncome: IncomeDto[] = await this.getUserIncome(userBasicProfile.id);
         const userExpenses: ExpenseDto[] = await this.getUserExpenses(userBasicProfile.id);
-        const userBalanceSheetEntries: UserBalanceSheetEntry[] = await this.getUserBalanceSheetEntries(userBasicProfile.id);
-        const userChips: UserChip[] = await this.getUserChips(userBasicProfile.id);
+        const userBalanceSheetEntries: BalanceRecordDto[] = await this.getUserBalanceSheetEntries(userBasicProfile.id);
+        const userChips: ChipDto[] = await this.getUserChips(userBasicProfile.id);
 
         // mysql float values are stored strings and must therefore be transformed to numbers after retrieved for application use
  
@@ -191,7 +192,7 @@ export class AuthService {
             userExpenses.map((expense: ExpenseDto) => expense.amount = Number(expense.amount));
         };
         if (userBalanceSheetEntries) {
-            userBalanceSheetEntries.map((entry: UserBalanceSheetEntry) => entry.amount = Number(entry.amount));
+            userBalanceSheetEntries.map((entry: BalanceRecordDto) => entry.amount = Number(entry.amount));
         };
 
         const userLoginData: UserLoginData = {
@@ -212,34 +213,34 @@ export class AuthService {
     };
 
     async getUserIncome(userId: number): Promise<IncomeDto[]> {
-        const sqlQuery: string = `SELECT * FROM user${userId}_income`;
+        const sqlQuery: string = `SELECT * FROM user${userId}_income ORDER BY date ASC`;
         const userIncome = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], userIncome[0]);
         return this.checkForReturnValues(results);
     };
 
     async getUserExpenses(userId: number): Promise<ExpenseDto[]> {
-        const sqlQuery: string = `SELECT * FROM user${userId}_expenses`;
+        const sqlQuery: string = `SELECT * FROM user${userId}_expenses ORDER BY date ASC`;
         const userExpenses = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], userExpenses[0]);
         return this.checkForReturnValues(results);
     };
 
-    async getUserBalanceSheetEntries(userId: number): Promise<UserBalanceSheetEntry[]> {
-        const sqlQuery: string = `SELECT * FROM user${userId}_bal_sheet`;
+    async getUserBalanceSheetEntries(userId: number): Promise<BalanceRecordDto[]> {
+        const sqlQuery: string = `SELECT * FROM user${userId}_bal_sheet ORDER BY date ASC`;
         const userBalanceSheetEntries = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], userBalanceSheetEntries[0]);
         return this.checkForReturnValues(results);
     };
 
-    async getUserChips(userId: number): Promise<UserChip[]> {
-        const sqlQuery: string = `SELECT * FROM user${userId}_chips`;
+    async getUserChips(userId: number): Promise<ChipDto[]> {
+        const sqlQuery: string = `SELECT * FROM user${userId}_chips ORDER BY chip ASC`;
         const userChips = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], userChips[0]);
         return this.checkForReturnValues(results);
     };
 
-    private checkForReturnValues(results: any): UserTransaction[] | UserBalanceSheetEntry[] | UserChip[] | null | any {
+    private checkForReturnValues(results: any): IncomeDto[] | ExpenseDto[] | BalanceRecordDto[] | ChipDto[] | null | any {
         // if no values return(if table is empty will still return length of 1, but of an object with no key/value pairs)
         if (Object.keys(results[0]).length === 0 && results.length === 1) {
             return null;

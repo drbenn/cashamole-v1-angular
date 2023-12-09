@@ -19,7 +19,7 @@ import { AnimateOnScrollModule } from 'primeng/animateonscroll';
   styleUrl: './user-login.component.scss'
 })
 export class UserLoginComponent {
-  loginForm = this.fb.group({
+  protected loginForm = this.fb.group({
     username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(75)]],
     password: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(75)]]
   })
@@ -54,8 +54,6 @@ export class UserLoginComponent {
       .subscribe(
         {
           next: (value: any) => {
-            // console.log('values');
-            // console.log(value);
             this.store.dispatch(new UserActions.SetUserDataOnLogin(JSON.parse(value.data)));
             this.router.navigate(['home']);
             // console.log('platformId', localStorage);
@@ -68,20 +66,6 @@ export class UserLoginComponent {
         }
       )
     }
-  }
+  };
 
-  // protected attemptUserLogin(form: NgForm) {
-  //   console.log(form.value);
-  //   this.userApi.authenticateUser(form.value).pipe(take(1), first())
-  //   .subscribe(
-  //     {
-  //       next: (value: any) => {
-  //         console.log(value);
-
-  //       },
-  //       error: (error: any) => console.error(error),
-  //       complete: () => console.log('Completed User Login'),
-  //     }
-  //   )
-  // }
 }

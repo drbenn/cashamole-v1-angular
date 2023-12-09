@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CoreApiService } from '../../../shared/api/core-api.service';
-
 import { Observable, first, take } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { DropdownModule } from 'primeng/dropdown';
@@ -13,17 +12,9 @@ import { CalendarModule } from 'primeng/calendar';
 import { ChipSelectComponent } from '../../../shared/chip-select/chip-select.component';
 import { Chip } from '../../../model/chips.model';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { Expense } from '../../../model/models.model';
 import { ChipState } from '../../../store/chip/chipState.state';
 import { ExpenseActions } from '../../../store/expense/expese.actions';
-
-export interface TranactionCategory {
-  category: string
-}
-
-export interface TransactionType {
-  type: string
-}
+import { Expense } from '../../../model/core.model';
 
 
 
@@ -48,14 +39,13 @@ export interface TransactionType {
 export class NewExpenseTransactionComponent implements OnInit {
   @Select(ChipState.expenseVendorChips) expenseVendorChips$!: Observable<Chip[]>;
   @Select(ChipState.expenseCategoryChips) expenseCategoryChips$!: Observable<Chip[]>;
-  expenseVendorChips: Chip[] = [];
-  expenseVendorChipStrings: string[] = [];
-  expenseCategoryChips: Chip[] = [];
-  expenseCategoryChipStrings: string[] = [];
-
+  protected expenseVendorChips: Chip[] = [];
+  protected expenseVendorChipStrings: string[] = [];
+  protected expenseCategoryChips: Chip[] = [];
+  protected expenseCategoryChipStrings: string[] = [];
   protected today: Date = new Date();
 
-  newExpenseForm = this.fb.group({
+  protected newExpenseForm = this.fb.group({
     date: [ this.today, [Validators.required]],
     amount: [null as unknown as number, [Validators.required, Validators.min(-10000000), Validators.max(10000000)]],
     category: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
@@ -81,7 +71,7 @@ export class NewExpenseTransactionComponent implements OnInit {
         this.setExpenseChips('category', chips);
       };
     });
-  }
+  };
 
   private setExpenseChips(type: 'vendor' | 'category', chips: Chip[]): void {
     if (type === 'vendor') {
@@ -152,5 +142,5 @@ export class NewExpenseTransactionComponent implements OnInit {
         }
       )
     }
-  }
+  };
 }

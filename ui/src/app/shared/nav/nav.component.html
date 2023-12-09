@@ -4,6 +4,32 @@
     </div>
     <div class="text-right text-lg">
         <ul>
+            @if (loggedInUserVal) {
+                <li>
+                    <div class="h-1rem flex flex-row flex-nowrap justify-content-center align-items-center pb-1"
+                        [ngStyle]="{'transform': 'translate(0rem, 0.25rem)'}"
+                    >
+                        <div (click)="backOneMonth()">
+                            <i class="pi pi-angle-left" [ngStyle]="{'font-size': '2rem', 'color': 'lightseagreen'}"></i>
+                        </div>
+                        <div [ngStyle]="{'width': '6.25rem'}">
+                            <p-calendar 
+                                [(ngModel)]="monthDate"
+                                view="month"
+                                dateFormat="M yy"
+                                [readonlyInput]="true"
+                                inputId="monthpicker"
+                                (onSelect)="updateActiveMonthRange($event)"
+                                class=""
+                            ></p-calendar>
+                        </div>
+                        <div class="" (click)="forwardOneMonth()">
+                            <i class="pi pi-angle-right" [ngStyle]="{'font-size': '2rem', 'color': 'lightseagreen'}"></i>
+                        </div>
+    
+                    </div>
+                </li>
+            }
             <li><a routerLink="/home" routerLinkActive="active">Home</a></li>
             @if (loggedInUserVal) {
                 <li><a routerLink="expense" routerLinkActive="active">+Expense</a></li>

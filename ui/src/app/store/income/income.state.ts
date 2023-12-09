@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, State, StateContext, Store } from '@ngxs/store';
 import { Router } from '@angular/router';
 import { IncomeActions } from '../income/income.actions';
-import { Income } from '../../model/models.model';
-
+import { Income } from '../../model/core.model';
 
 
 export interface IncomeStateModel {

@@ -1,9 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TransactionBody } from '../../../model/transaction.model';
 import { TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
-import { Expense } from '../../../model/models.model';
+import { Expense } from '../../../model/core.model';
 
 @Component({
   selector: 'app-expense-table',
@@ -18,9 +17,9 @@ export class ExpenseTableComponent implements OnInit {
 
   ngOnInit(): void {
     
-  }
+  };
 
-  protected editTransactionRecord(transaction: TransactionBody) {
-    console.log(transaction);
-  }
+  protected editTransactionRecord(expense: Expense) {
+    console.log(expense);
+  };
 }

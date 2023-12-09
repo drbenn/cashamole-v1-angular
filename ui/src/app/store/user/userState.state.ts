@@ -1,39 +1,27 @@
 import { Injectable } from '@angular/core';
-import { Action, NgxsOnInit, Selector, State, StateContext, Store } from '@ngxs/store';
-import { User, UserLoginData } from '../../model/user.models';
+import { Action, NgxsOnInit, State, StateContext, Store } from '@ngxs/store';
+import { User } from '../../model/user.models';
 import { UserActions } from './userState.actions';
-import { TransactionBody } from '../../model/transaction.model';
 import { CookieService } from 'ngx-cookie-service';
 import { UserApiService } from '../../shared/api/user-api.service';
 import { Router } from '@angular/router';
-import { Chip } from '../../model/chips.model';
-import { BalanceSheetEntry, ChipStateStructure } from '../../model/models.model';
 import { ChipActions } from '../chip/chipState.actions';
 import { BalancSheetActions } from '../balanceSheet/bsState.actions';
 import { ExpenseActions } from '../expense/expese.actions';
 import { IncomeActions } from '../income/income.actions';
+import { CalendarActions } from '../calendar/calendar.actions';
 
 
 export interface UserStateModel {
   isInitUserDataLoaded: boolean,
-  loggedInUser: User,
-  transactions: TransactionBody[],
-  chips: ChipStateStructure
+  loggedInUser: User
 }
 
 @State<UserStateModel>({
   name: 'user',
   defaults: {
     isInitUserDataLoaded: false,
-    loggedInUser: {} as User,
-    transactions: [],
-    chips: {
-      asset: [],
-      liability: [],
-      expense_category: [],
-      expense_vendor: [],
-      income_source: [] 
-    },
+    loggedInUser: {} as User
   }
 })
 @Injectable()
@@ -43,7 +31,7 @@ export class UserState implements NgxsOnInit {
     private userApi: UserApiService,
     private store: Store,
     private router: Router
-    ) {}
+  ) {}
 
   ngxsOnInit(ctx: StateContext<UserState>) {
     const userIdCookie: number = <number><unknown>this.cookieService.get('cashamole_uid');
@@ -60,31 +48,6 @@ export class UserState implements NgxsOnInit {
     };
   };
 
-  // @Selector() 
-  // static assetChips(state: UserStateModel): Chip[] {
-  //   return state.chips.asset;
-  // }
-
-  // @Selector() 
-  // static liabilityChips(state: UserStateModel): Chip[] {
-  //   return state.chips.liability;
-  // }
-
-  // @Selector() 
-  // static incomeSourceChips(state: UserStateModel): Chip[] {
-  //   return state.chips.income_source;
-  // }
-
-  // @Selector() 
-  // static expenseCategoryChips(state: UserStateModel): Chip[] {
-  //   return state.chips.expense_category;
-  // }
-
-  // @Selector() 
-  // static expenseVendorChips(state: UserStateModel): Chip[] {
-  //   return state.chips.expense_vendor;
-  // }
-
   @Action(UserActions.RegisterLoggedInUser)
   registerLoggedInUser(
     ctx: StateContext<UserStateModel>,
@@ -100,8 +63,9 @@ export class UserState implements NgxsOnInit {
     action: UserActions.SetUserDataOnLogin
   ) {
     console.log(action.payload);
-    this.store.dispatch(new IncomeActions.SetIncomeOnLogin(action.payload.income))
-    this.store.dispatch(new ExpenseActions.SetExpensesOnLogin(action.payload.expenses))
+    this.store.dispatch(new CalendarActions.SetCalendarOnLogin());
+    this.store.dispatch(new IncomeActions.SetIncomeOnLogin(action.payload.income));
+    this.store.dispatch(new ExpenseActions.SetExpensesOnLogin(action.payload.expenses));
     this.store.dispatch(new BalancSheetActions.SetBalanceSheetEntriesOnLogin(action.payload.balanceSheetEntries));
     this.store.dispatch(new ChipActions.SetChipsOnLogin(action.payload.chips));
     ctx.patchState({ 
@@ -109,33 +73,6 @@ export class UserState implements NgxsOnInit {
       loggedInUser: action.payload.basicProfile
     });
   };
-
-
-
-  // @Action(UserActions.AddUserTransaction)
-  // addUserTransaction(
-  //   ctx: StateContext<UserStateModel>,
-  //   action: UserActions.AddUserTransaction
-  // ) {
-  //   let updatedTransactions: TransactionBody[] = ctx.getState().transactions;
-  //   updatedTransactions === null ? updatedTransactions = [] : updatedTransactions = updatedTransactions; 
-  //   updatedTransactions.push(action.payload);
-  //   ctx.patchState({ transactions: updatedTransactions });
-  // };
-
-  // @Action(UserActions.AddUserBalanceRecord)
-  // addUserBalanceRecord(
-  //   ctx: StateContext<UserStateModel>,
-  //   action: UserActions.AddUserBalanceRecord
-  // ) {
-  //   let currentBalanceRecords: BalanceSheetEntry[] = ctx.getState().balanceSheetEntries;
-  //   currentBalanceRecords === null ? currentBalanceRecords = [] : currentBalanceRecords = currentBalanceRecords; 
-  //   currentBalanceRecords.push(action.payload);
-  //   const updatedBalanceRecords: BalanceSheetEntry[] = currentBalanceRecords.map((obj: BalanceSheetEntry) => obj);
-  //   ctx.patchState({ balanceSheetEntries: updatedBalanceRecords });
-  // };
-
-
 
 
   @Action(UserActions.ClearUserStateOnLogout)
@@ -146,14 +83,6 @@ export class UserState implements NgxsOnInit {
     ctx.patchState({     
       isInitUserDataLoaded: false,
       loggedInUser: {} as User,
-      transactions: [],
-      chips:  {
-        asset: [],
-        liability: [],
-        expense_category: [],
-        expense_vendor: [],
-        income_source: [] 
-      }
     });
   };
 

@@ -22,17 +22,16 @@ export class ChipSelectComponent implements OnInit {
   @Output() selectedChip: EventEmitter<{ kind: string, chip: string }> = new EventEmitter();
   protected maxChips: number = 100;
 
-
   constructor(
     private coreApi: CoreApiService,
     private store: Store  
   ) {}
 
-    ngOnInit(): void {
-      if (this.chipObjects?.length) {
-        this.setChips(this.chipObjects);
-      };
+  ngOnInit(): void {
+    if (this.chipObjects?.length) {
+      this.setChips(this.chipObjects);
     };
+  };
 
   private setChips(chips: Chip[]): void {
     this.chipObjects = chips;
@@ -71,7 +70,7 @@ export class ChipSelectComponent implements OnInit {
           error: (error: any) => {
             console.error(error)
           }
-    })};};
+  })};};
 
   protected onChipAdd(event: ChipsAddEvent): void {
     const chipToAdd: string = event.value.toLowerCase();
@@ -85,7 +84,7 @@ export class ChipSelectComponent implements OnInit {
         error: (error: any) => {
           console.error(error)
         }
-    });};
+  });};
 
   private creatFullChipObjectForSubmit(chipString: string, status: 'active' | 'delete'): Chip {
     return {

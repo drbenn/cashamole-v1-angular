@@ -4,7 +4,6 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CoreApiService } from '../../../shared/api/core-api.service';
 import { Observable, first, take } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
-import { UserActions } from '../../../store/user/userState.actions';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -13,9 +12,9 @@ import { CalendarModule } from 'primeng/calendar';
 import { ChipSelectComponent } from '../../../shared/chip-select/chip-select.component';
 import { Chip } from '../../../model/chips.model';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { BalanceSheetEntry } from '../../../model/models.model';
 import { ChipState } from '../../../store/chip/chipState.state';
 import { BalancSheetActions } from '../../../store/balanceSheet/bsState.actions';
+import { BalanceSheetEntry } from '../../../model/core.model';
 
 
 export interface BalanceSheetType {
@@ -42,14 +41,14 @@ export interface BalanceSheetType {
 export class NewBsRecordComponent implements OnInit {
   @Select(ChipState.assetChips) assetChips$!: Observable<Chip[]>;
   @Select(ChipState.liabilityChips) liabilityChips$!: Observable<Chip[]>;
-  assetChips: Chip[] = [];
-  assetChipStrings: string[] = [];
-  liabilityChips: Chip[] = [];
-  liabilityChipStrings: string[] = [];
-  assetLiabilityToggle: 'asset' | 'liability' = 'asset';
-  bsTypes: BalanceSheetType[] = [{ type: 'asset'}, { type: "liability"}];
-  selectedBsType: BalanceSheetType = this.bsTypes[0];
-  today: Date = new Date();
+  protected assetChips: Chip[] = [];
+  protected assetChipStrings: string[] = [];
+  protected liabilityChips: Chip[] = [];
+  protected liabilityChipStrings: string[] = [];
+  protected assetLiabilityToggle: 'asset' | 'liability' = 'asset';
+  protected bsTypes: BalanceSheetType[] = [{ type: 'asset'}, { type: "liability"}];
+  protected selectedBsType: BalanceSheetType = this.bsTypes[0];
+  private today: Date = new Date();
   
   newRecordForm = this.fb.group({
     type: ['asset', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],

@@ -1,3 +1,5 @@
+import { BalanceRecordDto } from "src/balance_sheet/balance_sheet-dto/balance_sheet-dto";
+import { ChipDto } from "src/chip/chip-dto/chip-dto";
 import { ExpenseDto } from "src/expense/expense-dto/expense-dto";
 import { IncomeDto } from "src/income/income-dto/income-dto";
 
@@ -33,37 +35,10 @@ export class UserBasicProfile {
     join_date: Date
 }
 
-export class UserTransaction {
-    trans_id: number;
-    date: Date;
-    amount: number;
-    category: string;
-    vendor: string;
-    note: string;
-    active: boolean;
-}
-
-export class UserBalanceSheetEntry {
-    record_id: number;
-    date: Date;
-    amount: number;
-    type: string;
-    description: string;
-    active: boolean;
-}
-
-export class UserChip {
-    chip_id: number;
-    type: string;
-    chip: string;
-    active: boolean;
-}
-
 export class UserLoginData {
     basicProfile: UserBasicProfile;
-    // transactions: UserTransaction[] | null;
     income: IncomeDto[];
     expenses: ExpenseDto[];
-    balanceSheetEntries: UserBalanceSheetEntry[] | null;
-    chips: UserChip[] | null;
+    balanceSheetEntries: BalanceRecordDto[] | null;
+    chips: ChipDto[] | null;
 }

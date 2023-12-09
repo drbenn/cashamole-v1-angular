@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Router } from '@angular/router';
-import { Chip } from '../../model/chips.model';
-import { ChipStateStructure } from '../../model/models.model';
+import { Chip, ChipStateStructure } from '../../model/chips.model';
 import { ChipActions } from './chipState.actions';
 
 
