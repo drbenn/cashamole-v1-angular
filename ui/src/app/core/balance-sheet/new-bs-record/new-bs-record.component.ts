@@ -15,6 +15,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { ChipState } from '../../../store/chip/chipState.state';
 import { BalancSheetActions } from '../../../store/balanceSheet/bsState.actions';
 import { BalanceSheetEntry } from '../../../model/core.model';
+import { CalendarState } from '../../../store/calendar/calendar.state';
 
 
 export interface BalanceSheetType {
@@ -39,6 +40,8 @@ export interface BalanceSheetType {
   styleUrl: './new-bs-record.component.scss'
 })
 export class NewBsRecordComponent implements OnInit {
+  @Select(CalendarState.activeMonthStartDate) activeMonthStartDate$!: Observable<Date>;
+  protected activeMonthStartDate!: Date ;
   @Select(ChipState.assetChips) assetChips$!: Observable<Chip[]>;
   @Select(ChipState.liabilityChips) liabilityChips$!: Observable<Chip[]>;
   protected assetChips: Chip[] = [];
@@ -52,7 +55,6 @@ export class NewBsRecordComponent implements OnInit {
   
   newRecordForm = this.fb.group({
     type: ['asset', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
-    date: [this.today, [Validators.required]],
     description: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(75)]],
     amount: [null as unknown as number, [Validators.required, Validators.min(-10000000), Validators.max(10000000)]]
   })
@@ -66,6 +68,9 @@ export class NewBsRecordComponent implements OnInit {
 
   ngOnInit(): void {
     this.today = new Date();
+    this.activeMonthStartDate$.subscribe((startDate: Date) => {
+      this.activeMonthStartDate = startDate;
+    })
     this.assetChips$.subscribe((chips: Chip[]) => {
       if (chips) {        
         this.setBsChips('asset', chips);
@@ -103,18 +108,21 @@ export class NewBsRecordComponent implements OnInit {
     };
   };
 
-  protected handleBsSelectClick(type: 'asset' | 'liability'): void {   
+  protected handleBsSelectClick(type: 'asset' | 'liability'): void {
     if (type === 'asset') {
       this.assetLiabilityToggle = 'asset';
+      this.selectedBsType = this.bsTypes[0];
+      this.clearForm();
     } else {
       this.assetLiabilityToggle = 'liability';
+      this.selectedBsType = this.bsTypes[1];
+      this.clearForm();
     };
   };
 
   protected clearForm(): void {
     this.newRecordForm.setValue({ 
       type: this.selectedBsType.type,
-      date: new Date(this.today),
       description: '',
       amount: null
     });
@@ -129,7 +137,7 @@ export class NewBsRecordComponent implements OnInit {
     else if (values) {
       const balanceSheetEntry: BalanceSheetEntry = {
         type: values.type,
-        date: new Date(values.date),
+        date: this.activeMonthStartDate,
         description: values.description,
         amount: values.amount,
         status: 'active'
@@ -141,6 +149,7 @@ export class NewBsRecordComponent implements OnInit {
           next: (value: any) => {
             // Updates state with new transaction / no need for full data pull on db upon each update
             this.store.dispatch(new BalancSheetActions.AddUserBalanceRecord(JSON.parse(value.data)));
+            this.clearForm();
           },
           error: (error: any) => {
             console.error(error);
