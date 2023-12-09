@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Action, State, StateContext, Store } from '@ngxs/store';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { CalendarActions } from './calendar.actions';
 import { DateRange } from '../../model/calendar.model';
 
@@ -31,6 +31,16 @@ export class CalendarState {
   constructor(
     private store: Store
   ) {}
+
+  @Selector() 
+  static activeMonthStartDate(state: CalendarStateModel): Date {
+    return state.monthDateRange.startDate;
+  };
+
+  @Selector() 
+  static activeMonthDateRange(state: CalendarStateModel): DateRange {
+    return state.monthDateRange;
+  };
 
 
   @Action(CalendarActions.SetCalendarOnLogin)
