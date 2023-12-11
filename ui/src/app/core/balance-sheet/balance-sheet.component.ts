@@ -6,6 +6,8 @@ import { BalanceSheetTableComponent } from './balance-sheet-table/balance-sheet-
 
 
 
+
+
 @Component({
   selector: 'app-balance-sheet',
   standalone: true,
