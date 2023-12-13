@@ -26,6 +26,14 @@ export class CoreApiService {
     return this.httpClient.post(this.apiUrl + '/balance-sheet', balanceSheetEntryBody, {withCredentials: true}) as Observable<any>;
   };
 
+  public submitUpdatedBsRecord(balanceSheetEntryBody: BalanceSheetEntry): Observable<any> {    
+    return this.httpClient.patch(this.apiUrl + '/balance-sheet', balanceSheetEntryBody, {withCredentials: true}) as Observable<any>;
+  };
+
+  public deactivateBsRecord(record_id: number): Observable<any> {    
+    return this.httpClient.patch(this.apiUrl + `/balance-sheet/${record_id}`, {withCredentials: true}) as Observable<any>;
+  };
+
   public submitNewChip(chipBody: Chip): Observable<any> {    
     return this.httpClient.post(this.apiUrl + '/chip', chipBody, {withCredentials: true}) as Observable<any>;
   };

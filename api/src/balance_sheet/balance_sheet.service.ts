@@ -38,4 +38,47 @@ export class BalanceSheetService {
         };
     };
 
+    async updateBalanceRecord(balanceRecordDto: BalanceRecordDto, userId: number): Promise<BalanceRecordDto | 'update error' | 'undefined userid' > {
+        if (!userId) {
+            return 'undefined userid';
+        };
+        const chip: ChipDto = {kind: balanceRecordDto.type, chip: balanceRecordDto.description, status: 'active'};
+        this.chipService.createNewChip(chip, userId);
+        const sqlQuery: string = `UPDATE user${userId}_bal_sheet
+            SET
+            date = '${balanceRecordDto.date}',
+            amount = '${balanceRecordDto.amount}',
+            type = '${balanceRecordDto.type},
+            description = '${balanceRecordDto.description}'
+            WHERE record_id = ${balanceRecordDto.record_id};
+        `;
+        const udpateBalanceRecord = await this.connection.query(sqlQuery);
+        const results = Object.assign([{}], udpateBalanceRecord[0]);
+        if (results.affectedRows === 1) {
+            const completeBalanceRecord: BalanceRecordDto = balanceRecordDto;
+            completeBalanceRecord.record_id = results.insertId;
+            return completeBalanceRecord;
+        } else {
+            return 'update error';
+        };
+    };
+
+    async deactivateBalanceRecord(recordId: number, userId: number): Promise<BalanceRecordDto | 'deactivate error' | 'undefined userid' > {
+        if (!userId) {
+            return 'undefined userid';
+        };
+        const sqlQuery: string = `UPDATE user${userId}_bal_sheet
+            SET
+            status = 'deactivated',
+            WHERE record_id = ${recordId};
+        `;
+        const deactivatedBalanceRecord = await this.connection.query(sqlQuery);
+        const results = Object.assign([{}], deactivatedBalanceRecord[0]);
+        if (results.affectedRows === 1) {
+            return results;
+        } else {
+            return 'deactivate error';
+        };
+    };
+
 }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
-import { Observable } from 'rxjs';
+import { Observable, first, take } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { BalanceSheetEntry } from '../../../model/core.model';
 import { CalendarState } from '../../../store/calendar/calendar.state';
@@ -11,11 +11,8 @@ import { FormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
-
-// DropdownModule,
-// InputTextModule,
-// InputNumberModule,
-// ButtonModule,
+import { BalancSheetActions } from '../../../store/balanceSheet/bsState.actions';
+import { CoreApiService } from '../../../shared/api/core-api.service';
 
 
 @Component({
@@ -34,7 +31,8 @@ export class BalanceSheetTableComponent implements OnInit {
   protected liabilities: BalanceSheetEntry[] = [];
 
   constructor(
-    private store: Store
+    private store: Store,
+    private coreApi: CoreApiService
   ) {}
 
   ngOnInit(): void {
@@ -78,15 +76,19 @@ onRowEditInit(product: any) {
     // this.clonedProducts[product.id as string] = { ...product };
 }
 
-onRowEditSave(product: any) {
-  console.log('ONROW EDIT SAVE');
-  console.log(product);
-    // if (product.price > 0) {
-    //     delete this.clonedProducts[product.id as string];
-    //     this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Product is updated' });
-    // } else {
-    //     this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid Price' });
-    // }
+onRowEditSave(balanceSheetEntry: BalanceSheetEntry) {
+  this.coreApi.submitUpdatedBsRecord(balanceSheetEntry).pipe(take(1), first())
+  .subscribe(
+    {
+      next: (value: any) => {
+        console.log(value);
+        this.store.dispatch(new BalancSheetActions.EditUserBalanceRecord(balanceSheetEntry));
+      },
+      error: (error: any) => {
+        console.error(error);
+      }
+    }
+  );
 }
 
 onRowEditCancel(product: any, index: number) {
@@ -96,11 +98,24 @@ onRowEditCancel(product: any, index: number) {
     // delete this.clonedProducts[product.id as string];
 }
 
-removeEntry(product: any, index: number) {
-  console.log('REmove entry');
-  console.log(product);
-    // this.products[index] = this.clonedProducts[product.id as string];
-    // delete this.clonedProducts[product.id as string];
+removeEntry(balanceSheetEntry: BalanceSheetEntry, index: number) {
+  if (balanceSheetEntry.record_id) {
+    this.coreApi.deactivateBsRecord(balanceSheetEntry?.record_id).pipe(take(1), first())
+    .subscribe(
+      {
+        next: (value: any) => {
+          console.log(value);
+          this.store.dispatch(new BalancSheetActions.DeactivateUserBalanceRecord(balanceSheetEntry));
+        },
+        error: (error: any) => {
+          console.error(error);
+        }
+      }
+    );
+  } else {
+    this.store.dispatch(new BalancSheetActions.DeactivateUserBalanceRecord(balanceSheetEntry));
+  }
+
 }
 
   protected editBalanceRecord(entry: BalanceSheetEntry) {

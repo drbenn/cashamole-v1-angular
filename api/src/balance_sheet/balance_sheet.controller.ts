@@ -1,4 +1,4 @@
-import { Body, Controller, HttpException, HttpStatus, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, HttpException, HttpStatus, Param, Patch, Post, Req, Res } from '@nestjs/common';
 import { BalanceSheetService } from './balance_sheet.service';
 import { BalanceRecordDto } from './balance_sheet-dto/balance_sheet-dto';
 import { Request, Response } from 'express';
@@ -29,4 +29,49 @@ export class BalanceSheetController {
             };
         };
     };  
+
+    @Patch()
+    async editBalanceRecord(
+        @Req() req: Request, 
+        @Res() res: Response, 
+        @Body() balanceRecordDto: BalanceRecordDto
+        ) {  
+        if (!req.cookies) {
+            console.log('throw no cookie error');
+            // todo: throw error
+        }  else {
+            const userId: number = req.cookies.cashamole_uid;
+            
+            const newUpdateRecord: BalanceRecordDto | 'update error' | 'undefined userid' = await this.balanceSheetService.updateBalanceRecord(balanceRecordDto, userId);
+
+            if (newUpdateRecord === 'update error' || newUpdateRecord ===  'undefined userid') {
+                throw new HttpException('balance sheet record update failed', HttpStatus.BAD_REQUEST);
+            } else {
+                res.status(HttpStatus.OK).send({message: 'balance record update successful', data: JSON.stringify(newUpdateRecord)});
+            };
+        };
+    };
+
+    @Patch('/:id')
+    async deactivateBalanceRecord(
+        @Req() req: Request, 
+        @Res() res: Response, 
+        @Param() params: any,
+        ) {  
+        if (!req.cookies) {
+            console.log('throw no cookie error');
+            // todo: throw error
+        }  else {
+            const userId: number = req.cookies.cashamole_uid;
+            const recordId: number = params.id;
+            
+            const deactivateRecord: BalanceRecordDto | 'deactivate error' | 'undefined userid' = await this.balanceSheetService.deactivateBalanceRecord(recordId, userId);
+
+            if (deactivateRecord === 'deactivate error' || deactivateRecord ===  'undefined userid') {
+                throw new HttpException('balance sheet record deactivate failed', HttpStatus.BAD_REQUEST);
+            } else {
+                res.status(HttpStatus.OK).send({message: 'balance record deactivate successful', data: JSON.stringify(deactivateRecord)});
+            };
+        };
+    }; 
 }
