@@ -13,7 +13,7 @@
 } 
 
 :host ::ng-deep .p-inputnumber-input  {
-    width: 8rem;
+    width: 5rem;
 }
 
 :host ::ng-deep .p-button-icon  {
@@ -23,4 +23,8 @@
 :host ::ng-deep .p-button.p-button-icon-only {
     width: 2.55rem;
     padding: 0.5rem;
+}
+
+.cancel-icon-color {
+    color: #555555;
 }

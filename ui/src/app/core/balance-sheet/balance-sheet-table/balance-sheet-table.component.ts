@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
-import { CardModule } from 'primeng/card';
 import { Observable, first, take } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { BalanceSheetEntry } from '../../../model/core.model';
@@ -13,12 +12,13 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { BalancSheetActions } from '../../../store/balanceSheet/bsState.actions';
 import { CoreApiService } from '../../../shared/api/core-api.service';
+import { TooltipModule } from 'primeng/tooltip';
 
 
 @Component({
   selector: 'app-balance-sheet-table',
   standalone: true,
-  imports: [CommonModule, TableModule, CardModule, FormsModule, CalendarModule, InputTextModule, InputNumberModule],
+  imports: [CommonModule, TableModule, FormsModule, CalendarModule, InputTextModule, InputNumberModule, TooltipModule],
   templateUrl: './balance-sheet-table.component.html',
   styleUrl: './balance-sheet-table.component.scss'
 })
@@ -41,10 +41,11 @@ export class BalanceSheetTableComponent implements OnInit {
         this.activeMonthDateRange = dateRange;
       };
       if (dateRange && this.allBalanceSheetEntries) {
+        this.resetTableData();
         this.filterEntriesToActiveMonth(this.allBalanceSheetEntries, this.activeMonthDateRange);
       };
     });
-    this.balanceSheetData$.subscribe((data: BalanceSheetEntry[]) => {
+    this.balanceSheetData$.subscribe((data: BalanceSheetEntry[]) => {     
       if (data) {
         this.allBalanceSheetEntries = data;
       };
@@ -68,57 +69,62 @@ export class BalanceSheetTableComponent implements OnInit {
     });
   };
 
-onRowEditInit(product: any) {
-  console.log('ONROW EDIT');
-  console.log(product);
-  
-  
-    // this.clonedProducts[product.id as string] = { ...product };
-}
-
-onRowEditSave(balanceSheetEntry: BalanceSheetEntry) {
-  this.coreApi.submitUpdatedBsRecord(balanceSheetEntry).pipe(take(1), first())
-  .subscribe(
-    {
-      next: (value: any) => {
-        console.log(value);
-        this.store.dispatch(new BalancSheetActions.EditUserBalanceRecord(balanceSheetEntry));
-      },
-      error: (error: any) => {
-        console.error(error);
-      }
-    }
-  );
-}
-
-onRowEditCancel(product: any, index: number) {
-  console.log('ONROW EDIT Cancel');
-  console.log(product);
-    // this.products[index] = this.clonedProducts[product.id as string];
-    // delete this.clonedProducts[product.id as string];
-}
-
-removeEntry(balanceSheetEntry: BalanceSheetEntry, index: number) {
-  if (balanceSheetEntry.record_id) {
-    this.coreApi.deactivateBsRecord(balanceSheetEntry?.record_id).pipe(take(1), first())
-    .subscribe(
-      {
-        next: (value: any) => {
-          console.log(value);
-          this.store.dispatch(new BalancSheetActions.DeactivateUserBalanceRecord(balanceSheetEntry));
-        },
-        error: (error: any) => {
-          console.error(error);
-        }
-      }
-    );
-  } else {
-    this.store.dispatch(new BalancSheetActions.DeactivateUserBalanceRecord(balanceSheetEntry));
-  }
-
-}
-
-  protected editBalanceRecord(entry: BalanceSheetEntry) {
-    console.log(entry);
+  private resetTableData(): void {
+    this.assets = [];
+    this.liabilities = [];
   };
+
+  protected onRowEditInit(product: any): void {
+    console.log('ONROW EDIT');
+    console.log(product);
+
+  };
+
+  protected onRowEditSave(balanceSheetEntry: BalanceSheetEntry): void {
+    console.log('edit bs recrod');
+    console.log(balanceSheetEntry);
+    
+    
+    // this.coreApi.submitUpdatedBsRecord(balanceSheetEntry).pipe(take(1), first())
+    // .subscribe(
+    //   {
+    //     next: (value: any) => {
+    //       console.log(value);
+    //       this.store.dispatch(new BalancSheetActions.EditUserBalanceRecord(balanceSheetEntry));
+    //     },
+    //     error: (error: any) => {
+    //       console.error(error);
+    //     }
+    //   }
+    // );
+  };
+
+  protected onRowEditCancel(product: any, index: number): void {
+    console.log('ONROW EDIT Cancel');
+    console.log(product);
+  };
+
+  protected removeEntry(recordId: number, type: 'asset' | 'liability', index: number): void {
+    console.log('remove bs entry: ', type);
+    console.log(recordId);
+    
+    
+    // if (balanceSheetEntry.record_id) {
+    //   this.coreApi.deactivateBsRecord(balanceSheetEntry?.record_id).pipe(take(1), first())
+    //   .subscribe(
+    //     {
+    //       next: (value: any) => {
+    //         console.log(value);
+    //         this.store.dispatch(new BalancSheetActions.DeactivateUserBalanceRecord(balanceSheetEntry));
+    //       },
+    //       error: (error: any) => {
+    //         console.error(error);
+    //       }
+    //     }
+    //   );
+    // } else {
+    //   this.store.dispatch(new BalancSheetActions.DeactivateUserBalanceRecord(balanceSheetEntry));
+    // };
+  };
+
 }

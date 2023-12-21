@@ -18,8 +18,24 @@ export class CoreApiService {
     return this.httpClient.post(this.apiUrl + '/income', incomeBody, {withCredentials: true}) as Observable<any>;
   };
 
+  public submitUpdatedIncome(incomeBody: Income): Observable<any> {    
+    return this.httpClient.patch(this.apiUrl + '/income', incomeBody, {withCredentials: true}) as Observable<any>;
+  };
+
+  public deactivateIncome(record_id: number): Observable<any> {    
+    return this.httpClient.patch(this.apiUrl + `/income/${record_id}`, {withCredentials: true}) as Observable<any>;
+  };
+
   public submitNewExpense(expenseBody: Expense): Observable<any> {
     return this.httpClient.post(this.apiUrl + '/expense', expenseBody, {withCredentials: true}) as Observable<any>;
+  };
+
+  public submitUpdatedExpense(expenseBody: Expense): Observable<any> {    
+    return this.httpClient.patch(this.apiUrl + '/expense', expenseBody, {withCredentials: true}) as Observable<any>;
+  };
+
+  public deactivatExpense(record_id: number): Observable<any> {    
+    return this.httpClient.patch(this.apiUrl + `/expense/${record_id}`, {withCredentials: true}) as Observable<any>;
   };
 
   public submitNewBsRecord(balanceSheetEntryBody: BalanceSheetEntry): Observable<any> {    
