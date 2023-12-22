@@ -4,5 +4,5 @@ export class BalanceRecordDto {
     amount: number;
     type: string;
     description: string;
-    status: string;
+    status: string | 'active' | 'deactivated';
 }

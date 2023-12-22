@@ -100,7 +100,7 @@ export class NewIncomeTransactionComponent implements OnInit {
         status: 'active'
       }
       
-      this.coreApi.submitNewIncome(incomeBody).pipe(take(1), first())
+      this.coreApi.submitNewIncomeRecord(incomeBody).pipe(take(1), first())
       .subscribe(
         {
           next: (value: any) => {

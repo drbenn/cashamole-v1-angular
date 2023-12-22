@@ -7,10 +7,16 @@ import { IncomeDto } from 'src/income/income-dto/income-dto';
 import { ExpenseDto } from 'src/expense/expense-dto/expense-dto';
 import { BalanceRecordDto } from 'src/balance_sheet/balance_sheet-dto/balance_sheet-dto';
 import { ChipDto } from 'src/chip/chip-dto/chip-dto';
+import { IncomeService } from 'src/income/income.service';
 
 @Injectable()
 export class AuthService {
-    constructor(@InjectClient() private readonly connection: Connection) {}
+    constructor(
+        @InjectClient() private readonly connection: Connection,
+        // private incomeService: IncomeService
+        
+        
+        ) {}
 
     async findAll() {
       const users = await this.connection.query('SELECT * FROM users');
@@ -213,21 +219,22 @@ export class AuthService {
     };
 
     async getUserIncome(userId: number): Promise<IncomeDto[]> {
-        const sqlQuery: string = `SELECT * FROM user${userId}_income ORDER BY date ASC`;
+        const sqlQuery: string = `SELECT * FROM user${userId}_income WHERE status != 'deactivated' ORDER BY date ASC;`;
         const userIncome = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], userIncome[0]);
         return this.checkForReturnValues(results);
+        // return this.incomeService.getActiveIncome(userId);
     };
 
     async getUserExpenses(userId: number): Promise<ExpenseDto[]> {
-        const sqlQuery: string = `SELECT * FROM user${userId}_expenses ORDER BY date ASC`;
+        const sqlQuery: string = `SELECT * FROM user${userId}_expenses WHERE status != 'deactivated' ORDER BY date ASC;`;
         const userExpenses = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], userExpenses[0]);
         return this.checkForReturnValues(results);
     };
 
     async getUserBalanceSheetEntries(userId: number): Promise<BalanceRecordDto[]> {
-        const sqlQuery: string = `SELECT * FROM user${userId}_bal_sheet ORDER BY date ASC`;
+        const sqlQuery: string = `SELECT * FROM user${userId}_bal_sheet WHERE status != 'deactivated' ORDER BY date ASC;`;
         const userBalanceSheetEntries = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], userBalanceSheetEntries[0]);
         return this.checkForReturnValues(results);

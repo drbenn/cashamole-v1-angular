@@ -14,47 +14,63 @@ export class CoreApiService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public submitNewIncome(incomeBody: Income): Observable<any> {
-    return this.httpClient.post(this.apiUrl + '/income', incomeBody, {withCredentials: true}) as Observable<any>;
+  // ===================== INCOME API CALLS ======================
+
+  public submitNewIncomeRecord(incomeBody: Income): Observable<Income> {
+    return this.httpClient.post(this.apiUrl + '/income', incomeBody, {withCredentials: true}) as Observable<Income>;
   };
 
-  public submitUpdatedIncome(incomeBody: Income): Observable<any> {    
-    return this.httpClient.patch(this.apiUrl + '/income', incomeBody, {withCredentials: true}) as Observable<any>;
+  public submitUpdatedIncomeRecord(incomeBody: Income): Observable<Income> {    
+    return this.httpClient.patch(this.apiUrl + '/income', incomeBody, {withCredentials: true}) as Observable<Income>;
   };
 
-  public deactivateIncome(record_id: number): Observable<any> {    
-    return this.httpClient.patch(this.apiUrl + `/income/${record_id}`, {withCredentials: true}) as Observable<any>;
+  public deactivateIncomeRecord(record_id: number): Observable<any> {  
+    const requestBody: {inc_id: number} = {inc_id: record_id};
+    return this.httpClient.patch(this.apiUrl + `/income/deactivate`, requestBody, {withCredentials: true}) as Observable<any>;
   };
 
-  public submitNewExpense(expenseBody: Expense): Observable<any> {
-    return this.httpClient.post(this.apiUrl + '/expense', expenseBody, {withCredentials: true}) as Observable<any>;
+
+
+  // ===================== EXPENSE API CALLS ======================
+
+  public submitNewExpenseRecord(expenseBody: Expense): Observable<Expense> {
+    return this.httpClient.post(this.apiUrl + '/expense', expenseBody, {withCredentials: true}) as Observable<Expense>;
   };
 
-  public submitUpdatedExpense(expenseBody: Expense): Observable<any> {    
-    return this.httpClient.patch(this.apiUrl + '/expense', expenseBody, {withCredentials: true}) as Observable<any>;
+  public submitUpdatedExpenseRecord(expenseBody: Expense): Observable<Expense> {    
+    return this.httpClient.patch(this.apiUrl + '/expense', expenseBody, {withCredentials: true}) as Observable<Expense>;
   };
 
-  public deactivatExpense(record_id: number): Observable<any> {    
-    return this.httpClient.patch(this.apiUrl + `/expense/${record_id}`, {withCredentials: true}) as Observable<any>;
+  public deactivatExpenseRecord(record_id: number): Observable<any> {    
+    const requestBody: {exp_id: number} = {exp_id: record_id};
+    return this.httpClient.patch(this.apiUrl + `/expense/deactivate`, requestBody, {withCredentials: true}) as Observable<any>;
   };
 
-  public submitNewBsRecord(balanceSheetEntryBody: BalanceSheetEntry): Observable<any> {    
-    return this.httpClient.post(this.apiUrl + '/balance-sheet', balanceSheetEntryBody, {withCredentials: true}) as Observable<any>;
+
+  // ===================== BALANCE SHEET API CALLS ======================
+
+  public submitNewBsRecord(balanceSheetEntryBody: BalanceSheetEntry): Observable<BalanceSheetEntry> {    
+    return this.httpClient.post(this.apiUrl + '/balance-sheet', balanceSheetEntryBody, {withCredentials: true}) as Observable<BalanceSheetEntry>;
   };
 
-  public submitUpdatedBsRecord(balanceSheetEntryBody: BalanceSheetEntry): Observable<any> {    
-    return this.httpClient.patch(this.apiUrl + '/balance-sheet', balanceSheetEntryBody, {withCredentials: true}) as Observable<any>;
+  public submitUpdatedBsRecord(balanceSheetEntryBody: BalanceSheetEntry): Observable<BalanceSheetEntry> {    
+    return this.httpClient.patch(this.apiUrl + '/balance-sheet', balanceSheetEntryBody, {withCredentials: true}) as Observable<BalanceSheetEntry>;
   };
 
   public deactivateBsRecord(record_id: number): Observable<any> {    
-    return this.httpClient.patch(this.apiUrl + `/balance-sheet/${record_id}`, {withCredentials: true}) as Observable<any>;
+    const requestBody: {record_id: number} = {record_id: record_id};
+    return this.httpClient.patch(this.apiUrl + `/balance-sheet/deactivate`, requestBody, {withCredentials: true}) as Observable<any>;
   };
 
-  public submitNewChip(chipBody: Chip): Observable<any> {    
+
+
+  // ===================== CHIP API CALLS ======================
+
+  public submitNewChip(chipBody: Chip): Observable<Chip> {    
     return this.httpClient.post(this.apiUrl + '/chip', chipBody, {withCredentials: true}) as Observable<any>;
   };
 
-  public deleteChip(chipBody: Chip): Observable<any> {    
+  public deleteChip(chipBody: Chip): Observable<Chip> {    
     return this.httpClient.post(this.apiUrl + '/chip/delete', chipBody, {withCredentials: true}) as Observable<any>;
   };
 }

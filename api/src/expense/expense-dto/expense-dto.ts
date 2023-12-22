@@ -5,5 +5,5 @@ export class ExpenseDto {
     category: string;
     vendor: string;
     note: string;
-    status: string | 'active' | 'cancelled';
+    status: string | 'active' | 'deactivated';
 }

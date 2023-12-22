@@ -41,7 +41,6 @@ export class BalanceSheetController {
             // todo: throw error
         }  else {
             const userId: number = req.cookies.cashamole_uid;
-            
             const newUpdateRecord: BalanceRecordDto | 'update error' | 'undefined userid' = await this.balanceSheetService.updateBalanceRecord(balanceRecordDto, userId);
 
             if (newUpdateRecord === 'update error' || newUpdateRecord ===  'undefined userid') {
@@ -52,26 +51,26 @@ export class BalanceSheetController {
         };
     };
 
-    @Patch('/:id')
+    @Patch('/deactivate')
     async deactivateBalanceRecord(
         @Req() req: Request, 
         @Res() res: Response, 
-        @Param() params: any,
+        @Body() requestBody: {record_id: number}
         ) {  
         if (!req.cookies) {
             console.log('throw no cookie error');
             // todo: throw error
         }  else {
             const userId: number = req.cookies.cashamole_uid;
-            const recordId: number = params.id;
-            
+            const recordId: number = requestBody.record_id;
             const deactivateRecord: BalanceRecordDto | 'deactivate error' | 'undefined userid' = await this.balanceSheetService.deactivateBalanceRecord(recordId, userId);
 
             if (deactivateRecord === 'deactivate error' || deactivateRecord ===  'undefined userid') {
-                throw new HttpException('balance sheet record deactivate failed', HttpStatus.BAD_REQUEST);
+                throw new HttpException('balance record deactivate failed', HttpStatus.BAD_REQUEST);
             } else {
                 res.status(HttpStatus.OK).send({message: 'balance record deactivate successful', data: JSON.stringify(deactivateRecord)});
             };
         };
     }; 
+
 }

@@ -127,7 +127,7 @@ export class NewExpenseTransactionComponent implements OnInit {
         status: 'active'
       };
       
-      this.coreApi.submitNewExpense(expenseBody).pipe(take(1), first())
+      this.coreApi.submitNewExpenseRecord(expenseBody).pipe(take(1), first())
       .subscribe(
         {
           next: (value: any) => {

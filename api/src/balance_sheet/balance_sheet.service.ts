@@ -44,14 +44,11 @@ export class BalanceSheetService {
         };
         const chip: ChipDto = {kind: balanceRecordDto.type, chip: balanceRecordDto.description, status: 'active'};
         this.chipService.createNewChip(chip, userId);
-        const sqlQuery: string = `UPDATE user${userId}_bal_sheet
-            SET
-            date = '${balanceRecordDto.date}',
-            amount = '${balanceRecordDto.amount}',
-            type = '${balanceRecordDto.type},
-            description = '${balanceRecordDto.description}'
-            WHERE record_id = ${balanceRecordDto.record_id};
-        `;
+        const sqlQuery: string = `
+            UPDATE user${userId}_bal_sheet
+            SET date = '${balanceRecordDto.date}', amount = '${balanceRecordDto.amount}', 
+            type = '${balanceRecordDto.type}', description = '${balanceRecordDto.description}'
+            WHERE record_id = ${balanceRecordDto.record_id};`;
         const udpateBalanceRecord = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], udpateBalanceRecord[0]);
         if (results.affectedRows === 1) {
@@ -68,13 +65,10 @@ export class BalanceSheetService {
             return 'undefined userid';
         };
         const sqlQuery: string = `UPDATE user${userId}_bal_sheet
-            SET
-            status = 'deactivated',
-            WHERE record_id = ${recordId};
-        `;
+            SET status = 'deactivated' WHERE record_id = ${recordId};`;
         const deactivatedBalanceRecord = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], deactivatedBalanceRecord[0]);
-        if (results.affectedRows === 1) {
+        if (results.affectedRows === 1) {           
             return results;
         } else {
             return 'deactivate error';

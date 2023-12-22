@@ -34,4 +34,40 @@ export class ExpenseService {
             return 'insert error';
         };
     };
+
+    async updateExpenseRecord(expenseDto: ExpenseDto, userId: number): Promise<ExpenseDto | 'update error' | 'undefined userid' > {
+        if (!userId) {
+            return 'undefined userid';
+        };
+        const sqlQuery: string = `
+        UPDATE user${userId}_expenses
+        SET date = '${expenseDto.date}', amount = ${expenseDto.amount}, category = '${expenseDto.category}', 
+        vendor = '${expenseDto.vendor}', note = '${expenseDto.note}'
+        WHERE exp_id = ${expenseDto.exp_id};`;
+
+        const udpateExpenseRecord = await this.connection.query(sqlQuery);
+        const results = Object.assign([{}], udpateExpenseRecord[0]);
+        if (results.affectedRows === 1) {
+            const completeExpenseRecord: ExpenseDto = expenseDto;
+            completeExpenseRecord.exp_id = results.insertId;
+            return completeExpenseRecord;
+        } else {
+            return 'update error';
+        };
+    };
+
+    async deactivateExpenseRecord(recordId: number, userId: number): Promise<ExpenseDto | 'deactivate error' | 'undefined userid' > {
+        if (!userId) {
+            return 'undefined userid';
+        };        
+        const sqlQuery: string = `UPDATE user${userId}_expenses
+            SET status = 'deactivated' WHERE exp_id = ${recordId};`;
+        const deactivatedIncomeRecord = await this.connection.query(sqlQuery);
+        const results = Object.assign([{}], deactivatedIncomeRecord[0]);
+        if (results.affectedRows === 1) {
+            return results;
+        } else {
+            return 'deactivate error';
+        };
+    };
 }

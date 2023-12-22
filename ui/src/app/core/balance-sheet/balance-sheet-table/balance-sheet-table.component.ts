@@ -25,7 +25,7 @@ import { TooltipModule } from 'primeng/tooltip';
 export class BalanceSheetTableComponent implements OnInit {
   @Select(CalendarState.activeMonthDateRange) activeMonthDateRange$!: Observable<DateRange>;
   activeMonthDateRange!: DateRange;
-  protected balanceSheetData$: Observable<BalanceSheetEntry[]> = this.store.select((state) => state.balanceSheet.entries);
+  protected balanceSheetData$: Observable<BalanceSheetEntry[]> = this.store.select((state: any) => state.balanceSheet.entries);
   private allBalanceSheetEntries!: BalanceSheetEntry[];
   protected assets: BalanceSheetEntry[] = [];
   protected liabilities: BalanceSheetEntry[] = [];
@@ -74,29 +74,27 @@ export class BalanceSheetTableComponent implements OnInit {
     this.liabilities = [];
   };
 
-  protected onRowEditInit(product: any): void {
+  protected onRowEditInit(row: any): void {
     console.log('ONROW EDIT');
-    console.log(product);
+    console.log(row);
 
   };
 
   protected onRowEditSave(balanceSheetEntry: BalanceSheetEntry): void {
     console.log('edit bs recrod');
     console.log(balanceSheetEntry);
-    
-    
-    // this.coreApi.submitUpdatedBsRecord(balanceSheetEntry).pipe(take(1), first())
-    // .subscribe(
-    //   {
-    //     next: (value: any) => {
-    //       console.log(value);
-    //       this.store.dispatch(new BalancSheetActions.EditUserBalanceRecord(balanceSheetEntry));
-    //     },
-    //     error: (error: any) => {
-    //       console.error(error);
-    //     }
-    //   }
-    // );
+    this.coreApi.submitUpdatedBsRecord(balanceSheetEntry).pipe(take(1), first())
+    .subscribe(
+      {
+        next: (value: any) => {
+          console.log(value);
+          this.store.dispatch(new BalancSheetActions.EditUserBalanceRecord(balanceSheetEntry));
+        },
+        error: (error: any) => {
+          console.error(error);
+        }
+      }
+    );
   };
 
   protected onRowEditCancel(product: any, index: number): void {
@@ -104,27 +102,27 @@ export class BalanceSheetTableComponent implements OnInit {
     console.log(product);
   };
 
-  protected removeEntry(recordId: number, type: 'asset' | 'liability', index: number): void {
-    console.log('remove bs entry: ', type);
-    console.log(recordId);
+  protected removeEntry(balanceSheetEntry: BalanceSheetEntry, index: number): void {
+    console.log('remove bs entry');
+    console.log(balanceSheetEntry);
     
     
-    // if (balanceSheetEntry.record_id) {
-    //   this.coreApi.deactivateBsRecord(balanceSheetEntry?.record_id).pipe(take(1), first())
-    //   .subscribe(
-    //     {
-    //       next: (value: any) => {
-    //         console.log(value);
-    //         this.store.dispatch(new BalancSheetActions.DeactivateUserBalanceRecord(balanceSheetEntry));
-    //       },
-    //       error: (error: any) => {
-    //         console.error(error);
-    //       }
-    //     }
-    //   );
-    // } else {
-    //   this.store.dispatch(new BalancSheetActions.DeactivateUserBalanceRecord(balanceSheetEntry));
-    // };
+    if (balanceSheetEntry.record_id) {
+      this.coreApi.deactivateBsRecord(balanceSheetEntry?.record_id).pipe(take(1), first())
+      .subscribe(
+        {
+          next: (value: any) => {
+            console.log(value);
+            this.store.dispatch(new BalancSheetActions.DeactivateUserBalanceRecord(balanceSheetEntry));
+          },
+          error: (error: any) => {
+            console.error(error);
+          }
+        }
+      );
+    } else {
+      this.store.dispatch(new BalancSheetActions.DeactivateUserBalanceRecord(balanceSheetEntry));
+    };
   };
 
 }
