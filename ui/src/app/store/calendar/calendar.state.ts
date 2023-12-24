@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { CalendarActions } from './calendar.actions';
 import { DateRange } from '../../model/calendar.model';
+import { BalanceSheetActions } from '../balanceSheet/bsState.actions';
+import { IncomeActions } from '../income/income.actions';
+import { ExpenseActions } from '../expense/expese.actions';
 
 
 export interface CalendarStateModel {
@@ -52,7 +55,15 @@ export class CalendarState {
     const lastDayOfCurrentMonth: Date = new Date(now.getFullYear(), now.getMonth() + 1, 0);
     const shortMonthName = now.toLocaleString('en-US', { month: 'short' });
     const longMonthName = now.toLocaleString('en-US', { month: 'long' });
-    const monthYear = now.toLocaleString('en-US', { month: 'long', year: 'numeric' });  
+    const monthYear = now.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+
+
+    const year: string = firstDayOfCurrentMonth.getFullYear().toString();
+    const month: string = (firstDayOfCurrentMonth.getMonth() + 1).toString().padStart(2, '0');
+    const yearMonthId: string = `${year}-${month}`;
+    this.store.dispatch(new BalanceSheetActions.GetAndSetMonthBalanceRecords(yearMonthId));
+    this.store.dispatch(new IncomeActions.GetAndSetMonthIncomeRecords(yearMonthId));
+    this.store.dispatch(new ExpenseActions.GetAndSetMonthExpenseRecords(yearMonthId));
 
     ctx.patchState({ 
         monthYearDisplay: monthYear,
@@ -73,6 +84,13 @@ export class CalendarState {
     const shortMonthName = action.payload.startDate.toLocaleString('en-US', { month: 'short' });
     const longMonthName = action.payload.startDate.toLocaleString('en-US', { month: 'long' });
     const monthYear = action.payload.startDate.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+
+    const year: string = action.payload.startDate.getFullYear().toString();
+    const month: string = (action.payload.startDate.getMonth() + 1).toString().padStart(2, '0');
+    const yearMonthId: string = `${year}-${month}`;
+    this.store.dispatch(new BalanceSheetActions.GetAndSetMonthBalanceRecords(yearMonthId));
+    this.store.dispatch(new IncomeActions.GetAndSetMonthIncomeRecords(yearMonthId));
+    this.store.dispatch(new ExpenseActions.GetAndSetMonthExpenseRecords(yearMonthId));
 
     ctx.patchState({
       monthYearDisplay: monthYear,

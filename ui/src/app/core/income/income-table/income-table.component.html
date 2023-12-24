@@ -13,7 +13,6 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
         </ng-template>
         <ng-template pTemplate="body" let-category let-editing="editing" let-ri="rowIndex">
             <tr [pEditableRow]="category">
-                <!-- <td style="width:15%">{{ category.date | date:'M/d/yy' }}</td> -->
                 <td>
                     <p-cellEditor>
                         <ng-template pTemplate="input">
@@ -35,7 +34,6 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
                         </ng-template>
                     </p-cellEditor>
                 </td>
-                <!-- <td style="width:20%">{{ category.vendor }}</td> -->
                 <td>
                     <p-cellEditor>
                         <ng-template pTemplate="input">
@@ -54,7 +52,6 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
                         </ng-template>
                     </p-cellEditor>
                 </td>
-                <!-- <td style="width:40%">{{ category.note }}</td> -->
                 <td>
                     <p-cellEditor>
                         <ng-template pTemplate="input">
@@ -73,7 +70,6 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
                         </ng-template>
                     </p-cellEditor>
                 </td>
-                <!-- <td style="width:20%">{{ category.amount | currency }}</td> -->
                 <td>
                     <p-cellEditor class="">
                         <ng-template pTemplate="input">
@@ -95,16 +91,6 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
                         </ng-template>
                     </p-cellEditor>
                 </td>
-                <!-- <td style="width:5%">
-                    <div 
-                        class="text-center flex flex-row justify-content-center align-items-center border-circle"
-                        (click)="editIncomeRecord(category)"
-                    >
-                        <div>
-                            <i class="pi pi-file-edit icon-hover"></i>
-                        </div>
-                    </div>
-                </td> -->
                 <td>
                     <div class="flex flex-row flex-nowrap justify-content-center"
                     [ngStyle]="{'width':'6rem'}"
@@ -174,4 +160,3 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
             </tr>
         </ng-template>
     </p-table>
-<!-- </p-card> -->

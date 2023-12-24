@@ -11,7 +11,29 @@ export class BalanceSheetService {
     constructor(
         @InjectClient() private readonly connection: Connection,
         private chipService: ChipService
-        ) {}
+    ) {}
+
+    // async getAllActiveBalanceRecords(userId: number): Promise<BalanceRecordDto[] | 'get error' | 'undefined userid'> {
+    //     const sqlQuery: string = `SELECT * FROM user${userId}_bal_sheet WHERE status != 'deactivated' ORDER BY date ASC;`;
+    //     const userBalanceRecords = await this.connection.query(sqlQuery);
+    //     const results = Object.assign([{}], userBalanceRecords[0]);
+    //     if (Object.keys(results[0]).length === 0 && results.length === 1) {
+    //         return null;
+    //     } else {
+    //         return results;
+    //     };
+    // };
+
+    async getAllActiveBalanceRecordsByMonth(userId: number, yearMonthString: string): Promise<BalanceRecordDto[] | 'get error' | 'undefined userid'> {
+        const sqlQuery: string = `SELECT * FROM user${userId}_bal_sheet WHERE status != 'deactivated' AND date LIKE '${yearMonthString}%' ORDER BY date ASC;`;       
+        const userBalanceRecords = await this.connection.query(sqlQuery);
+        const results = Object.assign([{}], userBalanceRecords[0]);
+        if (Object.keys(results[0]).length === 0 && results.length === 1) {
+            return null;
+        } else {            
+            return results;
+        };
+    };
 
     async postNewBalanceRecord(balanceRecordDto: BalanceRecordDto, userId: number): Promise<BalanceRecordDto | 'insert error' | 'undefined userid' > {
         if (!userId) {

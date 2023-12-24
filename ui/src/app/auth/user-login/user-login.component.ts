@@ -49,7 +49,7 @@ export class UserLoginComponent {
         username: values.username,
         password: values.password
       }
-      console.log(loginBody);
+      // console.log(loginBody);
       this.userApi.authenticateUser(loginBody).pipe(take(1), first())
       .subscribe(
         {

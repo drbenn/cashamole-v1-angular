@@ -1,4 +1,4 @@
-import { Body, Controller, HttpException, HttpStatus, Param, Patch, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Patch, Post, Req, Res } from '@nestjs/common';
 import { BalanceSheetService } from './balance_sheet.service';
 import { BalanceRecordDto } from './balance_sheet-dto/balance_sheet-dto';
 import { Request, Response } from 'express';
@@ -7,7 +7,32 @@ import { Request, Response } from 'express';
 export class BalanceSheetController {
 
     constructor(private balanceSheetService: BalanceSheetService) {}
+
     
+    @Get(':id')
+    async getActiveMonthBalanceRecords(
+        @Req() req: Request, 
+        @Param() params: any,
+        @Res() res: Response
+      ) {
+        if (!req.cookies) {
+            console.log('throw error');
+            // todo: throw error
+        }  else {
+            const userId: number = req.cookies.cashamole_uid;
+            const yearMonthString: string = params.id;
+            
+            const activeMonthBalanceRecords: BalanceRecordDto[] | 'get error' | 'undefined userid' =  await this.balanceSheetService.getAllActiveBalanceRecordsByMonth(userId, yearMonthString);
+
+            if (activeMonthBalanceRecords === 'get error' || activeMonthBalanceRecords === 'undefined userid') {
+                throw new HttpException('balance records get failed', HttpStatus.BAD_REQUEST);
+            } else {
+                res.status(HttpStatus.OK).send({message: 'balance records get successful', data: JSON.stringify(activeMonthBalanceRecords)});
+            };
+        };
+    };
+
+
     @Post()
     async newBalanceRecord(
         @Req() req: Request, 

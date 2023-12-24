@@ -7,6 +7,11 @@ export namespace ExpenseActions {
         constructor(public payload: any) {}
     };
 
+    export class GetAndSetMonthExpenseRecords {
+        static readonly type =  '[Expense] Get and set entries on month change';
+        constructor(public payload: string) {}
+    };
+
     export class AddExpense {
         static readonly type =  '[Expense] Add expense record';
         constructor(public payload: Expense) {}

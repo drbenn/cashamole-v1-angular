@@ -71,7 +71,6 @@ export class NavComponent {
     let nextMonth: Date = this.monthDate;
     nextMonth.setMonth(nextMonth.getMonth() + 1);   
     this.monthDate = nextMonth;
-    console.log(this.monthDate);
     this.updateCalendarDisplay();
     this.updateActiveMonthRange(nextMonth);
   };

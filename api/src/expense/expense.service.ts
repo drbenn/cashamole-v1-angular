@@ -8,7 +8,29 @@ export class ExpenseService {
 
     constructor(
         @InjectClient() private readonly connection: Connection
-        ) {}
+    ) {}
+
+    // async getAllActiveExpenseRecords(userId: number): Promise<ExpenseDto[] | 'get error' | 'undefined userid'> {
+    //     const sqlQuery: string = `SELECT * FROM user${userId}_expenses WHERE status != 'deactivated' ORDER BY date ASC;`;
+    //     const userExpenseRecords = await this.connection.query(sqlQuery);
+    //     const results = Object.assign([{}], userExpenseRecords[0]);
+    //     if (Object.keys(results[0]).length === 0 && results.length === 1) {
+    //         return null;
+    //     } else {
+    //         return results;
+    //     };
+    // };
+
+    async getAllActiveExpenseRecordsByMonth(userId: number, yearMonthString: string): Promise<ExpenseDto[] | 'get error' | 'undefined userid'> {
+        const sqlQuery: string = `SELECT * FROM user${userId}_expenses WHERE status != 'deactivated' AND date LIKE '${yearMonthString}%' ORDER BY date ASC;`;
+        const userExpenseRecords = await this.connection.query(sqlQuery);
+        const results = Object.assign([{}], userExpenseRecords[0]);
+        if (Object.keys(results[0]).length === 0 && results.length === 1) {
+            return null;
+        } else {
+            return results;
+        };
+    };
 
     async postNewExpense(expenseDto: ExpenseDto, userId: number): Promise<ExpenseDto | 'insert error' | 'undefined userid' > {
         

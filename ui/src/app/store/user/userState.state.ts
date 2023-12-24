@@ -6,7 +6,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { UserApiService } from '../../shared/api/user-api.service';
 import { Router } from '@angular/router';
 import { ChipActions } from '../chip/chipState.actions';
-import { BalancSheetActions } from '../balanceSheet/bsState.actions';
+import { BalanceSheetActions } from '../balanceSheet/bsState.actions';
 import { ExpenseActions } from '../expense/expese.actions';
 import { IncomeActions } from '../income/income.actions';
 import { CalendarActions } from '../calendar/calendar.actions';
@@ -66,7 +66,7 @@ export class UserState implements NgxsOnInit {
     this.store.dispatch(new CalendarActions.SetCalendarOnLogin());
     this.store.dispatch(new IncomeActions.SetIncomeOnLogin(action.payload.income));
     this.store.dispatch(new ExpenseActions.SetExpensesOnLogin(action.payload.expenses));
-    this.store.dispatch(new BalancSheetActions.SetBalanceSheetEntriesOnLogin(action.payload.balanceSheetEntries));
+    this.store.dispatch(new BalanceSheetActions.SetBalanceSheetEntriesOnLogin(action.payload.balanceSheetEntries));
     this.store.dispatch(new ChipActions.SetChipsOnLogin(action.payload.chips));
     ctx.patchState({ 
       isInitUserDataLoaded: true,

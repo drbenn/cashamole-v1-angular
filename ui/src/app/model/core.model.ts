@@ -25,3 +25,8 @@ export interface Expense {
     note: string;
     status?: string | 'active' | 'cancelled';
 }
+
+export interface BasicApiResponse {
+    message: string,
+    data: any
+}

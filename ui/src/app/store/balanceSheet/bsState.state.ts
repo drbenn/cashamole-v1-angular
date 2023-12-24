@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Action, State, StateContext, Store } from '@ngxs/store';
 import { Router } from '@angular/router';
-import { BalancSheetActions } from './bsState.actions';
+import { BalanceSheetActions } from './bsState.actions';
 import { BalanceSheetEntry } from '../../model/core.model';
+import { CoreApiService } from '../../shared/api/core-api.service';
 
 
 export interface BalanceSheetStateModel {
@@ -20,25 +21,44 @@ export interface BalanceSheetStateModel {
 export class BalanceSheetState {
   constructor(
     private store: Store,
-    private router: Router
+    private router: Router,
+    private coreApi: CoreApiService
     ) {}
 
 
 
-    @Action(BalancSheetActions.SetBalanceSheetEntriesOnLogin)
-    SstBalanceSheetEntriesOnLogin(
+    @Action(BalanceSheetActions.SetBalanceSheetEntriesOnLogin)
+    SetBalanceSheetEntriesOnLogin(
       ctx: StateContext<BalanceSheetStateModel>,
-      action: BalancSheetActions.SetBalanceSheetEntriesOnLogin
+      action: BalanceSheetActions.SetBalanceSheetEntriesOnLogin
     ) {
       ctx.patchState({ 
         entries: action.payload
       });
     }
 
-    @Action(BalancSheetActions.AddUserBalanceRecord)
+    @Action(BalanceSheetActions.GetAndSetMonthBalanceRecords)
+    getAndSetMonthBalanceRecords(
+      ctx: StateContext<BalanceSheetStateModel>,
+      action: BalanceSheetActions.GetAndSetMonthBalanceRecords
+    ) {
+      this.coreApi.getActiveBalanceRecordsByMonth(action.payload).subscribe((res: any) => {
+        if (res.data === 'null') {
+          ctx.patchState({ 
+            entries: []
+          });
+        } else {
+          ctx.patchState({ 
+            entries: JSON.parse(res.data)
+          });
+        };
+      });
+    };
+
+    @Action(BalanceSheetActions.AddUserBalanceRecord)
     addUserBalanceRecord(
         ctx: StateContext<BalanceSheetStateModel>,
-        action: BalancSheetActions.AddUserBalanceRecord
+        action: BalanceSheetActions.AddUserBalanceRecord
     ) {
         let currentBalanceRecords: BalanceSheetEntry[] = ctx.getState().entries;
         currentBalanceRecords === null ? currentBalanceRecords = [] : currentBalanceRecords = currentBalanceRecords; 
@@ -47,10 +67,10 @@ export class BalanceSheetState {
         ctx.patchState({ entries: updatedBalanceRecords });
     };
 
-    @Action(BalancSheetActions.EditUserBalanceRecord)
+    @Action(BalanceSheetActions.EditUserBalanceRecord)
     editUserBalanceRecord(
         ctx: StateContext<BalanceSheetStateModel>,
-        action: BalancSheetActions.EditUserBalanceRecord
+        action: BalanceSheetActions.EditUserBalanceRecord
     ) {
         let currentBalanceRecords: BalanceSheetEntry[] = ctx.getState().entries;
         currentBalanceRecords === null ? currentBalanceRecords = [] : currentBalanceRecords = currentBalanceRecords; 
@@ -65,22 +85,19 @@ export class BalanceSheetState {
         ctx.patchState({ entries: updatedBalanceRecords });
     };
 
-    @Action(BalancSheetActions.DeactivateUserBalanceRecord)
+    @Action(BalanceSheetActions.DeactivateUserBalanceRecord)
     deactivateUserBalanceRecord(
         ctx: StateContext<BalanceSheetStateModel>,
-        action: BalancSheetActions.DeactivateUserBalanceRecord
+        action: BalanceSheetActions.DeactivateUserBalanceRecord
     ) {
         let currentBalanceRecords: BalanceSheetEntry[] = ctx.getState().entries;
         currentBalanceRecords === null ? currentBalanceRecords = [] : currentBalanceRecords = currentBalanceRecords; 
         const updatedBalanceRecords: BalanceSheetEntry[] = [];
         currentBalanceRecords.forEach((record: BalanceSheetEntry) => {
-          if (record.record_id !== action.payload.record_id || 
-              record.amount !== action.payload.amount && record.date !== action.payload.date && 
-              record.type !== action.payload.type && record.description !== action.payload.description 
-          ) {
-            updatedBalanceRecords.push(action.payload);
+          if (record.record_id !== action.payload.record_id) {
+            updatedBalanceRecords.push(record);
           };
-        })
+        });        
         ctx.patchState({ entries: updatedBalanceRecords });
     };
 }

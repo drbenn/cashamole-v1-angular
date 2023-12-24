@@ -1,4 +1,4 @@
-import { Body, Controller, HttpException, HttpStatus, Param, Patch, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Patch, Post, Req, Res } from '@nestjs/common';
 
 import { Request, Response } from 'express';
 import { IncomeService } from './income.service';
@@ -8,6 +8,56 @@ import { IncomeDto } from './income-dto/income-dto';
 export class IncomeController {
 
     constructor(private incomeService: IncomeService) {}
+
+
+    // @Get(':id')
+    // async getActiveIncomeRecords(
+    //     @Req() req: Request, 
+    //     @Param() params: any,
+    //     @Res() res: Response
+    //   ) {
+    //     if (!req.cookies) {
+    //         console.log('throw error');
+    //         // todo: throw error
+    //     }  else {
+    //         const userId: number = req.cookies.cashamole_uid;
+    //         console.log('====PARAMS====');
+            
+    //         console.log(params);
+            
+    //         // const activeExpenseRecords: ExpenseDto[] | 'get error' | 'undefined userid' =  await this.expenseService.getActiveExpenses(userId);
+
+    //         // if (activeExpenseRecords === 'get error' || activeExpenseRecords === 'undefined userid') {
+    //         //     throw new HttpException('expense records get failed', HttpStatus.BAD_REQUEST);
+    //         // } else {
+    //         //     res.status(HttpStatus.OK).send({message: 'expense records get successful', data: JSON.stringify(activeExpenseRecords)});
+    //         // };
+    //     };
+    // };
+
+    @Get(':id')
+    async getActiveMonthIncomeRecords(
+        @Req() req: Request, 
+        @Param() params: any,
+        @Res() res: Response
+      ) {
+        if (!req.cookies) {
+            console.log('throw error');
+            // todo: throw error
+        }  else {
+            const userId: number = req.cookies.cashamole_uid;
+            const yearMonthString: string = params.id;
+            
+            const activeMonthIncomeRecords: IncomeDto[] | 'get error' | 'undefined userid' =  await this.incomeService.getAllActiveIncomeRecordsByMonth(userId, yearMonthString);
+
+            if (activeMonthIncomeRecords === 'get error' || activeMonthIncomeRecords === 'undefined userid') {
+                throw new HttpException('income records get failed', HttpStatus.BAD_REQUEST);
+            } else {
+                res.status(HttpStatus.OK).send({message: 'income records get successful', data: JSON.stringify(activeMonthIncomeRecords)});
+            };
+        };
+    };
+
     
     @Post()
     async newTransaction(

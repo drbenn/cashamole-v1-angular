@@ -9,18 +9,29 @@ export class IncomeService {
 
     constructor(
         @InjectClient() private readonly connection: Connection
-        ) {}
+    ) {}
 
-    // async getActiveIncome(userId: number): Promise<IncomeDto[]> {
+    // async getAllActiveIncomeRecords(userId: number): Promise<IncomeDto[] | 'get error' | 'undefined userid'> {
     //     const sqlQuery: string = `SELECT * FROM user${userId}_income WHERE status != 'deactivated' ORDER BY date ASC;`;
-    //     const userIncome = await this.connection.query(sqlQuery);
-    //     const results = Object.assign([{}], userIncome[0]);
+    //     const userIncomeRecords = await this.connection.query(sqlQuery);
+    //     const results = Object.assign([{}], userIncomeRecords[0]);
     //     if (Object.keys(results[0]).length === 0 && results.length === 1) {
     //         return null;
     //     } else {
     //         return results;
     //     };
     // };
+
+    async getAllActiveIncomeRecordsByMonth(userId: number, yearMonthString: string): Promise<IncomeDto[] | 'get error' | 'undefined userid'> {
+        const sqlQuery: string = `SELECT * FROM user${userId}_income WHERE status != 'deactivated' AND date LIKE '${yearMonthString}%' ORDER BY date ASC;`;
+        const userIncomeRecords = await this.connection.query(sqlQuery);
+        const results = Object.assign([{}], userIncomeRecords[0]);
+        if (Object.keys(results[0]).length === 0 && results.length === 1) {
+            return null;
+        } else {
+            return results;
+        };
+    };
 
     async postNewIncome(incomeDto: IncomeDto, userId: number): Promise<IncomeDto | 'insert error' | 'undefined userid' > {
         if (!userId) {

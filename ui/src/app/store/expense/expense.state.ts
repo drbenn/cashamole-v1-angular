@@ -3,6 +3,7 @@ import { Action, State, StateContext, Store } from '@ngxs/store';
 import { Router } from '@angular/router';
 import { ExpenseActions } from './expese.actions';
 import { Expense } from '../../model/core.model';
+import { CoreApiService } from '../../shared/api/core-api.service';
 
 
 
@@ -22,7 +23,8 @@ export interface ExpenseStateModel {
 export class ExpenseState {
   constructor(
     private store: Store,
-    private router: Router
+    private router: Router,
+    private coreApi: CoreApiService
     ) {}
 
 
@@ -36,6 +38,24 @@ export class ExpenseState {
     });
   }
 
+  @Action(ExpenseActions.GetAndSetMonthExpenseRecords)
+  getAndSetMonthExpenseRecords(
+    ctx: StateContext<ExpenseStateModel>,
+    action: ExpenseActions.GetAndSetMonthExpenseRecords
+  ) {
+    this.coreApi.getActiveExpenseRecordsByMonth(action.payload).subscribe((res: any) => {
+      if (res.data === 'null') {
+        ctx.patchState({ 
+          expenses: []
+        });
+      } else {
+        ctx.patchState({ 
+          expenses: JSON.parse(res.data)
+        });
+      };
+    });
+  };
+
   @Action(ExpenseActions.AddExpense)
   addExpense(
     ctx: StateContext<ExpenseStateModel>,
@@ -45,5 +65,21 @@ export class ExpenseState {
     updatedExpenses === null ? updatedExpenses = [] : updatedExpenses = updatedExpenses; 
     updatedExpenses.push(action.payload);
     ctx.patchState({ expenses: updatedExpenses });
+  };
+
+  @Action(ExpenseActions.DeactivateUserExpenseRecord)
+  deactivateUserExpenseRecord(
+      ctx: StateContext<ExpenseStateModel>,
+      action: ExpenseActions.DeactivateUserExpenseRecord
+  ) {
+      let currentExpenseRecords: Expense[] = ctx.getState().expenses;
+      currentExpenseRecords === null ? currentExpenseRecords = [] : currentExpenseRecords = currentExpenseRecords; 
+      const updatedExpenseRecords: Expense[] = [];
+      currentExpenseRecords.forEach((record: Expense) => {
+        if (record.exp_id !== action.payload.exp_id) {
+          updatedExpenseRecords.push(record);
+        };
+      });    
+      ctx.patchState({ expenses: updatedExpenseRecords });
   };
 }

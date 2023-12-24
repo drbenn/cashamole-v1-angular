@@ -44,7 +44,6 @@
                         <td>
                             <p-cellEditor>
                                 <ng-template pTemplate="input">
-                                    <!-- <input pInputText type="text" [(ngModel)]="entry.description"> -->
                                     <span class="p-float-label">
                                         <input 
                                             pInputText
@@ -63,7 +62,6 @@
                         <td>
                             <p-cellEditor class="">
                                 <ng-template pTemplate="input">
-                                    <!-- <input pInputText type="text" [(ngModel)]="entry.amount"> -->
                                     <span class="p-float-label">
                                         <p-inputNumber 
                                             id="amount"
@@ -139,7 +137,7 @@
                                             type="button"
                                             pCancelEditableRow
                                             icon="pi pi-trash"
-                                            (click)="removeEntry(entry, 'asset', ri)"
+                                            (click)="removeEntry(entry, ri)"
                                             class="p-button-rounded p-button-text p-button-danger w-2rem"
                                             pTooltip="Delete Record"
                                             tooltipPosition="top"
@@ -170,7 +168,6 @@
 
                 <ng-template pTemplate="body" let-entry let-editing="editing" let-ri="rowIndex">
                     <tr [pEditableRow]="entry">
-                        <!-- <td style="width:15%">{{ type.date | date:'M/d/yy' }}</td> -->
                         <td>
                             <p-cellEditor>
                                 <ng-template pTemplate="input">
@@ -192,7 +189,6 @@
                                 </ng-template>
                             </p-cellEditor>
                         </td>
-                        <!-- <td style="width:60%">{{ type.description }}</td> -->
                         <td>
                             <p-cellEditor>
                                 <ng-template pTemplate="input">
@@ -211,11 +207,9 @@
                                 </ng-template>
                             </p-cellEditor>
                         </td>
-                        <!-- <td style="width:20%">{{ type.amount | currency }}</td> -->
                         <td>
                             <p-cellEditor class="">
                                 <ng-template pTemplate="input">
-                                    <!-- <input pInputText type="text" [(ngModel)]="entry.amount"> -->
                                     <span class="p-float-label">
                                         <p-inputNumber 
                                             id="amount"
@@ -291,7 +285,7 @@
                                             type="button"
                                             pCancelEditableRow
                                             icon="pi pi-trash"
-                                            (click)="removeEntry(entry, 'liability', ri)"
+                                            (click)="removeEntry(entry, ri)"
                                             class="p-button-rounded p-button-text p-button-danger w-2rem"
                                             pTooltip="Delete Record"
                                             tooltipPosition="top"

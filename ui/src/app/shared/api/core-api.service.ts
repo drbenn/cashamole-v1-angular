@@ -16,6 +16,14 @@ export class CoreApiService {
 
   // ===================== INCOME API CALLS ======================
 
+  public getAllActiveIncomeRecords(): Observable<Income[]> {
+    return this.httpClient.get(this.apiUrl + '/income', {withCredentials: true}) as Observable<Income[]>;
+  };
+
+  public getActiveIncomeRecordsByMonth(yearMonthId:string): Observable<Income[]> {
+    return this.httpClient.get(this.apiUrl + `/income/${yearMonthId}`, {withCredentials: true}) as Observable<Income[]>;
+  };
+
   public submitNewIncomeRecord(incomeBody: Income): Observable<Income> {
     return this.httpClient.post(this.apiUrl + '/income', incomeBody, {withCredentials: true}) as Observable<Income>;
   };
@@ -33,6 +41,14 @@ export class CoreApiService {
 
   // ===================== EXPENSE API CALLS ======================
 
+  public getAllActiveExpenseRecords(): Observable<Expense[]> {
+    return this.httpClient.get(this.apiUrl + '/expense', {withCredentials: true}) as Observable<Expense[]>;
+  };
+
+  public getActiveExpenseRecordsByMonth(yearMonthId:string): Observable<Expense[]> {
+    return this.httpClient.get(this.apiUrl + `/expense/${yearMonthId}`, {withCredentials: true}) as Observable<Expense[]>;
+  };
+
   public submitNewExpenseRecord(expenseBody: Expense): Observable<Expense> {
     return this.httpClient.post(this.apiUrl + '/expense', expenseBody, {withCredentials: true}) as Observable<Expense>;
   };
@@ -48,6 +64,14 @@ export class CoreApiService {
 
 
   // ===================== BALANCE SHEET API CALLS ======================
+
+  public getAllActiveBalanceRecords(): Observable<BalanceSheetEntry[]> {
+    return this.httpClient.get(this.apiUrl + '/balance-sheet', {withCredentials: true}) as Observable<BalanceSheetEntry[]>;
+  };
+
+  public getActiveBalanceRecordsByMonth(yearMonthId:string): Observable<BalanceSheetEntry[]> {
+    return this.httpClient.get(this.apiUrl + `/balance-sheet/${yearMonthId}`, {withCredentials: true}) as Observable<BalanceSheetEntry[]>;
+  };
 
   public submitNewBsRecord(balanceSheetEntryBody: BalanceSheetEntry): Observable<BalanceSheetEntry> {    
     return this.httpClient.post(this.apiUrl + '/balance-sheet', balanceSheetEntryBody, {withCredentials: true}) as Observable<BalanceSheetEntry>;

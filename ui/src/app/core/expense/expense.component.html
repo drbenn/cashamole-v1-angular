@@ -4,7 +4,7 @@
    <section class="my-3">
        <app-new-expense-transaction></app-new-expense-transaction>
    </section>
-    <section class="my-4">
+    <section class="my-4" *ngIf="latestData">
         @for (category of expenseCategoryArray; track expenseCategoryObject[category].exp_id) {
             <section class="m-4">
                 <app-expense-table [tableTitle]="category" [tableData]="expenseCategoryObject[category]"></app-expense-table>

@@ -1,10 +1,15 @@
 import { BalanceSheetEntry } from "../../model/core.model";
 
-export namespace BalancSheetActions {
+export namespace BalanceSheetActions {
 
     export class SetBalanceSheetEntriesOnLogin {
         static readonly type =  '[Balance Sheet] Set entries on login';
         constructor(public payload: any) {}
+    };
+
+    export class GetAndSetMonthBalanceRecords {
+        static readonly type =  '[Balance Sheet] Get and set entries on month change';
+        constructor(public payload: string) {}
     };
 
     export class AddUserBalanceRecord {

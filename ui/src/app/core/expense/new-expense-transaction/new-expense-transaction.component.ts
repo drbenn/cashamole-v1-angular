@@ -131,8 +131,6 @@ export class NewExpenseTransactionComponent implements OnInit {
       .subscribe(
         {
           next: (value: any) => {
-            console.log(value);
-            
             // Updates state with new transaction / no need for full data pull on db upon each update
             this.store.dispatch(new ExpenseActions.AddExpense(JSON.parse(value.data)));
           },

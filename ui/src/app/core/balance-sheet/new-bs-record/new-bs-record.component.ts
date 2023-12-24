@@ -13,7 +13,7 @@ import { ChipSelectComponent } from '../../../shared/chip-select/chip-select.com
 import { Chip } from '../../../model/chips.model';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { ChipState } from '../../../store/chip/chipState.state';
-import { BalancSheetActions } from '../../../store/balanceSheet/bsState.actions';
+import { BalanceSheetActions } from '../../../store/balanceSheet/bsState.actions';
 import { BalanceSheetEntry } from '../../../model/core.model';
 import { CalendarState } from '../../../store/calendar/calendar.state';
 
@@ -68,7 +68,7 @@ export class NewBsRecordComponent implements OnInit {
 
   ngOnInit(): void {
     this.today = new Date();
-    this.activeMonthStartDate$.subscribe((startDate: Date) => {
+    this.activeMonthStartDate$.subscribe((startDate: Date) => {      
       this.activeMonthStartDate = startDate;
     })
     this.assetChips$.subscribe((chips: Chip[]) => {
@@ -148,7 +148,7 @@ export class NewBsRecordComponent implements OnInit {
         {
           next: (value: any) => {
             // Updates state with new transaction / no need for full data pull on db upon each update
-            this.store.dispatch(new BalancSheetActions.AddUserBalanceRecord(JSON.parse(value.data)));
+            this.store.dispatch(new BalanceSheetActions.AddUserBalanceRecord(JSON.parse(value.data)));
             this.clearForm();
           },
           error: (error: any) => {

@@ -1,12 +1,57 @@
-import { Body, Controller, HttpException, HttpStatus, Patch, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Patch, Post, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { ExpenseService } from './expense.service';
 import { ExpenseDto } from './expense-dto/expense-dto';
+import { IncomeDto } from 'src/income/income-dto/income-dto';
 
 @Controller('expense')
 export class ExpenseController {
 
     constructor(private expenseService: ExpenseService) {}
+
+    // @Get()
+    // async getActiveExpenseRecords(
+    //     @Req() req: Request, 
+    //     @Param() params: any,
+    //     @Res() res: Response
+    //   ) {
+    //     if (!req.cookies) {
+    //         console.log('throw error');
+    //         // todo: throw error
+    //     }  else {
+    //         const userId: number = params.id;
+    //         const activeExpenseRecords: ExpenseDto[] | 'get error' | 'undefined userid' =  await this.expenseService.getActiveExpenses(userId);
+
+    //         if (activeExpenseRecords === 'get error' || activeExpenseRecords === 'undefined userid') {
+    //             throw new HttpException('expense records get failed', HttpStatus.BAD_REQUEST);
+    //         } else {
+    //             res.status(HttpStatus.OK).send({message: 'expense records get successful', data: JSON.stringify(activeExpenseRecords)});
+    //         };
+    //     };
+    // };
+
+    @Get(':id')
+    async getActiveMonthExpenseRecords(
+        @Req() req: Request, 
+        @Param() params: any,
+        @Res() res: Response
+      ) {
+        if (!req.cookies) {
+            console.log('throw error');
+            // todo: throw error
+        }  else {
+            const userId: number = req.cookies.cashamole_uid;
+            const yearMonthString: string = params.id;
+            
+            const activeMonthExpenseRecords: ExpenseDto[] | 'get error' | 'undefined userid' =  await this.expenseService.getAllActiveExpenseRecordsByMonth(userId, yearMonthString);
+
+            if (activeMonthExpenseRecords === 'get error' || activeMonthExpenseRecords === 'undefined userid') {
+                throw new HttpException('expense records get failed', HttpStatus.BAD_REQUEST);
+            } else {
+                res.status(HttpStatus.OK).send({message: 'expense records get successful', data: JSON.stringify(activeMonthExpenseRecords)});
+            };
+        };
+    };
     
     @Post()
     async newTransaction(
