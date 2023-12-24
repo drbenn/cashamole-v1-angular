@@ -72,17 +72,21 @@ export class BalanceSheetState {
         ctx: StateContext<BalanceSheetStateModel>,
         action: BalanceSheetActions.EditUserBalanceRecord
     ) {
-        let currentBalanceRecords: BalanceSheetEntry[] = ctx.getState().entries;
-        currentBalanceRecords === null ? currentBalanceRecords = [] : currentBalanceRecords = currentBalanceRecords; 
-        const updatedBalanceRecords: BalanceSheetEntry[] = [];
-        currentBalanceRecords.forEach((record: BalanceSheetEntry) => {
-          if (record.record_id === action.payload.record_id) {
-            updatedBalanceRecords.push(action.payload);
-          } else {
-            updatedBalanceRecords.push(record);
-          }
-        })
-        ctx.patchState({ entries: updatedBalanceRecords });
+      const year: string = action.payload.date.getFullYear().toString();
+      const month: string = (action.payload.date.getMonth() + 1).toString().padStart(2, '0');
+      const yearMonthId: string = `${year}-${month}`;
+      this.store.dispatch(new BalanceSheetActions.GetAndSetMonthBalanceRecords(yearMonthId));
+      // let currentBalanceRecords: BalanceSheetEntry[] = ctx.getState().entries;
+      // currentBalanceRecords === null ? currentBalanceRecords = [] : currentBalanceRecords = currentBalanceRecords; 
+      // const updatedBalanceRecords: BalanceSheetEntry[] = [];
+      // currentBalanceRecords.forEach((record: BalanceSheetEntry) => {
+      //   if (record.record_id === action.payload.record_id) {
+      //     updatedBalanceRecords.push(action.payload);
+      //   } else {
+      //     updatedBalanceRecords.push(record);
+      //   }
+      // })
+      // ctx.patchState({ entries: updatedBalanceRecords });
     };
 
     @Action(BalanceSheetActions.DeactivateUserBalanceRecord)

@@ -65,6 +65,28 @@ export class IncomeState {
     ctx.patchState({ income: updatedIncome });
   };
 
+  @Action(IncomeActions.EditIncomeRecord)
+  editUserIncomeRecord(
+      ctx: StateContext<IncomeStateModel>,
+      action: IncomeActions.EditIncomeRecord
+  ) {
+    const year: string = action.payload.date.getFullYear().toString();
+    const month: string = (action.payload.date.getMonth() + 1).toString().padStart(2, '0');
+    const yearMonthId: string = `${year}-${month}`;
+    this.store.dispatch(new IncomeActions.GetAndSetMonthIncomeRecords(yearMonthId));
+    // let currentIncomeRecords: Income[] = ctx.getState().income;
+    // currentIncomeRecords === null ? currentIncomeRecords = [] : currentIncomeRecords = currentIncomeRecords; 
+    // const updatedIncomeRecords: Income[] = [];
+    // currentIncomeRecords.forEach((record: Income) => {
+    //   if (record.inc_id === action.payload.inc_id) {
+    //     updatedIncomeRecords.push(action.payload);
+    //   } else {
+    //     updatedIncomeRecords.push(record);
+    //   }
+    // })
+    // ctx.patchState({ income: updatedIncomeRecords });
+  };
+
   @Action(IncomeActions.DeactivateUserIncomeRecord)
   deactivateUserIncomeRecord(
       ctx: StateContext<IncomeStateModel>,

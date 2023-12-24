@@ -12,7 +12,7 @@
             <p-table [value]="assets" dataKey="record_id" editMode="row" [tableStyle]="{ 'width': 'fit-content' }" styleClass="p-datatable-sm">
                 <ng-template pTemplate="header">
                     <tr>
-                        <th pSortableColumn="date" [style]="{'width': '7rem'}">Date</th>
+                        <th pSortableColumn="date" [style]="{'width': '8rem'}">Date</th>
                         <th pSortableColumn="description" [style]="{'width': '10rem'}">Description</th>
                         <th pSortableColumn="amount" [style]="{'width': '5rem'}">Amount</th>
                         <th [style]="{'width': '6rem'}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit</th>
@@ -28,9 +28,10 @@
                                             id="date"
                                             [showIcon]="true"
                                             [(ngModel)]="entry.date"
-                                            [style]="{'width':'7rem'}"
+                                            [inputStyle]="{'width':'8rem'}"
                                             appendTo="body"
-                                            dateFormat="mm/dd/y"
+                                            view="month"
+                                            dateFormat="M y"
                                         >
                                         </p-calendar>
                                         <label htmlFor="date">Date</label>
@@ -176,9 +177,10 @@
                                             id="date"
                                             [showIcon]="true"
                                             [(ngModel)]="entry.date"
-                                            [style]="{'width':'7rem'}"
+                                            [inputStyle]="{'width':'8rem'}"
                                             appendTo="body"
-                                            dateFormat="mm/dd/y"
+                                            view="month"
+                                            dateFormat="M y"
                                         >
                                         </p-calendar>
                                         <label htmlFor="date">Date</label>

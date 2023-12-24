@@ -67,6 +67,28 @@ export class ExpenseState {
     ctx.patchState({ expenses: updatedExpenses });
   };
 
+  @Action(ExpenseActions.EditUserExpenseRecord)
+  editUserExpenseRecord(
+      ctx: StateContext<ExpenseStateModel>,
+      action: ExpenseActions.EditUserExpenseRecord
+  ) {
+    const year: string = action.payload.date.getFullYear().toString();
+    const month: string = (action.payload.date.getMonth() + 1).toString().padStart(2, '0');
+    const yearMonthId: string = `${year}-${month}`;
+    this.store.dispatch(new ExpenseActions.GetAndSetMonthExpenseRecords(yearMonthId));
+    // let currentExpenseRecords: Expense[] = ctx.getState().expenses;
+    // currentExpenseRecords === null ? currentExpenseRecords = [] : currentExpenseRecords = currentExpenseRecords; 
+    // const updatedExpenseRecords: Expense[] = [];
+    // currentExpenseRecords.forEach((record: Expense) => {
+    //   if (record.exp_id === action.payload.exp_id) {
+    //     updatedExpenseRecords.push(action.payload);
+    //   } else {
+    //     updatedExpenseRecords.push(record);
+    //   }
+    // })
+    // ctx.patchState({ expenses: updatedExpenseRecords });
+  };
+
   @Action(ExpenseActions.DeactivateUserExpenseRecord)
   deactivateUserExpenseRecord(
       ctx: StateContext<ExpenseStateModel>,
