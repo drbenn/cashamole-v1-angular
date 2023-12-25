@@ -1,38 +1,39 @@
-<main 
-    *ngIf="monthIncome !== 0 && monthExpense !== 0 && monthNetCashflow !== 0"
-    class="flex flex-no-wrap flex-row justify-content-center align-items-center">
-    <div class="bg-red-100 flex flex-no-wrap flex-column justify-content-center align-items-center">
-        <div>
-            {{ monthIncome | currency: 'USD'}}
-        </div>
-        <div>
-            Income
-        </div>
-    </div>
 
-    <div>
-        -
-    </div>
-
-    <div class="bg-red-100 flex flex-no-wrap flex-column justify-content-center align-items-center">
+@if (monthIncome !== 0 && monthExpense !== 0 && monthNetCashflow !== 0) {
+    <main class="flex flex-no-wrap flex-row justify-content-center align-items-center">
+        <div class="bg-red-100 flex flex-no-wrap flex-column justify-content-center align-items-center">
+            <div>
+                {{ monthIncome | currency: 'USD'}}
+            </div>
+            <div>
+                Income
+            </div>
+        </div>
+    
         <div>
-            {{ monthExpense | currency: 'USD'}}
+            -
         </div>
+    
+        <div class="bg-red-100 flex flex-no-wrap flex-column justify-content-center align-items-center">
+            <div>
+                {{ monthExpense | currency: 'USD'}}
+            </div>
+            <div>
+                Expense
+            </div>
+        </div>
+    
         <div>
-            Expense
+            =
         </div>
-    </div>
-
-    <div>
-        =
-    </div>
-
-    <div class="bg-red-100 flex flex-no-wrap flex-column justify-content-center align-items-center">
-        <div [ngClass]="monthNetCashflow < 0 ? 'text-red-400' : 'text-green-400' ">
-            {{ monthNetCashflow | currency: 'USD'}}
+    
+        <div class="bg-red-100 flex flex-no-wrap flex-column justify-content-center align-items-center">
+            <div [ngClass]="monthNetCashflow < 0 ? 'text-red-400' : 'text-green-400' ">
+                {{ monthNetCashflow | currency: 'USD'}}
+            </div>
+            <div>
+                Cash Flow
+            </div>
         </div>
-        <div>
-            Cash Flow
-        </div>
-    </div>
-</main>
+    </main>
+}
