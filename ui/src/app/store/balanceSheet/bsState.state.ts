@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { BalanceSheetActions } from './bsState.actions';
 import { BalanceSheetEntry } from '../../model/core.model';
 import { CoreApiService } from '../../shared/api/core-api.service';
+import { DashboardActions } from '../dashboard/dashboard.actions';
 
 
 export interface BalanceSheetStateModel {
@@ -44,10 +45,13 @@ export class BalanceSheetState {
     ) {
       this.coreApi.getActiveBalanceRecordsByMonth(action.payload).subscribe((res: any) => {
         if (res.data === 'null') {
+          this.store.dispatch(new DashboardActions.UpdateMonthBalanceSheetTotal(null));
           ctx.patchState({ 
             entries: []
           });
         } else {
+          const resData: BalanceSheetEntry[] = JSON.parse(res.data)
+          this.store.dispatch(new DashboardActions.UpdateMonthBalanceSheetTotal(resData));
           ctx.patchState({ 
             entries: JSON.parse(res.data)
           });
@@ -64,6 +68,7 @@ export class BalanceSheetState {
         currentBalanceRecords === null ? currentBalanceRecords = [] : currentBalanceRecords = currentBalanceRecords; 
         currentBalanceRecords.push(action.payload);
         const updatedBalanceRecords: BalanceSheetEntry[] = currentBalanceRecords.map((obj: BalanceSheetEntry) => obj);
+        this.store.dispatch(new DashboardActions.UpdateMonthBalanceSheetTotal(updatedBalanceRecords));
         ctx.patchState({ entries: updatedBalanceRecords });
     };
 
@@ -101,7 +106,8 @@ export class BalanceSheetState {
           if (record.record_id !== action.payload.record_id) {
             updatedBalanceRecords.push(record);
           };
-        });        
+        });
+        this.store.dispatch(new DashboardActions.UpdateMonthBalanceSheetTotal(updatedBalanceRecords)); 
         ctx.patchState({ entries: updatedBalanceRecords });
     };
 }

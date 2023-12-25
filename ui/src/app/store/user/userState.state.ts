@@ -7,7 +7,7 @@ import { UserApiService } from '../../shared/api/user-api.service';
 import { Router } from '@angular/router';
 import { ChipActions } from '../chip/chipState.actions';
 import { BalanceSheetActions } from '../balanceSheet/bsState.actions';
-import { ExpenseActions } from '../expense/expese.actions';
+import { ExpenseActions } from '../expense/expense.actions';
 import { IncomeActions } from '../income/income.actions';
 import { CalendarActions } from '../calendar/calendar.actions';
 

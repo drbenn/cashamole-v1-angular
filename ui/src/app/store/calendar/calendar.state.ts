@@ -4,7 +4,7 @@ import { CalendarActions } from './calendar.actions';
 import { DateRange } from '../../model/calendar.model';
 import { BalanceSheetActions } from '../balanceSheet/bsState.actions';
 import { IncomeActions } from '../income/income.actions';
-import { ExpenseActions } from '../expense/expese.actions';
+import { ExpenseActions } from '../expense/expense.actions';
 
 
 export interface CalendarStateModel {

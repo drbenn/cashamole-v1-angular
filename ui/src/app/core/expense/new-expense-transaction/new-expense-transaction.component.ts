@@ -13,7 +13,7 @@ import { ChipSelectComponent } from '../../../shared/chip-select/chip-select.com
 import { Chip } from '../../../model/chips.model';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { ChipState } from '../../../store/chip/chipState.state';
-import { ExpenseActions } from '../../../store/expense/expese.actions';
+import { ExpenseActions } from '../../../store/expense/expense.actions';
 import { Expense } from '../../../model/core.model';
 
 

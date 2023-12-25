@@ -10,7 +10,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { CoreApiService } from '../../../shared/api/core-api.service';
 import { TooltipModule } from 'primeng/tooltip';
 import { Expense } from '../../../model/core.model';
-import { ExpenseActions } from '../../../store/expense/expese.actions';
+import { ExpenseActions } from '../../../store/expense/expense.actions';
 
 
 @Component({

@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Action, State, StateContext, Store } from '@ngxs/store';
 import { Router } from '@angular/router';
-import { ExpenseActions } from './expese.actions';
+import { ExpenseActions } from './expense.actions';
 import { Expense } from '../../model/core.model';
 import { CoreApiService } from '../../shared/api/core-api.service';
+import { DashboardActions } from '../dashboard/dashboard.actions';
 
 
 
@@ -45,12 +46,15 @@ export class ExpenseState {
   ) {
     this.coreApi.getActiveExpenseRecordsByMonth(action.payload).subscribe((res: any) => {
       if (res.data === 'null') {
+        this.store.dispatch(new DashboardActions.UpdateMonthExpenseTotal(null));
         ctx.patchState({ 
           expenses: []
         });
       } else {
-        ctx.patchState({ 
-          expenses: JSON.parse(res.data)
+        const resData: Expense[] = JSON.parse(res.data)
+        this.store.dispatch(new DashboardActions.UpdateMonthExpenseTotal(resData));
+        ctx.patchState({
+          expenses: resData
         });
       };
     });
@@ -64,6 +68,7 @@ export class ExpenseState {
     let updatedExpenses: Expense[] = ctx.getState().expenses;
     updatedExpenses === null ? updatedExpenses = [] : updatedExpenses = updatedExpenses; 
     updatedExpenses.push(action.payload);
+    this.store.dispatch(new DashboardActions.UpdateMonthExpenseTotal(updatedExpenses));
     ctx.patchState({ expenses: updatedExpenses });
   };
 
@@ -101,7 +106,8 @@ export class ExpenseState {
         if (record.exp_id !== action.payload.exp_id) {
           updatedExpenseRecords.push(record);
         };
-      });    
+      });
+      this.store.dispatch(new DashboardActions.UpdateMonthExpenseTotal(updatedExpenseRecords)); 
       ctx.patchState({ expenses: updatedExpenseRecords });
   };
 }
