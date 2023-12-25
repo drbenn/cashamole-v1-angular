@@ -33,8 +33,6 @@ export class BalanceSheetTableComponent implements OnInit {
   ngOnInit(): void {
     this.balanceSheetData$.subscribe((data: BalanceSheetEntry[]) => {     
       if (data) {
-        console.log(data);
-        
         this.resetTableData();  
         this.setMonthEntriesToBsType(data);
       };

@@ -1,4 +1,6 @@
-<main class="flex flex-no-wrap flex-row justify-content-center align-items-center">
+<main 
+    *ngIf="monthAssets !== 0 && monthLiabilities !== 0 && monthNetWorth !== 0"
+    class="flex flex-no-wrap flex-row justify-content-center align-items-center">
     <div class="bg-blue-100 flex flex-no-wrap flex-column justify-content-center align-items-center">
         <div>
             {{ monthAssets | currency: 'USD'}}

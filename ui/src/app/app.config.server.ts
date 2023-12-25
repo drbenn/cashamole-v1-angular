@@ -23,7 +23,8 @@ const serverConfig: ApplicationConfig = {
         [AppState, UserState, ChipState, BalanceSheetState, IncomeState, ExpenseState, CalendarState, DashboardState]
       ),
       // devtools always last
-      NgxsReduxDevtoolsPluginModule.forRoot()
+      NgxsReduxDevtoolsPluginModule.forRoot(),
+      ChartModule
     )
   ]
 };

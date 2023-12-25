@@ -30,7 +30,8 @@ export const appConfig: ApplicationConfig = {
       // devtools always last
       NgxsReduxDevtoolsPluginModule.forRoot(),
       CookieService,
-      BrowserAnimationsModule
+      BrowserAnimationsModule,
+      ChartModule
     )
   ]
 };
