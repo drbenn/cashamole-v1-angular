@@ -5,11 +5,12 @@ import { IncomeTableComponent } from './income-table/income-table.component';
 import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { Income } from '../../model/core.model';
+import { MonthNetCashFlowBannerComponent } from '../../shared/month-net-cash-flow-banner/month-net-cash-flow-banner.component';
 
 @Component({
   selector: 'app-income',
   standalone: true,
-  imports: [CommonModule, NewIncomeTransactionComponent, IncomeTableComponent],
+  imports: [CommonModule, NewIncomeTransactionComponent, IncomeTableComponent, MonthNetCashFlowBannerComponent],
   templateUrl: './income.component.html',
   styleUrl: './income.component.scss'
 })

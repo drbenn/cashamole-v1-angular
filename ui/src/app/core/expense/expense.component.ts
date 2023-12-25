@@ -5,11 +5,12 @@ import { NewExpenseTransactionComponent } from './new-expense-transaction/new-ex
 import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { Expense } from '../../model/core.model';
+import { MonthNetCashFlowBannerComponent } from '../../shared/month-net-cash-flow-banner/month-net-cash-flow-banner.component';
 
 @Component({
   selector: 'app-expense',
   standalone: true,
-  imports: [CommonModule, ExpenseTableComponent, NewExpenseTransactionComponent],
+  imports: [CommonModule, ExpenseTableComponent, NewExpenseTransactionComponent, MonthNetCashFlowBannerComponent],
   templateUrl: './expense.component.html',
   styleUrl: './expense.component.scss'
 })
