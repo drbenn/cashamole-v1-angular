@@ -1,5 +1,4 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Param, Patch, Post, Req, Res } from '@nestjs/common';
-
 import { Request, Response } from 'express';
 import { IncomeService } from './income.service';
 import { IncomeDto } from './income-dto/income-dto';
@@ -84,14 +83,14 @@ export class IncomeController {
     async editIncomeRecord(
         @Req() req: Request, 
         @Res() res: Response, 
-        @Body() expenseRecordDto: IncomeDto
+        @Body() incomeRecordDto: IncomeDto
         ) {  
         if (!req.cookies) {
             console.log('throw no cookie error');
             // todo: throw error
         }  else {
             const userId: number = req.cookies.cashamole_uid;            
-            const newUpdateRecord: IncomeDto | 'update error' | 'undefined userid' = await this.incomeService.updateIncomeRecord(expenseRecordDto, userId);
+            const newUpdateRecord: IncomeDto | 'update error' | 'undefined userid' = await this.incomeService.updateIncomeRecord(incomeRecordDto, userId);
 
             if (newUpdateRecord === 'update error' || newUpdateRecord ===  'undefined userid') {
                 throw new HttpException('income record update failed', HttpStatus.BAD_REQUEST);

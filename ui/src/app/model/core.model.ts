@@ -16,6 +16,15 @@ export interface Income {
     status?: string | 'active' | 'cancelled';
 }
 
+export interface Invest {
+    inv_id?: number;
+    date: Date;
+    amount: number;
+    institution: string;
+    note: string;
+    status?: string | 'active' | 'cancelled';
+}
+
 export interface Expense {
     exp_id?: number;
     date: Date;

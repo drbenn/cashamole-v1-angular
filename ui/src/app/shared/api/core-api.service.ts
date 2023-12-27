@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { Chip } from '../../model/chips.model';
-import { BalanceSheetEntry, Expense, Income } from '../../model/core.model';
+import { BalanceSheetEntry, Expense, Income, Invest } from '../../model/core.model';
 
 
 @Injectable({
@@ -36,6 +36,31 @@ export class CoreApiService {
     const requestBody: {inc_id: number} = {inc_id: record_id};
     return this.httpClient.patch(this.apiUrl + `/income/deactivate`, requestBody, {withCredentials: true}) as Observable<any>;
   };
+
+
+  // ===================== INVEST API CALLS ======================
+
+  public getAllActiveInvestRecords(): Observable<Invest[]> {
+    return this.httpClient.get(this.apiUrl + '/invest', {withCredentials: true}) as Observable<Invest[]>;
+  };
+
+  public getActiveInvestRecordsByMonth(yearMonthId:string): Observable<Invest[]> {
+    return this.httpClient.get(this.apiUrl + `/invest/${yearMonthId}`, {withCredentials: true}) as Observable<Invest[]>;
+  };
+
+  public submitNewInvestRecord(investBody: Invest): Observable<Invest> {
+    return this.httpClient.post(this.apiUrl + '/invest', investBody, {withCredentials: true}) as Observable<Invest>;
+  };
+
+  public submitUpdatedInvestRecord(investBody: Invest): Observable<Invest> {    
+    return this.httpClient.patch(this.apiUrl + '/invest', investBody, {withCredentials: true}) as Observable<Invest>;
+  };
+
+  public deactivateInvestRecord(record_id: number): Observable<any> {  
+    const requestBody: {inc_id: number} = {inc_id: record_id};
+    return this.httpClient.patch(this.apiUrl + `/invest/deactivate`, requestBody, {withCredentials: true}) as Observable<any>;
+  };
+  
 
 
 

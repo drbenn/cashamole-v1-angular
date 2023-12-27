@@ -9,6 +9,7 @@ import { SplashComponent } from './shared/splash/splash.component'
 import { BalanceSheetComponent } from './core/balance-sheet/balance-sheet.component';
 import { IncomeComponent } from './core/income/income.component';
 import { ExpenseComponent } from './core/expense/expense.component';
+import { InvestComponent } from './core/invest/invest.component';
 
 
 export const routes: Routes = [
@@ -16,6 +17,7 @@ export const routes: Routes = [
     { path: 'home', component: HomeComponent },
     { path: 'balance-sheeet', component: BalanceSheetComponent },
     { path: 'income', component: IncomeComponent },
+    { path: 'invest', component: InvestComponent },
     { path: 'expense', component: ExpenseComponent },
     { path: 'login', component: UserLoginComponent },
     { path: 'register', component: UserRegisterComponent },

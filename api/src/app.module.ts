@@ -11,6 +11,9 @@ import { ChipService } from './chip/chip.service';
 import { ChipController } from './chip/chip.controller';
 import { ExpenseModule } from './expense/expense.module';
 import { IncomeModule } from './income/income.module';
+import { InvestController } from './invest/invest.controller';
+import { InvestService } from './invest/invest.service';
+import { InvestModule } from './invest/invest.module';
 
 
 
@@ -37,9 +40,10 @@ import { IncomeModule } from './income/income.module';
     TransactionModule,
     BalanceSheetModule,
     ExpenseModule,
-    IncomeModule
+    IncomeModule,
+    InvestModule
   ],
-  controllers: [AppController, ChipController],
-  providers: [AppService, ChipService],
+  controllers: [AppController, ChipController, InvestController],
+  providers: [AppService, ChipService, InvestService],
 })
 export class AppModule {}

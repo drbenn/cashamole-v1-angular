@@ -2,6 +2,7 @@ import { BalanceRecordDto } from "src/balance_sheet/balance_sheet-dto/balance_sh
 import { ChipDto } from "src/chip/chip-dto/chip-dto";
 import { ExpenseDto } from "src/expense/expense-dto/expense-dto";
 import { IncomeDto } from "src/income/income-dto/income-dto";
+import { InvestDto } from "src/invest/invest-dto/invest-dto";
 
 export class RegisterUserDto {
     email: string;
@@ -38,6 +39,7 @@ export class UserBasicProfile {
 export class UserLoginData {
     basicProfile: UserBasicProfile;
     income: IncomeDto[];
+    investments: InvestDto[];
     expenses: ExpenseDto[];
     balanceSheetEntries: BalanceRecordDto[] | null;
     chips: ChipDto[] | null;

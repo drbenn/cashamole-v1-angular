@@ -10,7 +10,8 @@ export interface ChipStateModel {
   liability: Chip[],
   expense_category: Chip[],
   expense_vendor: Chip[],
-  income_source: Chip[]
+  income_source: Chip[],
+  invest_institution: Chip[]
 }
 
 @State<ChipStateModel>({
@@ -20,7 +21,8 @@ export interface ChipStateModel {
     liability: [],
     expense_category: [],
     expense_vendor: [],
-    income_source: []
+    income_source: [],
+    invest_institution: []
     },
   }
 )
@@ -49,6 +51,11 @@ export class ChipState {
   };
 
   @Selector() 
+  static investChips(state: ChipStateModel): Chip[] {
+    return state.invest_institution;
+  };
+
+  @Selector() 
   static expenseCategoryChips(state: ChipStateModel): Chip[] {
     return state.expense_category;
   };
@@ -70,7 +77,8 @@ export class ChipState {
       liability: organizedChips.liability,
       expense_category: organizedChips.expense_category,
       expense_vendor: organizedChips.expense_vendor,
-      income_source: organizedChips.income_source
+      income_source: organizedChips.income_source,
+      invest_institution: organizedChips.invest_institution
     });
   };
 
@@ -80,8 +88,6 @@ export class ChipState {
     ctx: StateContext<ChipStateModel>,
     action: ChipActions.AddUserChip
   ) {
-    console.log('state chip payload');
-    console.log(action.payload);
     const kind: string = action.payload.kind;
     const newChip: Chip = action.payload;
 
@@ -99,6 +105,11 @@ export class ChipState {
       let incomeChips: Chip[] = ctx.getState().income_source;
       ctx.patchState({
         income_source: [...incomeChips, newChip]
+      })
+    } else if (kind === 'invest_institution') {
+      let investChips: Chip[] = ctx.getState().invest_institution;
+      ctx.patchState({
+        invest_institution: [...investChips, newChip]
       })
     } else if (kind === 'asset') {
       let assetChips: Chip[] = ctx.getState().asset;
@@ -136,6 +147,11 @@ export class ChipState {
       ctx.patchState({
         income_source: state.filter((chip: Chip) => chip.id !== removeChip.id )
       });
+    } else if (kind === 'invest_institution') {
+      const state = ctx.getState().invest_institution;
+      ctx.patchState({
+        invest_institution: state.filter((chip: Chip) => chip.id !== removeChip.id )
+      });
     } else if (kind === 'asset') {
       const state = ctx.getState().asset;
       ctx.patchState({
@@ -156,7 +172,8 @@ export class ChipState {
       liability: [],
       expense_category: [],
       expense_vendor: [],
-      income_source: [] 
+      income_source: [] ,
+      invest_institution: []
     }
     chips.forEach((chip: Chip) => {
       if (chip.kind === 'asset') {
@@ -174,9 +191,12 @@ export class ChipState {
       if (chip.kind === 'income_source') {
         organizedChips.income_source.push(chip);
       };
+      if (chip.kind === 'invest_institution') {
+        organizedChips.invest_institution.push(chip);
+      };
     });
     return organizedChips;
-  }
+  };
 
 
   @Action(ChipActions.ClearChipStateOnLogout)
@@ -188,7 +208,8 @@ export class ChipState {
       liability: [],
       expense_category: [],
       expense_vendor: [],
-      income_source: []
+      income_source: [],
+      invest_institution: []
     });
   };
 

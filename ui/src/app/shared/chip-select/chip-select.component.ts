@@ -102,6 +102,8 @@ export class ChipSelectComponent implements OnInit {
         return 'Vendor';
       case 'income_source': 
         return 'Income Source';
+      case 'invest_institution': 
+        return 'Investment Institution';
       case 'asset':
         return 'Asset Account';
       case 'liability': 

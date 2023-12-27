@@ -13,6 +13,7 @@ import { BalanceSheetEntry, Expense, Income } from '../../model/core.model';
 export interface DashboardStateModel {
     monthExpenses: number,
     monthIncome: number,
+    monthInvest: number,
     monthNetCashFlow: number,
     monthAssets: number,
     monthLiabilities: number,
@@ -24,6 +25,7 @@ export interface DashboardStateModel {
   defaults: {
     monthExpenses: 0,
     monthIncome: 0,
+    monthInvest: 0,
     monthNetCashFlow: 0,
     monthAssets: 0,
     monthLiabilities: 0,
@@ -76,6 +78,24 @@ export class DashboardState {
         ctx.patchState({ 
             monthIncome: sum,
             monthNetCashFlow: sum - expenses
+        });
+    };
+  };
+
+  @Action(DashboardActions.UpdateMonthInvestTotal)
+  updateMonthInvestTotal(
+    ctx: StateContext<DashboardStateModel>,
+    action: DashboardActions.UpdateMonthInvestTotal
+  ) {
+    let sum: number = 0;
+    if ( action.payload === null) {
+        ctx.patchState({ 
+            monthInvest: sum
+        });
+    } else {
+        sum = this.reduceToSum(action.payload);
+        ctx.patchState({ 
+            monthInvest: sum,
         });
     };
   };

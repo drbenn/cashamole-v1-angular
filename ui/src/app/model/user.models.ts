@@ -1,5 +1,5 @@
 import { Chip } from "./chips.model";
-import { BalanceSheetEntry, Expense, Income } from "./core.model";
+import { BalanceSheetEntry, Expense, Income, Invest } from "./core.model";
 
 export interface UserRegister {
     email: string,
@@ -22,6 +22,7 @@ export interface User {
 export interface UserLoginData {
     basicProfile: User,
     income: Income[],
+    investments: Invest[],
     expenses: Expense[],
     balanceSheetEntries: BalanceSheetEntry[],
     chips: Chip[],

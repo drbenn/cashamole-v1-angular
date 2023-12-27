@@ -10,6 +10,7 @@ import { BalanceSheetActions } from '../balanceSheet/bsState.actions';
 import { ExpenseActions } from '../expense/expense.actions';
 import { IncomeActions } from '../income/income.actions';
 import { CalendarActions } from '../calendar/calendar.actions';
+import { InvestActions } from '../invest/invest.actions';
 
 
 export interface UserStateModel {
@@ -65,6 +66,7 @@ export class UserState implements NgxsOnInit {
     console.log(action.payload);
     this.store.dispatch(new CalendarActions.SetCalendarOnLogin());
     this.store.dispatch(new IncomeActions.SetIncomeOnLogin(action.payload.income));
+    this.store.dispatch(new InvestActions.SetInvestOnLogin(action.payload.investments));
     this.store.dispatch(new ExpenseActions.SetExpensesOnLogin(action.payload.expenses));
     this.store.dispatch(new BalanceSheetActions.SetBalanceSheetEntriesOnLogin(action.payload.balanceSheetEntries));
     this.store.dispatch(new ChipActions.SetChipsOnLogin(action.payload.chips));

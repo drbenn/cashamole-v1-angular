@@ -13,6 +13,7 @@ import { IncomeState } from './store/income/income.state';
 import { ExpenseState } from './store/expense/expense.state';
 import { CalendarState } from './store/calendar/calendar.state';
 import { DashboardState } from './store/dashboard/dashboard.state';
+import { InvestState } from './store/invest/invest.state';
 
 const serverConfig: ApplicationConfig = {
   providers: [
@@ -20,7 +21,7 @@ const serverConfig: ApplicationConfig = {
     provideHttpClient(withFetch()),
     importProvidersFrom(
       NgxsModule.forRoot(
-        [AppState, UserState, ChipState, BalanceSheetState, IncomeState, ExpenseState, CalendarState, DashboardState]
+        [AppState, UserState, ChipState, BalanceSheetState, IncomeState, ExpenseState, CalendarState, DashboardState, InvestState]
       ),
       // devtools always last
       NgxsReduxDevtoolsPluginModule.forRoot(),

@@ -10,6 +10,11 @@ export namespace DashboardActions {
         constructor(public payload: any) {}
     };
 
+    export class UpdateMonthInvestTotal {
+        static readonly type =  '[Dashboard] Update invest month total';
+        constructor(public payload: any) {}
+    };
+
     export class UpdateMonthBalanceSheetTotal {
         static readonly type =  '[Dashboard] Update balance sheet month total';
         constructor(public payload: any) {}

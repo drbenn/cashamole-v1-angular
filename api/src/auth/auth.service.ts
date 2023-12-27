@@ -8,6 +8,7 @@ import { ExpenseDto } from 'src/expense/expense-dto/expense-dto';
 import { BalanceRecordDto } from 'src/balance_sheet/balance_sheet-dto/balance_sheet-dto';
 import { ChipDto } from 'src/chip/chip-dto/chip-dto';
 import { IncomeService } from 'src/income/income.service';
+import { InvestDto } from 'src/invest/invest-dto/invest-dto';
 
 @Injectable()
 export class AuthService {
@@ -48,7 +49,7 @@ export class AuthService {
             })
         }
         return userExistResult;
-    }
+    };
 
     async insertNewUser(userRegisterDto: RegisterUserDto): Promise<InsertUser> {    
         userRegisterDto.status = 'active';    
@@ -63,20 +64,21 @@ export class AuthService {
         
         const success: boolean = results.affectedRows > 0 ? true : false;
         return {insertSuccessful: success, userId: results.insertId, username: userRegisterDto.username, email: userRegisterDto.email};
-    }
+    };
 
     // The salt gets automatically included with the hash, so you do not need to store it in a database.
     async generateHashSaltPassword(password: string): Promise<string | any> {
         const saltRounds: number = 10;
         return await bcrypt.hash(password, saltRounds, null);
-    }
+    };
 
     async generateDbTablesForNewUser(userId: number) {
         this.generateUserExpenseTable(userId);
         this.generateUserIncomeTable(userId);
+        this.generateUserInvestTable(userId);
         this.generateUserBalanceSheetTable(userId);
         this.generateUserChipsTable(userId);
-    }
+    };
 
     async generateUserIncomeTable(userId: number) {
         const sqlQuery: string = `
@@ -90,7 +92,7 @@ export class AuthService {
         )`;
         const queryDb = await this.connection.query(sqlQuery);
         // const results = Object.assign([{}], queryDb[0]);
-    }
+    };
 
     async generateUserExpenseTable(userId: number) {
         const sqlQuery: string = `
@@ -100,6 +102,20 @@ export class AuthService {
             amount DECIMAL(10,2) NOT NULL,
             category VARCHAR(250) NOT NULL,
             vendor VARCHAR(100) NOT NULL,
+            note VARCHAR(100),
+            status VARCHAR(25) NOT NULL
+        )`;
+        const queryDb = await this.connection.query(sqlQuery);
+        // const results = Object.assign([{}], queryDb[0]);
+    };
+
+    async generateUserInvestTable(userId: number) {
+        const sqlQuery: string = `
+            CREATE TABLE IF NOT EXISTS user${userId}_invest (
+            inv_id INT PRIMARY KEY AUTO_INCREMENT,
+            date VARCHAR(250) NOT NULL,
+            amount DECIMAL(10,2) NOT NULL,
+            institution VARCHAR(100) NOT NULL,
             note VARCHAR(100),
             status VARCHAR(25) NOT NULL
         )`;
@@ -120,7 +136,7 @@ export class AuthService {
         )`;
         const queryDb = await this.connection.query(sqlQuery);
         // const results = Object.assign([{}], queryDb[0]);
-    }
+    };
 
     async generateUserChipsTable(userId: number) {
         const sqlQuery: string = `
@@ -162,7 +178,12 @@ export class AuthService {
         ('income_source', 'paycheck', 'active'),
         ('income_source', 'interest', 'active'),
         ('income_source', 'dividends', 'active'),
-        ('income_source', 'random', 'active');
+        ('income_source', 'random', 'active'),
+        ('invest_institution', '401k - personal contribution', 'active'),
+        ('invest_institution', '401k - employer contribution', 'active'),
+        ('invest_institution', 'fidelity', 'active'),
+        ('invest_institution', 'vanguard - brokerage', 'active'),
+        ('invest_institution', 'vanguard - roth ira', 'active');
      `
         const queryDb = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], queryDb[0]);
@@ -185,14 +206,18 @@ export class AuthService {
     async getUserDataOnSuccessfulValidation(userId: number): Promise<UserLoginData> {
         const userBasicProfile: UserBasicProfile = await this.getUserBasicProfile(userId);
         const userIncome: IncomeDto[] = await this.getUserIncome(userBasicProfile.id);
+        const userInvestments: InvestDto[] = await this.getUserInvestments(userBasicProfile.id);
         const userExpenses: ExpenseDto[] = await this.getUserExpenses(userBasicProfile.id);
         const userBalanceSheetEntries: BalanceRecordDto[] = await this.getUserBalanceSheetEntries(userBasicProfile.id);
         const userChips: ChipDto[] = await this.getUserChips(userBasicProfile.id);
 
         // mysql float values are stored strings and must therefore be transformed to numbers after retrieved for application use
- 
+        
         if (userIncome) {
             userIncome.map((income: IncomeDto) => income.amount = Number(income.amount));
+        };
+        if (userInvestments) {
+            userInvestments.map((invest: InvestDto) => invest.amount = Number(invest.amount));
         };
         if (userExpenses) {
             userExpenses.map((expense: ExpenseDto) => expense.amount = Number(expense.amount));
@@ -201,9 +226,13 @@ export class AuthService {
             userBalanceSheetEntries.map((entry: BalanceRecordDto) => entry.amount = Number(entry.amount));
         };
 
+        console.log(userInvestments);
+        
+
         const userLoginData: UserLoginData = {
             basicProfile: userBasicProfile,
             income: userIncome,
+            investments: userInvestments,
             expenses: userExpenses,
             balanceSheetEntries: userBalanceSheetEntries,
             chips: userChips
@@ -222,6 +251,14 @@ export class AuthService {
         const sqlQuery: string = `SELECT * FROM user${userId}_income WHERE status != 'deactivated' ORDER BY date ASC;`;
         const userIncome = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], userIncome[0]);
+        return this.checkForReturnValues(results);
+        // return this.incomeService.getActiveIncome(userId);
+    };
+
+    async getUserInvestments(userId: number): Promise<InvestDto[]> {
+        const sqlQuery: string = `SELECT * FROM user${userId}_invest WHERE status != 'deactivated' ORDER BY date ASC;`;
+        const userInvest = await this.connection.query(sqlQuery);
+        const results = Object.assign([{}], userInvest[0]);
         return this.checkForReturnValues(results);
         // return this.incomeService.getActiveIncome(userId);
     };
