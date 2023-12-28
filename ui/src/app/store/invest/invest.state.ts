@@ -75,8 +75,10 @@ export class InvestState {
       ctx: StateContext<InvestStateModel>,
       action: InvestActions.EditInvestRecord
   ) {
-    console.log(action.payload.date);
-    
+    if (typeof action.payload.date === 'string') {
+      const dateObject: Date = new Date(action.payload.date);
+      action.payload.date = dateObject
+    };   
     const year: string = action.payload.date.getFullYear().toString();
     const month: string = (action.payload.date.getMonth() + 1).toString().padStart(2, '0');
     const yearMonthId: string = `${year}-${month}`;

@@ -204,11 +204,16 @@ export class AuthService {
     };
 
     async getUserDataOnSuccessfulValidation(userId: number): Promise<UserLoginData> {
+        const today = new Date();
+        const thisMonth = today.getMonth() + 1;
+        const thisYear = today.getFullYear();        
+        const yearMonthString: string = `${thisYear}-${thisMonth}`;
+        
         const userBasicProfile: UserBasicProfile = await this.getUserBasicProfile(userId);
-        const userIncome: IncomeDto[] = await this.getUserIncome(userBasicProfile.id);
-        const userInvestments: InvestDto[] = await this.getUserInvestments(userBasicProfile.id);
-        const userExpenses: ExpenseDto[] = await this.getUserExpenses(userBasicProfile.id);
-        const userBalanceSheetEntries: BalanceRecordDto[] = await this.getUserBalanceSheetEntries(userBasicProfile.id);
+        const userIncome: IncomeDto[] = await this.getUserIncome(userBasicProfile.id, yearMonthString);
+        const userInvestments: InvestDto[] = await this.getUserInvestments(userBasicProfile.id, yearMonthString);
+        const userExpenses: ExpenseDto[] = await this.getUserExpenses(userBasicProfile.id, yearMonthString);
+        const userBalanceSheetEntries: BalanceRecordDto[] = await this.getUserBalanceSheetEntries(userBasicProfile.id, yearMonthString);
         const userChips: ChipDto[] = await this.getUserChips(userBasicProfile.id);
 
         // mysql float values are stored strings and must therefore be transformed to numbers after retrieved for application use
@@ -224,10 +229,7 @@ export class AuthService {
         };
         if (userBalanceSheetEntries) {
             userBalanceSheetEntries.map((entry: BalanceRecordDto) => entry.amount = Number(entry.amount));
-        };
-
-        console.log(userInvestments);
-        
+        };      
 
         const userLoginData: UserLoginData = {
             basicProfile: userBasicProfile,
@@ -247,31 +249,31 @@ export class AuthService {
         return results[0];
     };
 
-    async getUserIncome(userId: number): Promise<IncomeDto[]> {
-        const sqlQuery: string = `SELECT * FROM user${userId}_income WHERE status != 'deactivated' ORDER BY date ASC;`;
+    async getUserIncome(userId: number, yearMonthString: string): Promise<IncomeDto[]> {
+        const sqlQuery: string = `SELECT * FROM user${userId}_income WHERE status != 'deactivated' AND date LIKE '${yearMonthString}%' ORDER BY date ASC;`;
         const userIncome = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], userIncome[0]);
         return this.checkForReturnValues(results);
         // return this.incomeService.getActiveIncome(userId);
     };
 
-    async getUserInvestments(userId: number): Promise<InvestDto[]> {
-        const sqlQuery: string = `SELECT * FROM user${userId}_invest WHERE status != 'deactivated' ORDER BY date ASC;`;
+    async getUserInvestments(userId: number, yearMonthString: string): Promise<InvestDto[]> {
+        const sqlQuery: string = `SELECT * FROM user${userId}_invest WHERE status != 'deactivated' AND date LIKE '${yearMonthString}%' ORDER BY date ASC;`;
         const userInvest = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], userInvest[0]);
         return this.checkForReturnValues(results);
         // return this.incomeService.getActiveIncome(userId);
     };
 
-    async getUserExpenses(userId: number): Promise<ExpenseDto[]> {
-        const sqlQuery: string = `SELECT * FROM user${userId}_expenses WHERE status != 'deactivated' ORDER BY date ASC;`;
+    async getUserExpenses(userId: number, yearMonthString: string): Promise<ExpenseDto[]> {
+        const sqlQuery: string = `SELECT * FROM user${userId}_expenses WHERE status != 'deactivated' AND date LIKE '${yearMonthString}%' ORDER BY date ASC;`;
         const userExpenses = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], userExpenses[0]);
         return this.checkForReturnValues(results);
     };
 
-    async getUserBalanceSheetEntries(userId: number): Promise<BalanceRecordDto[]> {
-        const sqlQuery: string = `SELECT * FROM user${userId}_bal_sheet WHERE status != 'deactivated' ORDER BY date ASC;`;
+    async getUserBalanceSheetEntries(userId: number, yearMonthString: string): Promise<BalanceRecordDto[]> {
+        const sqlQuery: string = `SELECT * FROM user${userId}_bal_sheet WHERE status != 'deactivated' AND date LIKE '${yearMonthString}%' ORDER BY date ASC;`;
         const userBalanceSheetEntries = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], userBalanceSheetEntries[0]);
         return this.checkForReturnValues(results);

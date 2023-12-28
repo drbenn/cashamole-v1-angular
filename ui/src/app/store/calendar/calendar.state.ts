@@ -5,6 +5,7 @@ import { DateRange } from '../../model/calendar.model';
 import { BalanceSheetActions } from '../balanceSheet/bsState.actions';
 import { IncomeActions } from '../income/income.actions';
 import { ExpenseActions } from '../expense/expense.actions';
+import { InvestActions } from '../invest/invest.actions';
 
 
 export interface CalendarStateModel {
@@ -91,6 +92,7 @@ export class CalendarState {
     this.store.dispatch(new BalanceSheetActions.GetAndSetMonthBalanceRecords(yearMonthId));
     this.store.dispatch(new IncomeActions.GetAndSetMonthIncomeRecords(yearMonthId));
     this.store.dispatch(new ExpenseActions.GetAndSetMonthExpenseRecords(yearMonthId));
+    this.store.dispatch(new InvestActions.GetAndSetMonthInvestRecords(yearMonthId));
 
     ctx.patchState({
       monthYearDisplay: monthYear,

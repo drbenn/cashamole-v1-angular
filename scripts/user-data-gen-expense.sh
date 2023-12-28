@@ -1,14 +1,9 @@
 #!/bin/bash
 
-uid=4
-salary2012=50000
-annual_salary_bump=1.08
+uid=2
 annual_inflation=1.04
-declare -a years=("2020" "2021" "2022" "2023")
+declare -a years=("2019" "2020" "2021" "2022" "2023")
 declare -a months=("01" "02" "03" "04" "05" "06" "07" "08" "09" "10" "11" "12")
-
-
-declare -a eat_out_dates=("05" "11" "13" "20" "25")
 current_date=$(date +%Y-%m-%d)
 
 echo $current_date
