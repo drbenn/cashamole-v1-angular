@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BalanceSheetComponent } from '../balance-sheet/balance-sheet.component';
-import { ChartOneComponent } from '../viz/chart-one/chart-one.component';
+import { ChartOneComponent } from '../core/viz/chart-one/chart-one.component';
+
 
 
 
@@ -10,7 +10,7 @@ import { ChartOneComponent } from '../viz/chart-one/chart-one.component';
     standalone: true,
     templateUrl: './home.component.html',
     styleUrl: './home.component.scss',
-    imports: [CommonModule, BalanceSheetComponent, ChartOneComponent]
+    imports: [CommonModule, ChartOneComponent]
 })
 export class HomeComponent {
 

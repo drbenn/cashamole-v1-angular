@@ -4,12 +4,12 @@ import { UserLoginComponent } from './auth/user-login/user-login.component';
 import { UserResetPasswordComponent } from './auth/user-reset-password/user-reset-password.component';
 import { DonateComponent } from './shared/donate/donate.component';
 import { HowToComponent } from './shared/how-to/how-to.component';
-import { HomeComponent } from './core/home/home.component';
 import { SplashComponent } from './shared/splash/splash.component'
 import { BalanceSheetComponent } from './core/balance-sheet/balance-sheet.component';
 import { IncomeComponent } from './core/income/income.component';
 import { ExpenseComponent } from './core/expense/expense.component';
 import { InvestComponent } from './core/invest/invest.component';
+import { HomeComponent } from './home/home.component';
 
 
 export const routes: Routes = [
