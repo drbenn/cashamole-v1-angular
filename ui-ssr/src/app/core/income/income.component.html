@@ -1,0 +1,16 @@
+<main class="w-screen flex flex-column flex-no justify-content-start align-items-center pt-8"
+    [ngStyle]="{'max-width': '140rem', 'background': 'linear-gradient(45deg, violet, blue)'}"
+>
+    <div>
+        <app-month-net-cash-flow-banner></app-month-net-cash-flow-banner>
+    </div>
+    <div class="w-screen flex flex-row flex-wrap-reverse justify-content-evenly align-items-end pt-8">
+        <section class="my-3">
+            <app-new-income-transaction></app-new-income-transaction>
+        </section>
+         <section class="my-4">
+             <app-income-table tableTitle="income" [tableData]="activeMonthIncome"></app-income-table>
+         </section>
+    </div>
+    
+</main>

@@ -1,0 +1,22 @@
+<main class="w-screen flex flex-column flex-no justify-content-start align-items-center pt-8"
+    [ngStyle]="{'max-width': '140rem', 'background': 'linear-gradient(45deg, lime, blue)'}"
+>
+    <div>
+        <app-month-net-cash-flow-banner></app-month-net-cash-flow-banner>
+    </div>
+    <div class="w-screen flex flex-row flex-wrap-reverse justify-content-evenly align-items-end pt-8">
+        <section class="my-3">
+            <app-new-expense-transaction></app-new-expense-transaction>
+        </section>
+         <section class="my-4" *ngIf="latestData">
+            @for (category of expenseCategoryArray; track expenseCategoryObject[category].exp_id) {
+                <section class="m-4">
+                    <app-expense-table [tableTitle]="category" [tableData]="expenseCategoryObject[category]"></app-expense-table>
+                </section>
+            } @empty {
+                No Transactions Available
+            }
+         </section>
+    </div>
+    
+</main>

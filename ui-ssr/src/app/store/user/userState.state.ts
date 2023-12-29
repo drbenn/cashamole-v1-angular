@@ -1,0 +1,99 @@
+import { Injectable } from '@angular/core';
+import { Action, NgxsOnInit, State, StateContext, Store } from '@ngxs/store';
+import { User } from '../../model/user.models';
+import { UserActions } from './userState.actions';
+import { CookieService } from 'ngx-cookie-service';
+import { UserApiService } from '../../shared/api/user-api.service';
+import { Router } from '@angular/router';
+import { ChipActions } from '../chip/chipState.actions';
+import { BalanceSheetActions } from '../balanceSheet/bsState.actions';
+import { ExpenseActions } from '../expense/expense.actions';
+import { IncomeActions } from '../income/income.actions';
+import { CalendarActions } from '../calendar/calendar.actions';
+import { InvestActions } from '../invest/invest.actions';
+
+
+export interface UserStateModel {
+  isInitUserDataLoaded: boolean,
+  loggedInUser: User
+}
+
+@State<UserStateModel>({
+  name: 'user',
+  defaults: {
+    isInitUserDataLoaded: false,
+    loggedInUser: {} as User
+  }
+})
+@Injectable()
+export class UserState implements NgxsOnInit {
+  constructor(
+    private cookieService: CookieService,
+    private userApi: UserApiService,
+    private store: Store,
+    private router: Router
+  ) {}
+
+  ngxsOnInit(ctx: StateContext<UserState>) {
+    const userIdCookie: number = <number><unknown>this.cookieService.get('cashamole_uid');
+    const userTokenCookie: string = this.cookieService.get('cashamole_user_token');
+    
+    if (userIdCookie && userTokenCookie) {
+      this.userApi.loginCachedUser(userIdCookie).subscribe({
+        next: (userLogin: any) => {
+          this.store.dispatch(new UserActions.SetUserDataOnLogin(JSON.parse(userLogin.data)));
+          this.router.navigate(['home']);
+        },
+        error: (err: any) => console.log(err)
+      });
+    };
+  };
+
+  @Action(UserActions.RegisterLoggedInUser)
+  registerLoggedInUser(
+    ctx: StateContext<UserStateModel>,
+    action: UserActions.RegisterLoggedInUser
+  ) {
+    ctx.patchState({ loggedInUser: action.payload });
+  };
+
+
+  @Action(UserActions.SetUserDataOnLogin)
+  setUserDataOnLogin(
+    ctx: StateContext<UserStateModel>,
+    action: UserActions.SetUserDataOnLogin
+  ) {
+    console.log(action.payload);
+    this.store.dispatch(new CalendarActions.SetCalendarOnLogin());
+    this.store.dispatch(new IncomeActions.SetIncomeOnLogin(action.payload.income));
+    this.store.dispatch(new InvestActions.SetInvestOnLogin(action.payload.investments));
+    this.store.dispatch(new ExpenseActions.SetExpensesOnLogin(action.payload.expenses));
+    this.store.dispatch(new BalanceSheetActions.SetBalanceSheetEntriesOnLogin(action.payload.balanceSheetEntries));
+    this.store.dispatch(new ChipActions.SetChipsOnLogin(action.payload.chips));
+    ctx.patchState({ 
+      isInitUserDataLoaded: true,
+      loggedInUser: action.payload.basicProfile
+    });
+  };
+
+
+  @Action(UserActions.ClearUserStateOnLogout)
+  clearUserStateOnLogout(
+    ctx: StateContext<UserStateModel>
+  ) {
+    this.store.dispatch(new ChipActions.ClearChipStateOnLogout());
+    ctx.patchState({     
+      isInitUserDataLoaded: false,
+      loggedInUser: {} as User,
+    });
+  };
+
+}
+
+
+
+
+
+
+
+

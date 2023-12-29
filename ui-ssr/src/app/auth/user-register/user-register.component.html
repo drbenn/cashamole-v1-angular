@@ -1,0 +1,70 @@
+<main
+class="w-full bg-white flex flex-column justify-content-center align-items-center"
+[ngStyle]="{'min-height': '5rem'}"
+pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-1000
+>
+
+    <form action="" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+        <h2 class="m-4 text-gray-800 text-start">Register</h2>
+
+        <div class="m-4">
+            <span class="p-float-label">
+                <input 
+                    pInputText
+                    id="email"
+                    formControlName="email"
+                    [style]="{'width':'20rem'}"
+                    [autofocus]="true"
+                />
+            <label htmlFor="email">Email</label>
+            </span>
+        </div>
+
+        <div class="m-4">
+            <span class="p-float-label">
+                <input 
+                    pInputText
+                    id="username"
+                    formControlName="username"
+                    [style]="{'width':'20rem'}"
+                />
+            <label htmlFor="username">Username</label>
+            </span>
+        </div>
+
+        <div class="m-4">
+            <span class="p-float-label">
+                <input 
+                    pInputText
+                    id="password"
+                    type="password"
+                    formControlName="password"
+                    [style]="{'width':'20rem'}"
+                />
+            <label htmlFor="password">Password</label>
+            </span>
+        </div>
+
+        <div class="mx-4 my-1 text-right">
+            <button 
+                pButton
+                pRipple
+                type="reset"
+                (click)="clearForm()"
+                class="px-4 mr-2"
+            >Clear</button>
+            <button 
+                class="ml-4"
+                pButton
+                pRipple
+                type="submit"
+                [disabled]="!registerForm.valid"
+                class="px-4"
+            >Submit</button>
+        </div>
+    </form>
+</main>
+
+<p>Form Status: {{ registerForm.status }}</p>
+<p>{{ registerForm.value | json}}</p>
