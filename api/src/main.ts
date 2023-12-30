@@ -17,7 +17,7 @@ async function bootstrap() {
   // app.enableCors();
   app.use(cookieParser());
   // app.setGlobalPrefix(process.env.API_ENDPOINT_PREFIX);
-  app.setGlobalPrefix('apiv1'); // todo: implement environment variable
+  // app.setGlobalPrefix('apiv1'); // todo: implement environment variable
   // enable CORS
   // enable CORS specific origin
   // app.enableCors({
