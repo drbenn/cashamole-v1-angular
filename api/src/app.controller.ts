@@ -10,17 +10,18 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
 
-  // @Get()
-  // getHello(@Req() request: Request,
-  // @Res({ passthrough: true }) response: Response
-  // ): any {
-  //   console.log('in hello');
+  @Get()
+  getHello(@Req() request: Request,
+  @Res({ passthrough: true }) response: Response
+  ): any {
+    return ' BONJOURNO!'
+    // console.log('in hello');
     
-  //   console.log(request.cookies);
+    // console.log(request.cookies);
         
-  //   // console.log(response);
-  //   return this.appService.getHello();
-  // }
+    // // console.log(response);
+    // return this.appService.getHello();
+  }
 
   @UseGuards(JwtGuard)
   @Get()
