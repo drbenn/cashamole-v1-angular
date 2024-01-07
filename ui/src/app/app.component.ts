@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { NavComponent } from './shared/nav/nav.component';
 import { FooterComponent } from './shared/footer/footer.component';
+import { CoreApiService } from './shared/api/core-api.service';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,23 @@ import { FooterComponent } from './shared/footer/footer.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'ui';
+
+  constructor(private coreApi: CoreApiService) {}
+
+  ngOnInit(): void {
+    this.coreApi.verifyApiConnection().subscribe(
+      {
+        next: (value: any) => {
+          console.log('app on init data response from verifyApiConnection');
+          console.log(value.message);
+        },
+        error: (error: any) => {
+          console.log('app on init ERROR response from verifyApiConnection');
+          console.error(error)
+        }
+      }
+    )
+  }
 }

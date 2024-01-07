@@ -14,6 +14,10 @@ export class CoreApiService {
 
   constructor(private httpClient: HttpClient) { }
 
+  public verifyApiConnection(): Observable<any> {
+    return this.httpClient.get(this.apiUrl) as Observable<any>;
+  };
+
   // ===================== INCOME API CALLS ======================
 
   public getAllActiveIncomeRecords(): Observable<Income[]> {

@@ -14,31 +14,6 @@ export class AppController {
   getHello(@Req() request: Request,
   @Res({ passthrough: true }) response: Response
   ): any {
-    return ' BONJOURNO!'
-    // console.log('in hello');
-    
-    // console.log(request.cookies);
-        
-    // // console.log(response);
-    // return this.appService.getHello();
-  }
-
-  @UseGuards(JwtGuard)
-  @Get()
-  privateEndpoint(@Req() req): any {
-    console.log(req.cookies);
-    return this.appService.getHello();
-  }
-
-
-  @Get('/pub')
-  publicEndpoint(@Req() req): any {
-    console.log(req.cookies);
-    return this.appService.getHello();
-  }
-
-  @Get('/email')
-  sendMail(): void {
-    return this.appService.sendMail();
+    return JSON.stringify({message:'BONJOURNO'})
   }
 }
