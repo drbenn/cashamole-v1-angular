@@ -1,10 +1,10 @@
 #!/bin/bash
 
-uid=2
+uid=4
 starting_post_tax_salary=70000
 annual_salary_bump=1.08
 annual_inflation=1.04
-declare -a years=("2019" "2020" "2021" "2022" "2023")
+declare -a years=("2019" "2020" "2021" "2022" "2023" "2024")
 declare -a months=("01" "02" "03" "04" "05" "06" "07" "08" "09" "10" "11" "12")
 
 current_date=$(date +%Y-%m-%d)

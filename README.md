@@ -55,8 +55,3 @@ summary: This tag defines a brief summary of the content within a details elemen
 
 time: This tag defines a specific date or time within the content.
 
-# Nest mac permissions bypass
-## for directory
-sudo chown -R $USER /Users/danielbennett/Desktop/code/cashamole/api
-## for shell file
-chmod +x create-db.sh

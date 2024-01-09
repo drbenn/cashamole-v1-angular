@@ -1,4 +1,4 @@
 # #!/bin/bash
 
 code . & wait
-cd api && npm run start:dev
+cd api-nest9 && npm run start:dev

@@ -10,7 +10,8 @@ import { BalanceSheetEntry, Expense, Income, Invest } from '../../model/core.mod
   providedIn: 'root'
 })
 export class CoreApiService {
-  private apiUrl: string = environment.apiUrl;
+  // private apiUrl: string = environment.apiUrl;
+  private apiUrl: string = 'http://localhost:3006/mole-apiv1';
 
   constructor(private httpClient: HttpClient) { }
 

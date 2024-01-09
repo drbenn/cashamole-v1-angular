@@ -1,18 +1,3 @@
-## Error on loading to namecheap hosting
-
-upon attempting to run node 20/nest 10 versions checking stderr.log the following error was being logged in namecheap node.js deployment
-
-/home/danbxdxb/nodevenv/mole-apiv1/14/lib/node_modules/@nestjs/common/file-stream/streamable-file.js:36
-            this.options.length ??= bufferOrReadStream.length;
-                                ^^^
-
-SyntaxError: Unexpected token '??='
-
-according to https://github.com/nestjs/nest/issues/12417 this error was fixed with node v 18, however, namecheap latest version of node is 14.21.2. Solution will be to either downgrade nest to earlier compatible with node 14.21.2 or to host server on alternate platform like render.com, fly.io or railway
-
-according to https://docs.nestjs.com/first-steps#prerequisites, current nest version(10) requires ndoe >= 16, and going back to nest site for version 9(selected at bottom of left nave pane) nest version 9 requires node >= 12 except for v13, so nestjs version 9 should work with namecheap avalaible node 14
-
-
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
