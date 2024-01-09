@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Connection } from 'mysql2';
 import { InjectClient } from 'nest-mysql';
 import { InsertUser, LoginUserDto, RegisterUserDto, UserBasicProfile, UserExist, UserLoginData } from './auth-dto/auth-dto';
-import * as bcrypt from 'bcrypt';
+import * as bcryptjs from 'bcryptjs';
 import { IncomeDto } from 'src/income/income-dto/income-dto';
 import { ExpenseDto } from 'src/expense/expense-dto/expense-dto';
 import { BalanceRecordDto } from 'src/balance_sheet/balance_sheet-dto/balance_sheet-dto';
@@ -69,7 +69,7 @@ export class AuthService {
     // The salt gets automatically included with the hash, so you do not need to store it in a database.
     async generateHashSaltPassword(password: string): Promise<string | any> {
         const saltRounds: number = 10;
-        return await bcrypt.hash(password, saltRounds, null);
+        return await bcryptjs.hash(password, saltRounds, null);
     };
 
     async generateDbTablesForNewUser(userId: number) {
@@ -195,7 +195,7 @@ export class AuthService {
         const results = Object.assign([{}], hashSaltPasswordFromDbQuery[0]);
         const dbHashSaltPassword: string = `${results[0].password}`;
         const userId: number = results[0].id;
-        const isMatch: boolean = await bcrypt.compare(loginUserDto.password, dbHashSaltPassword);
+        const isMatch: boolean = await bcryptjs.compare(loginUserDto.password, dbHashSaltPassword);
         if (!isMatch) {            
             return 0;
         } else {

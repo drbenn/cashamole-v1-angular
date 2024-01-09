@@ -2,19 +2,18 @@ import { NestFactory } from '@nestjs/core';
 import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 
-
 // this CORS config works perfectly in dev
 
 //   cors: {
-  //     credentials: true,
-  //     allowedHeaders: ['content-type'],
-  //     // origin: [process.env.CLIENT_ORIGIN],
-  //     origin: ['http://localhost:4200'],  // todo: implement environment variable
-  //     methods: ['GET', 'PUT', 'PATCH', 'POST']
-  // } 
+//     credentials: true,
+//     allowedHeaders: ['content-type'],
+//     // origin: [process.env.CLIENT_ORIGIN],
+//     origin: ['http://localhost:4200'],  // todo: implement environment variable
+//     methods: ['GET', 'PUT', 'PATCH', 'POST']
+// }
 async function bootstrap() {
-  // const app = await NestFactory.create(AppModule, 
-  //   { 
+  // const app = await NestFactory.create(AppModule,
+  //   {
   //     cors: {
   //       credentials: true,
   //       allowedHeaders: ['Access-Control-Allow-Credentials', 'content-type'],
@@ -47,10 +46,10 @@ async function bootstrap() {
     // ], // more restrictive allowed origins
     // allowedHeaders: ['content-type'], // orignal functioning config
     // allowedHeaders: ['Access-Control-Allow-Credentials', 'content-type'], // additional config to consider
-  })
+  });
   app.use(cookieParser());
 
   // await app.listen(process.env.PORT);
-  await app.listen(process.env.PORT || 3006);   // todo: implement environment variable
+  await app.listen(process.env.SERVER_PORT || 3006); // todo: implement environment variable
 }
 bootstrap();

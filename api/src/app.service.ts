@@ -4,7 +4,9 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class AppService {
 
-  constructor(private readonly mailerService: MailerService) {}
+  constructor(
+    private readonly mailerService: MailerService
+    ) {}
 
   getHello()  {
     return [{duh: 'Hello World!'}];
