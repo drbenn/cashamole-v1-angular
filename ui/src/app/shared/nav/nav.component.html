@@ -30,35 +30,74 @@
                     </div>
                 </li>
             }
-            <li><a routerLink="/home" routerLinkActive="active">Home</a></li>
-            @if (loggedInUserVal) {
+            <!-- <li><a routerLink="/home" routerLinkActive="active">Home</a></li> -->
+            @if (loggedInUserVal && !isMobileView) {
                 <li><a routerLink="expense" routerLinkActive="active">+Expense</a></li>
             }
-            @if (loggedInUserVal) {
+            @if (loggedInUserVal && !isMobileView) {
                 <li><a routerLink="income" routerLinkActive="active">+Income</a></li>
             }
-            @if (loggedInUserVal) {
+            @if (loggedInUserVal && !isMobileView) {
                 <li><a routerLink="invest" routerLinkActive="active">+Invest</a></li>
             }
-            @if (loggedInUserVal) {
+            @if (loggedInUserVal && !isMobileView) {
                 <li><a routerLink="balance-sheeet" routerLinkActive="active">Balance Sheet</a></li>
             }
-            <li><a routerLink="/how-to" routerLinkActive="active">How-to</a></li>
-            <li><a routerLink="/donate" routerLinkActive="active">Donate</a></li>
+            <!-- <li><a routerLink="/how-to" routerLinkActive="active">How-to</a></li>
+            <li><a routerLink="/donate" routerLinkActive="active">Donate</a></li> -->
 
-            @if (!loggedInUserVal) {
+            @if (!loggedInUserVal && !isMobileView) {
                 <li><a routerLink="register" routerLinkActive="active">Register</a></li>
             }
-            @if (!loggedInUserVal) {
+            @if (!loggedInUserVal && !isMobileView) {
                 <li><a (click)="logoutUser(false)" routerLink="login" routerLinkActive="active">Login</a></li>
             }
-            @if (loggedInUserVal) {
+            @if (loggedInUserVal && !isMobileView) {
                 <li class="surface-100 p-3 text-bluegray-500 font-bold text-xl">{{ loggedInUserVal | titlecase }}</li>
             }
-            @if (loggedInUserVal) {
+            @if (loggedInUserVal && !isMobileView) {
                 <li><a (click)="logoutUser(true)">Logout</a></li>
+            }
+            @if (isMobileView) {
+                <li class="cursor-pointer" (click)="visibleSidebar = true" ><i class="pi pi-align-justify text-xl" ></i></li>
             }
         </ul>
     </div>
 
 </nav>
+
+<p-sidebar [visible]="visibleSidebar" [fullScreen]="true" [baseZIndex]="10000" (onHide)="sidebarClose()" [showCloseIcon]="true">
+    <div class="flex flex-nowrap flex-column justify-content-start align-items-center">
+        <div class="w-6 text-center text-3xl flex flex-nowrap flex-column justify-content-start align-items-start">
+
+            @if (loggedInUserVal && isMobileView) {
+                <div class="surface-100 p-3 text-bluegray-500 font-bold text-xl">{{ loggedInUserVal | titlecase }}</div>
+            }
+            @if (loggedInUserVal && isMobileView) {
+                <div><a routerLink="expense" routerLinkActive="active">+Expense</a></div>
+            }
+            @if (loggedInUserVal && isMobileView) {
+                <div><a routerLink="income" routerLinkActive="active">+Income</a></div>
+            }
+            @if (loggedInUserVal && isMobileView) {
+                <div><a routerLink="invest" routerLinkActive="active">+Invest</a></div>
+            }
+            @if (loggedInUserVal && isMobileView) {
+                <div><a routerLink="balance-sheeet" routerLinkActive="active">Balance Sheet</a></div>
+            }
+            <!-- <div><a routerLink="/how-to" routerLinkActive="active">How-to</a></div>
+            <div><a routerLink="/donate" routerLinkActive="active">Donate</a></div> -->
+    
+            @if (!loggedInUserVal && isMobileView) {
+                <div><a routerLink="register" routerLinkActive="active">Register</a></div>
+            }
+            @if (!loggedInUserVal && isMobileView) {
+                <div><a (click)="logoutUser(false)" routerLink="login" routerLinkActive="active">Login</a></div>
+            }
+            @if (loggedInUserVal && isMobileView) {
+                <div><a (click)="logoutUser(true)">Logout</a></div>
+            }
+        </div>
+    </div>
+
+</p-sidebar>

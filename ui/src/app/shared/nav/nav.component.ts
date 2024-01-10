@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { UserApiService } from '../api/user-api.service';
@@ -11,11 +11,12 @@ import { FormsModule } from '@angular/forms';
 import { CalendarStateModel } from '../../store/calendar/calendar.state';
 import { CalendarActions } from '../../store/calendar/calendar.actions';
 import { DateRange } from '../../model/calendar.model';
+import {SidebarModule} from 'primeng/sidebar';
 
 @Component({
   selector: 'app-nav',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, CalendarModule, FormsModule],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, CalendarModule, FormsModule, SidebarModule],
   templateUrl: './nav.component.html',
   styleUrl: './nav.component.scss'
 })
@@ -24,6 +25,18 @@ export class NavComponent {
   @Select((state: {calendar: CalendarStateModel }) => state.calendar.monthDateRange) monthDateRange$!: Observable<any>;
   public loggedInUserVal!: string;
   monthDate!: Date;
+  protected isMobileView: boolean = false;
+  protected visibleSidebar!: boolean;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    const width = event.target.innerWidth;
+    if (width && width < 700 ) {
+      this.isMobileView = true;
+    } else {
+      this.isMobileView = false;
+    };
+  };
   
   constructor(
     private router: Router,
@@ -32,10 +45,20 @@ export class NavComponent {
   ) {}
 
   ngOnInit(): void {
+    if (window.innerWidth < 700) {
+      this.isMobileView = true;
+    } else {
+      this.isMobileView = false;
+    };
+
     this.monthDate = new Date();
     this.loggedInUser$.subscribe((username:string) => {
       this.loggedInUserVal = username;
     });
+  };
+
+  protected sidebarClose(): void {
+    this.visibleSidebar = false; 
   };
 
   protected navigateHome(): void {
