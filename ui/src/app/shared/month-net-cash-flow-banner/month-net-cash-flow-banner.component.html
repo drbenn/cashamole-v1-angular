@@ -1,39 +1,41 @@
 
 @if (monthIncome !== 0 && monthExpense !== 0 && monthNetCashflow !== 0) {
-    <main class="flex flex-no-wrap flex-row justify-content-center align-items-center">
-        <div class="bg-red-100 flex flex-no-wrap flex-column justify-content-center align-items-center">
-            <div>
-                {{ monthIncome | currency: 'USD'}}
+    <p-card class="">
+        <main class="flex flex-no-wrap flex-row justify-content-between align-items-center text-base h-3rem w-25rem px-4">
+            <div class="flex flex-no-wrap flex-column justify-content-between align-items-center h-full">
+                <div>
+                    {{ monthIncome | currency: 'USD'}}
+                </div>
+                <div class="text-700">
+                    Income
+                </div>
             </div>
-            <div>
-                Income
+        
+            <div class="mx-3 text-2xl font-light">
+                -
             </div>
-        </div>
-    
-        <div>
-            -
-        </div>
-    
-        <div class="bg-red-100 flex flex-no-wrap flex-column justify-content-center align-items-center">
-            <div>
-                {{ monthExpense | currency: 'USD'}}
+        
+            <div class="flex flex-no-wrap flex-column justify-content-between align-items-center h-full">
+                <div>
+                    {{ monthExpense | currency: 'USD'}}
+                </div>
+                <div class="text-700">
+                    Expense
+                </div>
             </div>
-            <div>
-                Expense
+        
+            <div class="mx-3 text-2xl font-light">
+                =
             </div>
-        </div>
-    
-        <div>
-            =
-        </div>
-    
-        <div class="bg-red-100 flex flex-no-wrap flex-column justify-content-center align-items-center">
-            <div [ngClass]="monthNetCashflow < 0 ? 'text-red-400' : 'text-green-400' ">
-                {{ monthNetCashflow | currency: 'USD'}}
+        
+            <div class="flex flex-no-wrap flex-column justify-content-between align-items-center h-full">
+                <div [ngClass]="monthNetCashflow < 0 ? 'text-red-400' : 'text-green-400' ">
+                    {{ monthNetCashflow | currency: 'USD'}}
+                </div>
+                <div class="text-700">
+                    Cash Flow
+                </div>
             </div>
-            <div>
-                Cash Flow
-            </div>
-        </div>
-    </main>
+        </main>
+    </p-card>
 }

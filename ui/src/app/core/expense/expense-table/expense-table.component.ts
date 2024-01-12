@@ -11,12 +11,13 @@ import { CoreApiService } from '../../../shared/api/core-api.service';
 import { TooltipModule } from 'primeng/tooltip';
 import { Expense } from '../../../model/core.model';
 import { ExpenseActions } from '../../../store/expense/expense.actions';
+import {CardModule} from 'primeng/card';
 
 
 @Component({
   selector: 'app-expense-table',
   standalone: true,
-  imports: [CommonModule, TableModule, FormsModule, CalendarModule, InputTextModule, InputNumberModule, TooltipModule],
+  imports: [CommonModule, TableModule, FormsModule, CalendarModule, InputTextModule, InputNumberModule, TooltipModule, CardModule],
   templateUrl: './expense-table.component.html',
   styleUrl: './expense-table.component.scss'
 })

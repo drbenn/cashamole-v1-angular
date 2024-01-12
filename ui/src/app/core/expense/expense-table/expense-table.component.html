@@ -1,6 +1,8 @@
-<div>
+<!-- <div>
     {{ tableTitle }}
-</div>
+</div> -->
+
+<p-card [header]="tableTitle">
 <p-table [value]="tableData" dataKey="exp_id" editMode="row" [tableStyle]="{ 'width': 'fit-content' }" styleClass="p-datatable-sm"
 pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-1000
 >
@@ -51,7 +53,7 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
                         </span>
                     </ng-template>
                     <ng-template pTemplate="output">
-                        {{ category.vendor }}
+                        {{ category.vendor | titlecase }}
                     </ng-template>
                 </p-cellEditor>
             </td>
@@ -69,7 +71,7 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
                         </span>
                     </ng-template>
                     <ng-template pTemplate="output">
-                        {{ category.note }}
+                        {{ category.note | titlecase }}
                     </ng-template>
                 </p-cellEditor>
             </td>
@@ -164,3 +166,4 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
         </tr>
     </ng-template>
 </p-table>
+</p-card>
