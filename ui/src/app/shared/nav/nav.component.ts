@@ -27,11 +27,12 @@ export class NavComponent {
   monthDate!: Date;
   protected isMobileView: boolean = false;
   protected visibleSidebar!: boolean;
+  private MOBILE_VIEW_WINDOW_SIZE: number = 950;
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     const width = event.target.innerWidth;
-    if (width && width < 700 ) {
+    if (width && width < this.MOBILE_VIEW_WINDOW_SIZE ) {
       this.isMobileView = true;
     } else {
       this.isMobileView = false;
@@ -45,7 +46,7 @@ export class NavComponent {
   ) {}
 
   ngOnInit(): void {
-    if (window.innerWidth < 700) {
+    if (window.innerWidth < this.MOBILE_VIEW_WINDOW_SIZE) {
       this.isMobileView = true;
     } else {
       this.isMobileView = false;

@@ -1,18 +1,55 @@
 <nav class="h-6rem bg-white cursor-pointer flex flex-row justify-content-between align-items-center">
-    <div class="text-3xl font-bold gradient-logo-text" (click)="navigateHome()">
-       CASHAMOLE
+    <div (click)="navigateHome()" class="flex flex-row flex-nowrap justify-content-between align-items-center">
+        <div>
+            <img src="./assets/img/cashamole-icon.png" alt="" [ngStyle]="{'height': '2.75rem'}">
+        </div>
+       
+        <div
+        class="text-3xl font-bold gradient-logo-text"
+        [ngStyle]="{'transform': 'translate(0.25rem, 0.0rem)'}"
+        [ngClass]="isMobileView ? 'logo-out-view' : 'logo-in-view' "
+        >
+            ASHAMOLE
+        </div>
     </div>
-    <div class="text-right text-lg">
+
+    <div>
+        @if (loggedInUserVal &&isMobileView) {
+            <div class="h-1rem flex flex-row flex-nowrap justify-content-center align-items-center pb-1"
+                [ngStyle]="{'transform': 'translate(0rem, 0rem)'}"
+            >
+                <div (click)="backOneMonth()">
+                    <i class="pi pi-angle-left responsive-nav-text mild-text-shadow" [ngStyle]="{'font-size': '2.5rem', 'color': '#a2fcd4','transform': 'translate(1rem, 0.1rem)' }"></i>
+                </div>
+                <div>
+                    <p-calendar 
+                        [(ngModel)]="monthDate"
+                        view="month"
+                        dateFormat="M yy"
+                        [readonlyInput]="true"
+                        inputId="monthpicker"
+                        (onSelect)="updateActiveMonthRange($event)"
+                        class=""
+                    ></p-calendar>
+                </div>
+                <div class="" (click)="forwardOneMonth()">
+                    <i class="pi pi-angle-right responsive-nav-text mild-text-shadow" [ngStyle]="{'font-size': '2.5rem', 'color': '#a2fcd4','transform': 'translate(-1rem, 0.1rem)'}"></i>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="text-right responsive-nav-text">
         <ul>
-            @if (loggedInUserVal) {
+            @if (loggedInUserVal && !isMobileView) {
                 <li>
                     <div class="h-1rem flex flex-row flex-nowrap justify-content-center align-items-center pb-1"
-                        [ngStyle]="{'transform': 'translate(0rem, 0.25rem)'}"
+                        [ngStyle]="{'transform': 'translate(0rem, 0.5rem)'}"
                     >
                         <div (click)="backOneMonth()">
-                            <i class="pi pi-angle-left" [ngStyle]="{'font-size': '2rem', 'color': 'lightseagreen'}"></i>
+                            <i class="pi pi-angle-left responsive-nav-text mild-text-shadow" [ngStyle]="{'font-size': '2.5rem', 'color': '#a2fcd4','transform': 'translate(1rem, 0.1rem)' }"></i>
                         </div>
-                        <div [ngStyle]="{'width': '6.25rem'}">
+                        <div>
                             <p-calendar 
                                 [(ngModel)]="monthDate"
                                 view="month"
@@ -24,7 +61,7 @@
                             ></p-calendar>
                         </div>
                         <div class="" (click)="forwardOneMonth()">
-                            <i class="pi pi-angle-right" [ngStyle]="{'font-size': '2rem', 'color': 'lightseagreen'}"></i>
+                            <i class="pi pi-angle-right responsive-nav-text mild-text-shadow" [ngStyle]="{'font-size': '2.5rem', 'color': '#a2fcd4','transform': 'translate(-1rem, 0.1rem)'}"></i>
                         </div>
     
                     </div>
@@ -53,13 +90,13 @@
                 <li><a (click)="logoutUser(false)" routerLink="login" routerLinkActive="active">Login</a></li>
             }
             @if (loggedInUserVal && !isMobileView) {
-                <li class="surface-100 p-3 text-bluegray-500 font-bold text-xl">{{ loggedInUserVal | titlecase }}</li>
-            }
-            @if (loggedInUserVal && !isMobileView) {
                 <li><a (click)="logoutUser(true)">Logout</a></li>
             }
+            @if (loggedInUserVal && !isMobileView) {
+                <li class="cashamole-green font-light text-sm">{{ loggedInUserVal | titlecase }}</li>
+            }
             @if (isMobileView) {
-                <li class="cursor-pointer" (click)="visibleSidebar = true" ><i class="pi pi-align-justify text-xl" ></i></li>
+                <li class="cursor-pointer mobile-hamburger-hover" (click)="visibleSidebar = true" ><i class="pi pi-align-justify text-3xl" ></i></li>
             }
         </ul>
     </div>
@@ -68,34 +105,35 @@
 
 <p-sidebar [visible]="visibleSidebar" [fullScreen]="true" [baseZIndex]="10000" (onHide)="sidebarClose()" [showCloseIcon]="true">
     <div class="flex flex-nowrap flex-column justify-content-start align-items-center">
-        <div class="w-6 text-center text-3xl flex flex-nowrap flex-column justify-content-start align-items-start">
-
+        <div class="text-center text-2xl flex flex-nowrap flex-column justify-content-start align-items-start"
+            [ngStyle]="{'width': '10rem'}"
+        >
             @if (loggedInUserVal && isMobileView) {
-                <div class="surface-100 p-3 text-bluegray-500 font-bold text-xl">{{ loggedInUserVal | titlecase }}</div>
+                <div><a routerLink="expense" routerLinkActive="active">+ Expense</a></div>
             }
             @if (loggedInUserVal && isMobileView) {
-                <div><a routerLink="expense" routerLinkActive="active">+Expense</a></div>
+                <div class="mt-3"><a routerLink="income" routerLinkActive="active">+ Income</a></div>
             }
             @if (loggedInUserVal && isMobileView) {
-                <div><a routerLink="income" routerLinkActive="active">+Income</a></div>
+                <div class="mt-3"><a routerLink="invest" routerLinkActive="active">+ Invest</a></div>
             }
             @if (loggedInUserVal && isMobileView) {
-                <div><a routerLink="invest" routerLinkActive="active">+Invest</a></div>
-            }
-            @if (loggedInUserVal && isMobileView) {
-                <div><a routerLink="balance-sheeet" routerLinkActive="active">Balance Sheet</a></div>
+                <div class="mt-3"><a routerLink="balance-sheeet" routerLinkActive="active">Balance Sheet</a></div>
             }
             <!-- <div><a routerLink="/how-to" routerLinkActive="active">How-to</a></div>
             <div><a routerLink="/donate" routerLinkActive="active">Donate</a></div> -->
     
             @if (!loggedInUserVal && isMobileView) {
-                <div><a routerLink="register" routerLinkActive="active">Register</a></div>
+                <div class="mt-3"><a routerLink="register" routerLinkActive="active">Register</a></div>
             }
             @if (!loggedInUserVal && isMobileView) {
-                <div><a (click)="logoutUser(false)" routerLink="login" routerLinkActive="active">Login</a></div>
+                <div class="mt-3"><a (click)="logoutUser(false)" routerLink="login" routerLinkActive="active">Login</a></div>
             }
             @if (loggedInUserVal && isMobileView) {
-                <div><a (click)="logoutUser(true)">Logout</a></div>
+                <div class="mt-7 cursor-pointer"><a (click)="logoutUser(true)">Logout</a></div>
+            }
+            @if (loggedInUserVal && isMobileView) {
+                <div class="cashamole-green font-light text-3xl mt-3 cursor-default">{{ loggedInUserVal | titlecase }}</div>
             }
         </div>
     </div>
