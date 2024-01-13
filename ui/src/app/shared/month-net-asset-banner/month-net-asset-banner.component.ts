@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { DashboardStateModel } from '../../store/dashboard/dashboard.state';
 import { Store } from '@ngxs/store';
+import {CardModule} from 'primeng/card';
 
 @Component({
   selector: 'app-month-net-asset-banner',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CardModule],
   templateUrl: './month-net-asset-banner.component.html',
   styleUrl: './month-net-asset-banner.component.scss'
 })

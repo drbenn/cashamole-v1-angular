@@ -1,169 +1,165 @@
-<!-- <div>
-    {{ tableTitle }}
-</div> -->
-
 <p-card [header]="tableTitle">
-<p-table [value]="tableData" dataKey="exp_id" editMode="row" [tableStyle]="{ 'width': 'fit-content' }" styleClass="p-datatable-sm"
-pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-1000
->
-    <ng-template pTemplate="header">
-        <tr>
-            <th pSortableColumn="date" [style]="{'width': '7rem'}">Date</th>
-            <th pSortableColumn="vendor" [style]="{'width': '7rem'}">Vendor</th>
-            <th pSortableColumn="note" [style]="{'width': '7rem'}">Note</th>
-            <th pSortableColumn="amount" [style]="{'width': '5rem'}">Amount</th>
-            <th [style]="{'width': '6rem'}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit</th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-category let-editing="editing" let-ri="rowIndex">
-        <tr [pEditableRow]="category">
-            <!-- <td style="width:15%">{{ category.date | date:'M/d/yy' }}</td> -->
-            <td>
-                <p-cellEditor>
-                    <ng-template pTemplate="input">
-                        <span class="p-float-label">
-                            <p-calendar
-                                id="date"
-                                [showIcon]="true"
-                                [(ngModel)]="category.date"
-                                [style]="{'width':'7rem'}"
-                                appendTo="body"
-                                dateFormat="mm/dd/y"
-                            >
-                            </p-calendar>
-                            <label htmlFor="date">Date</label>
-                        </span>
-                    </ng-template>
-                    <ng-template pTemplate="output">
-                        {{ category.date | date:'M/d/yy' }}
-                    </ng-template>
-                </p-cellEditor>
-            </td>
-            <td>
-                <p-cellEditor>
-                    <ng-template pTemplate="input">
-                        <span class="p-float-label">
-                            <input 
-                                pInputText
-                                id="vendor"
-                                [(ngModel)]="category.vendor"
-                                [style]="{'width':'7rem'}"
-                            />
-                        <label htmlFor="vendor">Vendor</label>
-                        </span>
-                    </ng-template>
-                    <ng-template pTemplate="output">
-                        {{ category.vendor | titlecase }}
-                    </ng-template>
-                </p-cellEditor>
-            </td>
-            <td>
-                <p-cellEditor>
-                    <ng-template pTemplate="input">
-                        <span class="p-float-label">
-                            <input 
-                                pInputText
-                                id="note"
-                                [(ngModel)]="category.note"
-                                [style]="{'width':'7rem'}"
-                            />
-                        <label htmlFor="note">Note</label>
-                        </span>
-                    </ng-template>
-                    <ng-template pTemplate="output">
-                        {{ category.note | titlecase }}
-                    </ng-template>
-                </p-cellEditor>
-            </td>
-            <!-- <td style="width:20%">{{ category.amount | currency }}</td> -->
-            <td>
-                <p-cellEditor class="">
-                    <ng-template pTemplate="input">
-                        <span class="p-float-label">
-                            <p-inputNumber 
-                                id="amount"
-                                [(ngModel)]="category.amount"
-                                inputId="minmaxfraction"
-                                mode="decimal"
-                                [minFractionDigits]="2"
-                                [maxFractionDigits]="2"
-                                [style]="{'width':'5rem'}"
-                            > </p-inputNumber>
-                            <label htmlFor="amount">$ Amount</label>
-                        </span>
-                    </ng-template>
-                    <ng-template pTemplate="output">
-                        {{ category.amount | currency }}
-                    </ng-template>
-                </p-cellEditor>
-            </td>
-            <td>
-                <div class="flex flex-row flex-nowrap justify-content-center"
-                [ngStyle]="{'width':'6rem'}"
-                >
-                    @if (!editing) {
-                        <div class="">
-                            <button 
-                                pButton
-                                pRipple
-                                type="button"
-                                pInitEditableRow
-                                icon="pi pi-pencil"
-                                (click)="onRowEditInit(category)"
-                                class="p-button-rounded p-button-text"
-                                pTooltip="Edit Record"
-                                tooltipPosition="top"
-                            ></button>
-                        </div>
-                    }
-                    @if (editing) {
-                        <div>
-                            <button
-                                pButton
-                                pRipple
-                                type="button"
-                                pSaveEditableRow
-                                icon="pi pi-check"
-                                (click)="onRowEditSave(category)"
-                                class="p-button-rounded p-button-text p-button-success w-2rem"
-                                pTooltip="Save Edit"
-                                tooltipPosition="top"
-                            ></button>
-                        </div>
-                    }
-                    @if (editing) {
-                        <div>
-                            <button
-                                pButton
-                                pRipple
-                                type="button"
-                                pCancelEditableRow
-                                icon="pi pi-times"
-                                (click)="onRowEditCancel(category, ri)"
-                                class="p-button-rounded p-button-text w-2rem cancel-icon-color"
-                                pTooltip="Cancel Edit"
-                                tooltipPosition="top"
-                            ></button>
-                        </div>
-                    }
-                    @if (editing) {
-                        <div>
-                            <button
-                                pButton
-                                pRipple
-                                type="button"
-                                pCancelEditableRow
-                                icon="pi pi-trash"
-                                (click)="removeEntry(category, ri)"
-                                class="p-button-rounded p-button-text p-button-danger w-2rem"
-                                pTooltip="Delete Record"
-                                tooltipPosition="top"
-                            ></button>
-                        </div>
-                    }
-                </div>
-            </td>
-        </tr>
-    </ng-template>
-</p-table>
+    <p-table [value]="tableData" dataKey="exp_id" editMode="row" [tableStyle]="{ 'width': 'fit-content' }" styleClass="p-datatable-sm"
+    pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-1000
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="date" [style]="{'width': '7rem'}">Date</th>
+                <th pSortableColumn="vendor" [style]="{'width': '7rem'}">Vendor</th>
+                <th pSortableColumn="note" [style]="{'width': '7rem'}">Note</th>
+                <th pSortableColumn="amount" [style]="{'width': '5rem'}">Amount</th>
+                <th [style]="{'width': '6rem'}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-category let-editing="editing" let-ri="rowIndex">
+            <tr [pEditableRow]="category">
+                <!-- <td style="width:15%">{{ category.date | date:'M/d/yy' }}</td> -->
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <span class="p-float-label">
+                                <p-calendar
+                                    id="date"
+                                    [showIcon]="true"
+                                    [(ngModel)]="category.date"
+                                    [style]="{'width':'7rem'}"
+                                    appendTo="body"
+                                    dateFormat="mm/dd/y"
+                                >
+                                </p-calendar>
+                                <label htmlFor="date">Date</label>
+                            </span>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{ category.date | date:'M/d/yy' }}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <span class="p-float-label">
+                                <input 
+                                    pInputText
+                                    id="vendor"
+                                    [(ngModel)]="category.vendor"
+                                    [style]="{'width':'7rem'}"
+                                />
+                            <label htmlFor="vendor">Vendor</label>
+                            </span>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{ category.vendor | titlecase }}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <span class="p-float-label">
+                                <input 
+                                    pInputText
+                                    id="note"
+                                    [(ngModel)]="category.note"
+                                    [style]="{'width':'7rem'}"
+                                />
+                            <label htmlFor="note">Note</label>
+                            </span>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{ category.note | titlecase }}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <!-- <td style="width:20%">{{ category.amount | currency }}</td> -->
+                <td>
+                    <p-cellEditor class="">
+                        <ng-template pTemplate="input">
+                            <span class="p-float-label">
+                                <p-inputNumber 
+                                    id="amount"
+                                    [(ngModel)]="category.amount"
+                                    inputId="minmaxfraction"
+                                    mode="decimal"
+                                    [minFractionDigits]="2"
+                                    [maxFractionDigits]="2"
+                                    [style]="{'width':'5rem'}"
+                                > </p-inputNumber>
+                                <label htmlFor="amount">$ Amount</label>
+                            </span>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{ category.amount | currency }}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <div class="flex flex-row flex-nowrap justify-content-center"
+                    [ngStyle]="{'width':'6rem'}"
+                    >
+                        @if (!editing) {
+                            <div class="">
+                                <button 
+                                    pButton
+                                    pRipple
+                                    type="button"
+                                    pInitEditableRow
+                                    icon="pi pi-pencil"
+                                    (click)="onRowEditInit(category)"
+                                    class="p-button-rounded p-button-text"
+                                    pTooltip="Edit Record"
+                                    tooltipPosition="top"
+                                ></button>
+                            </div>
+                        }
+                        @if (editing) {
+                            <div>
+                                <button
+                                    pButton
+                                    pRipple
+                                    type="button"
+                                    pSaveEditableRow
+                                    icon="pi pi-check"
+                                    (click)="onRowEditSave(category)"
+                                    class="p-button-rounded p-button-text p-button-success w-2rem"
+                                    pTooltip="Save Edit"
+                                    tooltipPosition="top"
+                                ></button>
+                            </div>
+                        }
+                        @if (editing) {
+                            <div>
+                                <button
+                                    pButton
+                                    pRipple
+                                    type="button"
+                                    pCancelEditableRow
+                                    icon="pi pi-times"
+                                    (click)="onRowEditCancel(category, ri)"
+                                    class="p-button-rounded p-button-text w-2rem cancel-icon-color"
+                                    pTooltip="Cancel Edit"
+                                    tooltipPosition="top"
+                                ></button>
+                            </div>
+                        }
+                        @if (editing) {
+                            <div>
+                                <button
+                                    pButton
+                                    pRipple
+                                    type="button"
+                                    pCancelEditableRow
+                                    icon="pi pi-trash"
+                                    (click)="removeEntry(category, ri)"
+                                    class="p-button-rounded p-button-text p-button-danger w-2rem"
+                                    pTooltip="Delete Record"
+                                    tooltipPosition="top"
+                                ></button>
+                            </div>
+                        }
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
 </p-card>
