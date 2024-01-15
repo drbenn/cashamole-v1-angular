@@ -15,6 +15,7 @@ import { ChipState } from '../../../store/chip/chipState.state';
 import { ChipSelectComponent } from '../../../shared/chip-select/chip-select.component';
 import { IncomeActions } from '../../../store/income/income.actions';
 import { Income } from '../../../model/core.model';
+import {CardModule} from 'primeng/card';
 
 
 @Component({
@@ -30,7 +31,8 @@ import { Income } from '../../../model/core.model';
     ButtonModule,
     CalendarModule,
     ChipSelectComponent,
-    SelectButtonModule
+    SelectButtonModule,
+    CardModule
   ],
   templateUrl: './new-income-transaction.component.html',
   styleUrl: './new-income-transaction.component.scss'

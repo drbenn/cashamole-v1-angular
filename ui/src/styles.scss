@@ -1,6 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 @import "primeicons/primeicons.css";
 
+
+html {
+    // font-size @html sets scale for all primeng components
+    font-size: 14px;
+}
 body {
     margin: auto;
     background-color: lime;  // scroll overflow bg

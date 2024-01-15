@@ -1,6 +1,6 @@
-<!-- <p-card [header]="tableTitle"
+<p-card header="Income Transactions" subheader="Income received for the month" [style]="{'padding': '1rem'}"
 pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-1000
-> -->
+>
     <p-table [value]="tableData" dataKey="inc_id" editMode="row" [tableStyle]="{ 'width': 'fit-content' }" styleClass="p-datatable-sm">
         <ng-template pTemplate="header">
             <tr>
@@ -160,3 +160,4 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
             </tr>
         </ng-template>
     </p-table>
+</p-card>

@@ -11,11 +11,12 @@ import { CoreApiService } from '../../../shared/api/core-api.service';
 import { TooltipModule } from 'primeng/tooltip';
 import { Income } from '../../../model/core.model';
 import { IncomeActions } from '../../../store/income/income.actions';
+import {CardModule} from 'primeng/card';
 
 @Component({
   selector: 'app-income-table',
   standalone: true,
-  imports: [CommonModule, TableModule, FormsModule, CalendarModule, InputTextModule, InputNumberModule, TooltipModule],
+  imports: [CommonModule, TableModule, FormsModule, CalendarModule, InputTextModule, InputNumberModule, TooltipModule, CardModule],
   templateUrl: './income-table.component.html',
   styleUrl: './income-table.component.scss'
 })
