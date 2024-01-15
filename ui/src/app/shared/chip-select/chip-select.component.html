@@ -1,5 +1,6 @@
 
-<h3>{{ titleGenerator(kind)  | titlecase }} Quick Tags</h3>
+<!-- <h3>{{ titleGenerator(kind)  | titlecase }} Quick Tags</h3> -->
+<div class="text-sm font-light mb-2">{{ titleGenerator(kind)  | titlecase }} Quick Tags</div>
 <p-chips
     [(ngModel)]="chipStrings"
     [max]="maxChips"

@@ -1,81 +1,86 @@
-<main
-class="w-full bg-white flex flex-column justify-content-center align-items-center"
-[ngStyle]="{'min-height': '5rem'}"
+<p-card header="New Balance Sheet Record" [subheader]="subheader" [style]="{'padding': '1rem', 'min-width': '20rem', 'max-width': '34rem'}"
+pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-1000
 >
-    <form action="" [formGroup]="newRecordForm" (ngSubmit)="onSubmit()">
+    <main
+    class="w-full bg-white flex flex-column justify-content-center align-items-start"
+    [ngStyle]="{'min-height': '5rem'}"
+    pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-1000
+    >
+        <form action="" [formGroup]="newRecordForm" (ngSubmit)="onSubmit()" class="max-w-30rem">
 
-        <h1 class="m-4 text-2xl">
-            Balance On {{ activeMonthStartDate | date:'EEEE, MMM d, yyyy'}}
-        </h1>
+            <!-- <h1 class="text-xl">
+                Balance On {{ activeMonthStartDate | date:'EEEE, MMM d, yyyy'}}
+            </h1> -->
 
-        <div class="m-4 w-20rem">
-            <p-selectButton
-                [options]="bsTypes"
-                formControlName="type"
-                optionLabel="type"
-                optionValue="type"
-                #type
-                (click)="handleBsSelectClick(type.value)"
-            ></p-selectButton>
-        </div>
+            <div class="mt-4 w-20rem">
+                <p-selectButton
+                    [options]="bsTypes"
+                    formControlName="type"
+                    optionLabel="type"
+                    optionValue="type"
+                    #type
+                    (click)="handleBsSelectClick(type.value)"
+                ></p-selectButton>
+            </div>
 
-        <div class="m-4 w-20rem">
-            @if (assetLiabilityToggle === 'asset') {
-                <app-chip-select [chipStrings]="assetChipStrings" [chipObjects]="assetChips" kind="asset" (selectedChip)="handleChipSelect($event)"></app-chip-select>
-            }
-            @if (assetLiabilityToggle === 'liability') {
-                <app-chip-select [chipStrings]="liabilityChipStrings" [chipObjects]="liabilityChips" kind="liability" (selectedChip)="handleChipSelect($event)"></app-chip-select>
-            }
-        </div>
-        
-        <div class="m-4">
-            <span class="p-float-label">
-                <input 
-                    pInputText
-                    id="description"
-                    formControlName="description"
-                    [style]="{'width':'20rem'}"
-                />
-            <label htmlFor="description">Description</label>
-            </span>
-        </div>
+            <div class="mt-4 max-w-30rem">
+                @if (assetLiabilityToggle === 'asset') {
+                    <app-chip-select [chipStrings]="assetChipStrings" [chipObjects]="assetChips" kind="asset" (selectedChip)="handleChipSelect($event)"></app-chip-select>
+                }
+                @if (assetLiabilityToggle === 'liability') {
+                    <app-chip-select [chipStrings]="liabilityChipStrings" [chipObjects]="liabilityChips" kind="liability" (selectedChip)="handleChipSelect($event)"></app-chip-select>
+                }
+            </div>
+            
+            <div class="mt-4">
+                <span class="p-float-label">
+                    <input 
+                        pInputText
+                        id="description"
+                        formControlName="description"
+                        [style]="{'min-width':'100%'}"
+                    />
+                <label htmlFor="description">Description</label>
+                </span>
+            </div>
 
-        <div class="m-4">
-            <span class="p-float-label">
-                <p-inputNumber 
-                    id="amount"
-                    formControlName="amount"
-                    inputId="minmaxfraction"
-                    mode="decimal"
-                    [minFractionDigits]="2"
-                    [maxFractionDigits]="2"
-                    placeholder=0.00
-                    [style]="{'width':'20rem'}"
-                > </p-inputNumber>
-                <label htmlFor="amount">$ Amount</label>
-            </span>
-        </div>
+            <div class="mt-4">
+                <span class="p-float-label">
+                    <p-inputNumber 
+                        id="amount"
+                        formControlName="amount"
+                        inputId="minmaxfraction"
+                        mode="decimal"
+                        [minFractionDigits]="2"
+                        [maxFractionDigits]="2"
+                        placeholder=0.00
+                        class="w-full" styleClass="w-full"
+                    > </p-inputNumber>
+                    <label htmlFor="amount">$ Amount</label>
+                </span>
+            </div>
 
-        <div class="mx-4 my-1 text-right">
-            <button 
-                pButton
-                pRipple
-                type="reset"
-                (click)="clearForm()"
-                class="px-4 mr-2"
-            >Clear</button>
-            <button 
-                class="ml-4"
-                pButton
-                pRipple
-                type="submit"
-                [disabled]="!newRecordForm.valid"
-                class="px-4"
-            >Submit</button>
-        </div>
-    </form>
+            <div class="my-1 text-right">
+                <button 
+                    pButton
+                    pRipple
+                    type="reset"
+                    (click)="clearForm()"
+                    class="px-4 mr-2"
+                >Clear</button>
+                <button 
+                    class="ml-4"
+                    pButton
+                    pRipple
+                    type="submit"
+                    [disabled]="!newRecordForm.valid"
+                    class="px-4"
+                >Submit</button>
+            </div>
+        </form>
 
-    <p>Form Status: {{ newRecordForm.status }}</p>
-    <p>{{ newRecordForm.value | json }}</p>
+        <p>Form Status: {{ newRecordForm.status }}</p>
+        <p>{{ newRecordForm.value | json }}</p>
 
-</main>
+    </main>
+</p-card>

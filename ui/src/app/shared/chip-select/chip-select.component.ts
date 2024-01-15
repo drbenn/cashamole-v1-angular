@@ -107,7 +107,7 @@ export class ChipSelectComponent implements OnInit {
       case 'asset':
         return 'Asset Account';
       case 'liability': 
-        return 'Liaibility Account';
+        return 'Liability Account';
       default:
         return 'error';
     };

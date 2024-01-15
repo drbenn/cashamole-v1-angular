@@ -1,14 +1,13 @@
-<p-card header="New Income" subheader="Enter new income transaction" [style]="{'padding': '1rem'}"
+<p-card header="New Income" subheader="Enter new income transaction" [style]="{'padding': '1rem', 'min-width': '20rem', 'max-width': '34rem'}"
 pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-1000
 >
     <main
-    class="w-full bg-white flex flex-column justify-content-center align-items-center"
+    class="w-full bg-white flex flex-column justify-content-center align-items-start"
     [ngStyle]="{'min-height': '5rem'}"
     >
-        <!-- <h2 class="m-4 text-gray-800 text-start">New Transaction</h2> -->
-            <form action="" [formGroup]="newIncomeForm" (ngSubmit)="onSubmit()">
+            <form action="" [formGroup]="newIncomeForm" (ngSubmit)="onSubmit()" class="max-w-30rem">
 
-                <div class="max-w-20rem">
+                <div class="max-w-30rem">
                         <app-chip-select 
                             [chipStrings]="incomeSourceChipStrings" [chipObjects]="incomeSourceChips" kind="income_source" 
                             (selectedChip)="handleIncomeChipSelect($event)"
@@ -21,7 +20,7 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
                             pInputText
                             id="source"
                             formControlName="source"
-                            [style]="{'width':'20rem'}"
+                            [style]="{'min-width':'100%'}"
                         />
                     <label htmlFor="source">Source</label>
                     </span>
@@ -33,7 +32,7 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
                             id="date"
                             [showIcon]="true"
                             formControlName="date"
-                            [style]="{'width':'20rem'}"
+                            [style]="{'min-width':'100%'}"
                         >
                         </p-calendar>
                         <label htmlFor="date">Date</label>
@@ -46,7 +45,7 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
                             pInputText
                             id="note"
                             formControlName="note"
-                            [style]="{'width':'20rem'}"
+                            [style]="{'min-width':'100%'}"
                         />
                     <label htmlFor="note">Note</label>
                     </span>
@@ -61,13 +60,13 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
                             mode="decimal"
                             [minFractionDigits]="2"
                             [maxFractionDigits]="2"
-                            [style]="{'width':'20rem'}"
+                            class="w-full" styleClass="w-full"
                         > </p-inputNumber>
                         <label htmlFor="amount">$ Amount</label>
                     </span>
                 </div>
 
-                <div class=" my-4 text-right">
+                <div class="my-4 text-right">
                     <button 
                         pButton
                         pRipple

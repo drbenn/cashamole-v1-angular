@@ -16,6 +16,7 @@ import { ChipState } from '../../../store/chip/chipState.state';
 import { BalanceSheetActions } from '../../../store/balanceSheet/bsState.actions';
 import { BalanceSheetEntry } from '../../../model/core.model';
 import { CalendarState } from '../../../store/calendar/calendar.state';
+import {CardModule} from 'primeng/card';
 
 
 export interface BalanceSheetType {
@@ -34,7 +35,8 @@ export interface BalanceSheetType {
     ButtonModule,
     CalendarModule,
     ChipSelectComponent,
-    SelectButtonModule
+    SelectButtonModule,
+    CardModule
   ],
   templateUrl: './new-bs-record.component.html',
   styleUrl: './new-bs-record.component.scss'
@@ -51,6 +53,7 @@ export class NewBsRecordComponent implements OnInit {
   protected assetLiabilityToggle: 'asset' | 'liability' = 'asset';
   protected bsTypes: BalanceSheetType[] = [{ type: 'asset'}, { type: "liability"}];
   protected selectedBsType: BalanceSheetType = this.bsTypes[0];
+  protected subheader: string = '';
   private today: Date = new Date();
   
   newRecordForm = this.fb.group({
@@ -70,6 +73,9 @@ export class NewBsRecordComponent implements OnInit {
     this.today = new Date();
     this.activeMonthStartDate$.subscribe((startDate: Date) => {      
       this.activeMonthStartDate = startDate;
+      const activeMonth: string = startDate.toLocaleString(undefined, { month: 'short' });
+      const fullyear: string = startDate.getFullYear().toString();
+      this.subheader = `Enter new balance sheet record with balance on ${activeMonth} 1, ${fullyear}`
     })
     this.assetChips$.subscribe((chips: Chip[]) => {
       if (chips) {        

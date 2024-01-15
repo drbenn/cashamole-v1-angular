@@ -15,6 +15,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { ChipState } from '../../../store/chip/chipState.state';
 import { ExpenseActions } from '../../../store/expense/expense.actions';
 import { Expense } from '../../../model/core.model';
+import {CardModule} from 'primeng/card';
 
 
 
@@ -31,7 +32,8 @@ import { Expense } from '../../../model/core.model';
     ButtonModule,
     CalendarModule,
     ChipSelectComponent,
-    SelectButtonModule
+    SelectButtonModule,
+    CardModule
   ],
   templateUrl: './new-expense-transaction.component.html',
   styleUrl: './new-expense-transaction.component.scss'

@@ -15,6 +15,7 @@ import { ChipState } from '../../../store/chip/chipState.state';
 import { ChipSelectComponent } from '../../../shared/chip-select/chip-select.component';
 import { InvestActions } from '../../../store/invest/invest.actions';
 import { Invest } from '../../../model/core.model';
+import {CardModule} from 'primeng/card';
 
 @Component({
   selector: 'app-new-invest-transaction',
@@ -29,7 +30,8 @@ import { Invest } from '../../../model/core.model';
     ButtonModule,
     CalendarModule,
     ChipSelectComponent,
-    SelectButtonModule
+    SelectButtonModule,
+    CardModule
   ],
   templateUrl: './new-invest-transaction.component.html',
   styleUrl: './new-invest-transaction.component.scss'

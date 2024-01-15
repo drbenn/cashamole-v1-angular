@@ -1,72 +1,74 @@
-<main
-class="w-full bg-white flex flex-column justify-content-center align-items-center"
-[ngStyle]="{'min-height': '5rem'}"
+<p-card header="New Expense" subheader="Enter new expense transaction" [style]="{'padding': '1rem', 'min-width': '20rem', 'max-width': '34rem'}"
 pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-1000
 >
-    <h2 class="m-4 text-gray-800 text-start">New Expense</h2>
-        <form action="" [formGroup]="newExpenseForm" (ngSubmit)="onSubmit()">
+    <main
+    class="w-full bg-white flex flex-column justify-content-center align-items-start"
+    [ngStyle]="{'min-height': '5rem'}"
+    pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-1000
+    >
+        <form action="" [formGroup]="newExpenseForm" (ngSubmit)="onSubmit()" class="max-w-30rem">
 
-            <div class="m-4 w-20rem">
+            <div class="max-w-30rem">
                 <app-chip-select [chipStrings]="expenseCategoryChipStrings" [chipObjects]="expenseCategoryChips" kind="category" (selectedChip)="handleChipSelect($event)"
                 ></app-chip-select>
             </div>
 
-            <div class="m-4">
+            <div class="mt-4">
                 <span class="p-float-label">
                     <input 
                         pInputText
                         id="category"
                         formControlName="category"
-                        [style]="{'width':'20rem'}"
+                        [style]="{'min-width':'100%'}"
                     />
                 <label htmlFor="category">Category</label>
                 </span>
             </div>
 
-            <div class="m-4 w-20rem">
+            <div class="mt-4 max-w-30rem">
                     <app-chip-select [chipStrings]="expenseVendorChipStrings" [chipObjects]="expenseVendorChips" kind="vendor" (selectedChip)="handleChipSelect($event)"
                     ></app-chip-select>
             </div>
 
 
-            <div class="m-4">
+            <div class="mt-4">
                 <span class="p-float-label">
                     <input 
                         pInputText
                         id="vendor"
                         formControlName="vendor"
-                        [style]="{'width':'20rem'}"
+                        [style]="{'min-width':'100%'}"
                     />
                 <label htmlFor="vendor">Vendor</label>
                 </span>
             </div>
 
-            <div class="m-4">
+            <div class="mt-4">
                 <span class="p-float-label">
                     <p-calendar
                         id="date"
                         [showIcon]="true"
                         formControlName="date"
-                        [style]="{'width':'20rem'}"
+                        [style]="{'min-width':'100%'}"
                     >
                     </p-calendar>
                     <label htmlFor="date">Date</label>
                 </span>
             </div>
     
-            <div class="m-4">
+            <div class="mt-4">
                 <span class="p-float-label">
                     <input 
                         pInputText
                         id="note"
                         formControlName="note"
-                        [style]="{'width':'20rem'}"
+                        [style]="{'min-width':'100%'}"
                     />
                 <label htmlFor="note">Note</label>
                 </span>
             </div>
             
-            <div class="m-4">
+            <div class="mt-4">
                 <span class="p-float-label">
                     <p-inputNumber 
                         id="amount"
@@ -75,13 +77,13 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
                         mode="decimal"
                         [minFractionDigits]="2"
                         [maxFractionDigits]="2"
-                        [style]="{'width':'20rem'}"
+                        class="w-full" styleClass="w-full"
                     > </p-inputNumber>
                     <label htmlFor="amount">$ Amount</label>
                 </span>
             </div>
 
-            <div class="mx-4 my-1 text-right">
+            <div class="my-1 text-right">
                 <button 
                     pButton
                     pRipple
@@ -100,7 +102,8 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
             </div>
 
         </form>
-</main>
+    </main>
+</p-card>
 
 <p>Form Status: {{ newExpenseForm.status }}</p>
 <p>{{ newExpenseForm.value | json}}</p>
