@@ -7,7 +7,7 @@
                 <div>
                     {{ monthIncome | currency: 'USD'}}
                 </div>
-                <div class="text-700 text-green-200">
+                <div class="text-700 text-green-300">
                     Income
                 </div>
             </div>
@@ -20,7 +20,7 @@
                 <div>
                     {{ monthExpense | currency: 'USD'}}
                 </div>
-                <div class="text-700 text-red-200">
+                <div class="text-700 text-red-300">
                     Expense
                 </div>
             </div>
@@ -34,12 +34,12 @@
                     {{ monthNetCashflow | currency: 'USD'}}
                 </div>
                 @if (monthNetCashflow > 0) {
-                    <div class="text-700 text-green-200">
+                    <div class="text-700 text-green-300">
                         Cash Flow
                     </div>
                 }
                 @else {
-                    <div class="text-700 text-red-200">
+                    <div class="text-700 text-red-300">
                         Cash Flow
                     </div>
                 }
