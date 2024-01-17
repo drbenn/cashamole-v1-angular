@@ -1,23 +1,21 @@
 <p-card [header]="tableTitle">
-    <p-table [value]="tableData" dataKey="exp_id" editMode="row" [tableStyle]="{ 'width': 'fit-content' }" styleClass="p-datatable-sm"
+    <p-table [value]="tableData" dataKey="exp_id" editMode="row" [tableStyle]="{ 'min-width': '30rem','width': '40vw' }" styleClass="p-datatable-sm"
     pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-1000
     >
         <ng-template pTemplate="header">
             <tr>
                 <th pSortableColumn="date" [style]="{'width': '7rem'}">Date</th>
-                <th pSortableColumn="vendor" [style]="{'width': '7rem'}">Vendor</th>
-                <th pSortableColumn="note" [style]="{'width': '7rem'}">Note</th>
-                <th pSortableColumn="amount" [style]="{'width': '5rem'}">Amount</th>
+                <th pSortableColumn="vendor">Vendor</th>
+                <th pSortableColumn="note">Note</th>
+                <th pSortableColumn="amount">Amount</th>
                 <th [style]="{'width': '6rem'}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-category let-editing="editing" let-ri="rowIndex">
             <tr [pEditableRow]="category">
-                <!-- <td style="width:15%">{{ category.date | date:'M/d/yy' }}</td> -->
                 <td>
                     <p-cellEditor>
                         <ng-template pTemplate="input">
-                            <span class="p-float-label">
                                 <p-calendar
                                     id="date"
                                     [showIcon]="true"
@@ -27,8 +25,6 @@
                                     dateFormat="mm/dd/y"
                                 >
                                 </p-calendar>
-                                <label htmlFor="date">Date</label>
-                            </span>
                         </ng-template>
                         <ng-template pTemplate="output">
                             {{ category.date | date:'M/d/yy' }}
@@ -38,15 +34,11 @@
                 <td>
                     <p-cellEditor>
                         <ng-template pTemplate="input">
-                            <span class="p-float-label">
                                 <input 
                                     pInputText
                                     id="vendor"
                                     [(ngModel)]="category.vendor"
-                                    [style]="{'width':'7rem'}"
                                 />
-                            <label htmlFor="vendor">Vendor</label>
-                            </span>
                         </ng-template>
                         <ng-template pTemplate="output">
                             {{ category.vendor | titlecase }}
@@ -56,26 +48,20 @@
                 <td>
                     <p-cellEditor>
                         <ng-template pTemplate="input">
-                            <span class="p-float-label">
                                 <input 
                                     pInputText
                                     id="note"
                                     [(ngModel)]="category.note"
-                                    [style]="{'width':'7rem'}"
                                 />
-                            <label htmlFor="note">Note</label>
-                            </span>
                         </ng-template>
                         <ng-template pTemplate="output">
                             {{ category.note | titlecase }}
                         </ng-template>
                     </p-cellEditor>
                 </td>
-                <!-- <td style="width:20%">{{ category.amount | currency }}</td> -->
                 <td>
                     <p-cellEditor class="">
                         <ng-template pTemplate="input">
-                            <span class="p-float-label">
                                 <p-inputNumber 
                                     id="amount"
                                     [(ngModel)]="category.amount"
@@ -83,10 +69,7 @@
                                     mode="decimal"
                                     [minFractionDigits]="2"
                                     [maxFractionDigits]="2"
-                                    [style]="{'width':'5rem'}"
                                 > </p-inputNumber>
-                                <label htmlFor="amount">$ Amount</label>
-                            </span>
                         </ng-template>
                         <ng-template pTemplate="output">
                             {{ category.amount | currency }}

@@ -1,12 +1,13 @@
 
 @if (monthIncome !== 0 && monthExpense !== 0 && monthNetCashflow !== 0) {
     <p-card class="">
+        <div class="mb-2 ml-4 font-base underline">Month Cash Flow Summary</div>
         <main class="flex flex-no-wrap flex-row justify-content-between align-items-center text-base h-3rem w-25rem px-4">
             <div class="flex flex-no-wrap flex-column justify-content-between align-items-center h-full">
                 <div>
                     {{ monthIncome | currency: 'USD'}}
                 </div>
-                <div class="text-700">
+                <div class="text-700 text-green-200">
                     Income
                 </div>
             </div>
@@ -19,7 +20,7 @@
                 <div>
                     {{ monthExpense | currency: 'USD'}}
                 </div>
-                <div class="text-700">
+                <div class="text-700 text-red-200">
                     Expense
                 </div>
             </div>
@@ -32,9 +33,17 @@
                 <div [ngClass]="monthNetCashflow < 0 ? 'text-red-400' : 'text-green-400' ">
                     {{ monthNetCashflow | currency: 'USD'}}
                 </div>
-                <div class="text-700">
-                    Cash Flow
-                </div>
+                @if (monthNetCashflow > 0) {
+                    <div class="text-700 text-green-200">
+                        Cash Flow
+                    </div>
+                }
+                @else {
+                    <div class="text-700 text-red-200">
+                        Cash Flow
+                    </div>
+                }
+
             </div>
         </main>
     </p-card>

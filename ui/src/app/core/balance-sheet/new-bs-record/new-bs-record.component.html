@@ -8,11 +8,7 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
     >
         <form action="" [formGroup]="newRecordForm" (ngSubmit)="onSubmit()" class="max-w-30rem">
 
-            <!-- <h1 class="text-xl">
-                Balance On {{ activeMonthStartDate | date:'EEEE, MMM d, yyyy'}}
-            </h1> -->
-
-            <div class="mt-4 w-20rem">
+            <div class="mt-4">
                 <p-selectButton
                     [options]="bsTypes"
                     formControlName="type"

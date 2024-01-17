@@ -1,307 +1,292 @@
-<div class="w-full bg-green-200 flex flex-column flex-nowrap justify-content-start align-items-start">
-    <div class="p-3">
-        <span class="text-2xl">Balance Sheet</span><span class="text-sm">&nbsp;as of XX/XX/0000</span>
+<p-card header="Balance Sheet" [subheader]="subheader" [style]="{'padding': '1rem'}"
+pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-1000
+>
+    <div class="w-full flex flex-column flex-wrap justify-content-start align-items-start">
+        <main class="flex flex-row flex-wrap justify-content-center align-items-start">
+            <div class="border-noround border-right-1 border-gray-300 pr-3">
+                <!-- <p-card header="Assets" [style]="{'padding': '1rem'}"
+                pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-1000
+                > -->
+                <div class="bg-white py-3 px-5"
+                [ngStyle]="{'font-size': '1.5rem', 'font-weight': '700', 'padding-left': '0.4rem'}"
+                >
+                Assets
+                </div>
+                    <p-table [value]="assets" dataKey="record_id" editMode="row" [tableStyle]="{ 'min-width': '30rem','width': '25vw' }" styleClass="p-datatable-sm">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th pSortableColumn="date" [style]="{'width': '7rem'}">Date</th>
+                                <th pSortableColumn="description">Description</th>
+                                <th pSortableColumn="amount">Amount</th>
+                                <th [style]="{'width': '6rem'}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-entry let-editing="editing" let-ri="rowIndex">
+                            <tr [pEditableRow]="entry">
+                                <td>
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                                <p-calendar
+                                                    id="date"
+                                                    [showIcon]="true"
+                                                    [(ngModel)]="entry.date"
+                                                    [inputStyle]="{'width':'7rem'}"
+                                                    appendTo="body"
+                                                    view="month"
+                                                    dateFormat="M y"
+                                                >
+                                                </p-calendar>
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{ entry.date | date:'M/d/yy' }}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td>
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                                <input 
+                                                    pInputText
+                                                    id="description"
+                                                    [(ngModel)]="entry.description"
+                                                />
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{ entry.description | titlecase }}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td>
+                                    <p-cellEditor class="">
+                                        <ng-template pTemplate="input">
+                                                <p-inputNumber 
+                                                    id="amount"
+                                                    [(ngModel)]="entry.amount"
+                                                    inputId="minmaxfraction"
+                                                    mode="decimal"
+                                                    [minFractionDigits]="2"
+                                                    [maxFractionDigits]="2"
+                                                > </p-inputNumber>
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{ entry.amount | currency }}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td>
+                                    <div class="flex flex-row flex-nowrap justify-content-center"
+                                    [ngStyle]="{'width':'6rem'}"
+                                    >
+                                        @if (!editing) {
+                                            <div class="">
+                                                <button 
+                                                    pButton
+                                                    pRipple
+                                                    type="button"
+                                                    pInitEditableRow
+                                                    icon="pi pi-pencil"
+                                                    (click)="onRowEditInit(entry)"
+                                                    class="p-button-rounded p-button-text"
+                                                    pTooltip="Edit Record"
+                                                    tooltipPosition="top"
+                                                ></button>
+                                            </div>
+                                        }
+                                        @if (editing) {
+                                            <div>
+                                                <button
+                                                    pButton
+                                                    pRipple
+                                                    type="button"
+                                                    pSaveEditableRow
+                                                    icon="pi pi-check"
+                                                    (click)="onRowEditSave(entry)"
+                                                    class="p-button-rounded p-button-text p-button-success w-2rem"
+                                                    pTooltip="Save Edit"
+                                                    tooltipPosition="top"
+                                                ></button>
+                                            </div>
+                                        }
+                                        @if (editing) {
+                                            <div>
+                                                <button
+                                                    pButton
+                                                    pRipple
+                                                    type="button"
+                                                    pCancelEditableRow
+                                                    icon="pi pi-times"
+                                                    (click)="onRowEditCancel(entry, ri)"
+                                                    class="p-button-rounded p-button-text w-2rem cancel-icon-color"
+                                                    pTooltip="Cancel Edit"
+                                                    tooltipPosition="top"
+                                                ></button>
+                                            </div>
+                                        }
+                                        @if (editing) {
+                                            <div>
+                                                <button
+                                                    pButton
+                                                    pRipple
+                                                    type="button"
+                                                    pCancelEditableRow
+                                                    icon="pi pi-trash"
+                                                    (click)="removeEntry(entry, ri)"
+                                                    class="p-button-rounded p-button-text p-button-danger w-2rem"
+                                                    pTooltip="Delete Record"
+                                                    tooltipPosition="top"
+                                                ></button>
+                                            </div>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                <!-- </p-card> -->
+            </div>
+            <div class="pl-3">
+                <!-- <p-card header="Liabilities" [style]="{'padding': '1rem'}"
+                pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-1000
+                > -->
+                <div class="bg-white py-3 px-5"
+                    [ngStyle]="{'font-size': '1.5rem', 'font-weight': '700', 'padding-left': '0.4rem'}"
+                >
+                Liabilities
+                </div>
+                    <p-table [value]="liabilities" dataKey="record_id" editMode="row" [tableStyle]="{ 'min-width': '30rem','width': '25vw' }" styleClass="p-datatable-sm">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th pSortableColumn="date" [style]="{'width': '7rem'}">Date</th>
+                                <th pSortableColumn="description">Description</th>
+                                <th pSortableColumn="amount">Amount</th>
+                                <th [style]="{'width': '6rem'}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit</th>
+                            </tr>
+                        </ng-template>
+
+                        <ng-template pTemplate="body" let-entry let-editing="editing" let-ri="rowIndex">
+                            <tr [pEditableRow]="entry">
+                                <td>
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                                <p-calendar
+                                                    id="date"
+                                                    [showIcon]="true"
+                                                    [(ngModel)]="entry.date"
+                                                    [inputStyle]="{'width':'8rem'}"
+                                                    appendTo="body"
+                                                    view="month"
+                                                    dateFormat="M y"
+                                                >
+                                                </p-calendar>
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{ entry.date | date:'M/d/yy' }}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td>
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                                <input 
+                                                    pInputText
+                                                    id="description"
+                                                    [(ngModel)]="entry.description"
+                                                />
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{ entry.description | titlecase }}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td>
+                                    <p-cellEditor class="">
+                                        <ng-template pTemplate="input">
+                                                <p-inputNumber 
+                                                    id="amount"
+                                                    [(ngModel)]="entry.amount"
+                                                    inputId="minmaxfraction"
+                                                    mode="decimal"
+                                                    [minFractionDigits]="2"
+                                                    [maxFractionDigits]="2"
+                                                > </p-inputNumber>
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{ entry.amount | currency }}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td>
+                                    <div class="flex flex-row flex-nowrap justify-content-center"
+                                    [ngStyle]="{'width':'6rem'}"
+                                    >
+                                        @if (!editing) {
+                                            <div class="">
+                                                <button 
+                                                    pButton
+                                                    pRipple
+                                                    type="button"
+                                                    pInitEditableRow
+                                                    icon="pi pi-pencil"
+                                                    (click)="onRowEditInit(entry)"
+                                                    class="p-button-rounded p-button-text"
+                                                    pTooltip="Edit Record"
+                                                    tooltipPosition="top"
+                                                ></button>
+                                            </div>
+                                        }
+                                        @if (editing) {
+                                            <div>
+                                                <button
+                                                    pButton
+                                                    pRipple
+                                                    type="button"
+                                                    pSaveEditableRow
+                                                    icon="pi pi-check"
+                                                    (click)="onRowEditSave(entry)"
+                                                    class="p-button-rounded p-button-text p-button-success w-2rem"
+                                                    pTooltip="Save Edit"
+                                                    tooltipPosition="top"
+                                                ></button>
+                                            </div>
+                                        }
+                                        @if (editing) {
+                                            <div>
+                                                <button
+                                                    pButton
+                                                    pRipple
+                                                    type="button"
+                                                    pCancelEditableRow
+                                                    icon="pi pi-times"
+                                                    (click)="onRowEditCancel(entry, ri)"
+                                                    class="p-button-rounded p-button-text w-2rem cancel-icon-color"
+                                                    pTooltip="Cancel Edit"
+                                                    tooltipPosition="top"
+                                                ></button>
+                                            </div>
+                                        }
+                                        @if (editing) {
+                                            <div>
+                                                <button
+                                                    pButton
+                                                    pRipple
+                                                    type="button"
+                                                    pCancelEditableRow
+                                                    icon="pi pi-trash"
+                                                    (click)="removeEntry(entry, ri)"
+                                                    class="p-button-rounded p-button-text p-button-danger w-2rem"
+                                                    pTooltip="Delete Record"
+                                                    tooltipPosition="top"
+                                                ></button>
+                                            </div>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                <!-- </p-card> -->
+            </div>
+        
+        </main>
     </div>
-    <main class="flex flex-row flex-nowrap justify-content-center align-items-start">
-        <section class="border-noround border-right-2 border-pink-300 pr-3">
-            <div class="bg-white p-3"
-                [ngStyle]="{'font-size': '1.5rem', 'font-weight': '700', 'padding-left': '0.4rem'}"
-            >
-            Assets
-            </div>
-            <p-table [value]="assets" dataKey="record_id" editMode="row" [tableStyle]="{ 'width': 'fit-content' }" styleClass="p-datatable-sm">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th pSortableColumn="date" [style]="{'width': '8rem'}">Date</th>
-                        <th pSortableColumn="description" [style]="{'width': '10rem'}">Description</th>
-                        <th pSortableColumn="amount" [style]="{'width': '5rem'}">Amount</th>
-                        <th [style]="{'width': '6rem'}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit</th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-entry let-editing="editing" let-ri="rowIndex">
-                    <tr [pEditableRow]="entry">
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <span class="p-float-label">
-                                        <p-calendar
-                                            id="date"
-                                            [showIcon]="true"
-                                            [(ngModel)]="entry.date"
-                                            [inputStyle]="{'width':'8rem'}"
-                                            appendTo="body"
-                                            view="month"
-                                            dateFormat="M y"
-                                        >
-                                        </p-calendar>
-                                        <label htmlFor="date">Date</label>
-                                    </span>
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    {{ entry.date | date:'M/d/yy' }}
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <span class="p-float-label">
-                                        <input 
-                                            pInputText
-                                            id="description"
-                                            [(ngModel)]="entry.description"
-                                            [style]="{'width':'10rem'}"
-                                        />
-                                    <label htmlFor="description">Description</label>
-                                    </span>
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    {{ entry.description }}
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <p-cellEditor class="">
-                                <ng-template pTemplate="input">
-                                    <span class="p-float-label">
-                                        <p-inputNumber 
-                                            id="amount"
-                                            [(ngModel)]="entry.amount"
-                                            inputId="minmaxfraction"
-                                            mode="decimal"
-                                            [minFractionDigits]="2"
-                                            [maxFractionDigits]="2"
-                                            [style]="{'width':'5rem'}"
-                                        > </p-inputNumber>
-                                        <label htmlFor="amount">$ Amount</label>
-                                    </span>
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    {{ entry.amount | currency }}
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <div class="flex flex-row flex-nowrap justify-content-center"
-                            [ngStyle]="{'width':'6rem'}"
-                            >
-                                @if (!editing) {
-                                    <div class="">
-                                        <button 
-                                            pButton
-                                            pRipple
-                                            type="button"
-                                            pInitEditableRow
-                                            icon="pi pi-pencil"
-                                            (click)="onRowEditInit(entry)"
-                                            class="p-button-rounded p-button-text"
-                                            pTooltip="Edit Record"
-                                            tooltipPosition="top"
-                                        ></button>
-                                    </div>
-                                }
-                                @if (editing) {
-                                    <div>
-                                        <button
-                                            pButton
-                                            pRipple
-                                            type="button"
-                                            pSaveEditableRow
-                                            icon="pi pi-check"
-                                            (click)="onRowEditSave(entry)"
-                                            class="p-button-rounded p-button-text p-button-success w-2rem"
-                                            pTooltip="Save Edit"
-                                            tooltipPosition="top"
-                                        ></button>
-                                    </div>
-                                }
-                                @if (editing) {
-                                    <div>
-                                        <button
-                                            pButton
-                                            pRipple
-                                            type="button"
-                                            pCancelEditableRow
-                                            icon="pi pi-times"
-                                            (click)="onRowEditCancel(entry, ri)"
-                                            class="p-button-rounded p-button-text w-2rem cancel-icon-color"
-                                            pTooltip="Cancel Edit"
-                                            tooltipPosition="top"
-                                        ></button>
-                                    </div>
-                                }
-                                @if (editing) {
-                                    <div>
-                                        <button
-                                            pButton
-                                            pRipple
-                                            type="button"
-                                            pCancelEditableRow
-                                            icon="pi pi-trash"
-                                            (click)="removeEntry(entry, ri)"
-                                            class="p-button-rounded p-button-text p-button-danger w-2rem"
-                                            pTooltip="Delete Record"
-                                            tooltipPosition="top"
-                                        ></button>
-                                    </div>
-                                }
-                            </div>
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
-        </section>
-        <section class="pl-3">
-            <div class="bg-white p-3"
-                [ngStyle]="{'font-size': '1.5rem', 'font-weight': '700', 'padding-left': '0.4rem'}"
-            >
-            Liabilities
-            </div>
-            <p-table [value]="liabilities" dataKey="record_id" editMode="row" [tableStyle]="{ 'width': 'fit-content' }" styleClass="p-datatable-sm">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th pSortableColumn="date" [style]="{'width': '7rem'}">Date</th>
-                        <th pSortableColumn="description" [style]="{'width': '10rem'}">Description</th>
-                        <th pSortableColumn="amount" [style]="{'width': '5rem'}">Amount</th>
-                        <th [style]="{'width': '6rem'}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit</th>
-                    </tr>
-                </ng-template>
-
-                <ng-template pTemplate="body" let-entry let-editing="editing" let-ri="rowIndex">
-                    <tr [pEditableRow]="entry">
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <span class="p-float-label">
-                                        <p-calendar
-                                            id="date"
-                                            [showIcon]="true"
-                                            [(ngModel)]="entry.date"
-                                            [inputStyle]="{'width':'8rem'}"
-                                            appendTo="body"
-                                            view="month"
-                                            dateFormat="M y"
-                                        >
-                                        </p-calendar>
-                                        <label htmlFor="date">Date</label>
-                                    </span>
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    {{ entry.date | date:'M/d/yy' }}
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <span class="p-float-label">
-                                        <input 
-                                            pInputText
-                                            id="description"
-                                            [(ngModel)]="entry.description"
-                                            [style]="{'width':'10rem'}"
-                                        />
-                                    <label htmlFor="description">Description</label>
-                                    </span>
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    {{ entry.description }}
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <p-cellEditor class="">
-                                <ng-template pTemplate="input">
-                                    <span class="p-float-label">
-                                        <p-inputNumber 
-                                            id="amount"
-                                            [(ngModel)]="entry.amount"
-                                            inputId="minmaxfraction"
-                                            mode="decimal"
-                                            [minFractionDigits]="2"
-                                            [maxFractionDigits]="2"
-                                            [style]="{'width':'5rem'}"
-                                        > </p-inputNumber>
-                                        <label htmlFor="amount">$ Amount</label>
-                                    </span>
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    {{ entry.amount | currency }}
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <div class="flex flex-row flex-nowrap justify-content-center"
-                            [ngStyle]="{'width':'6rem'}"
-                            >
-                                @if (!editing) {
-                                    <div class="">
-                                        <button 
-                                            pButton
-                                            pRipple
-                                            type="button"
-                                            pInitEditableRow
-                                            icon="pi pi-pencil"
-                                            (click)="onRowEditInit(entry)"
-                                            class="p-button-rounded p-button-text"
-                                            pTooltip="Edit Record"
-                                            tooltipPosition="top"
-                                        ></button>
-                                    </div>
-                                }
-                                @if (editing) {
-                                    <div>
-                                        <button
-                                            pButton
-                                            pRipple
-                                            type="button"
-                                            pSaveEditableRow
-                                            icon="pi pi-check"
-                                            (click)="onRowEditSave(entry)"
-                                            class="p-button-rounded p-button-text p-button-success w-2rem"
-                                            pTooltip="Save Edit"
-                                            tooltipPosition="top"
-                                        ></button>
-                                    </div>
-                                }
-                                @if (editing) {
-                                    <div>
-                                        <button
-                                            pButton
-                                            pRipple
-                                            type="button"
-                                            pCancelEditableRow
-                                            icon="pi pi-times"
-                                            (click)="onRowEditCancel(entry, ri)"
-                                            class="p-button-rounded p-button-text w-2rem cancel-icon-color"
-                                            pTooltip="Cancel Edit"
-                                            tooltipPosition="top"
-                                        ></button>
-                                    </div>
-                                }
-                                @if (editing) {
-                                    <div>
-                                        <button
-                                            pButton
-                                            pRipple
-                                            type="button"
-                                            pCancelEditableRow
-                                            icon="pi pi-trash"
-                                            (click)="removeEntry(entry, ri)"
-                                            class="p-button-rounded p-button-text p-button-danger w-2rem"
-                                            pTooltip="Delete Record"
-                                            tooltipPosition="top"
-                                        ></button>
-                                    </div>
-                                }
-
-
-                            </div>
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
-        </section>
-    
-    </main>
-</div>
+</p-card>

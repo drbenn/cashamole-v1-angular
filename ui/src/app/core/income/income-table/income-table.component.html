@@ -1,13 +1,13 @@
 <p-card header="Income Transactions" subheader="Income received for the month" [style]="{'padding': '1rem'}"
 pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-1000
 >
-    <p-table [value]="tableData" dataKey="inc_id" editMode="row" [tableStyle]="{ 'width': 'fit-content' }" styleClass="p-datatable-sm">
+    <p-table [value]="tableData" dataKey="inc_id" editMode="row" [tableStyle]="{ 'min-width': '30rem','width': '40vw' }" styleClass="p-datatable-sm">
         <ng-template pTemplate="header">
             <tr>
                 <th pSortableColumn="date" [style]="{'width': '7rem'}">Date</th>
-                <th pSortableColumn="vendor" [style]="{'width': '7rem'}">Source</th>
-                <th pSortableColumn="note" [style]="{'width': '7rem'}">Note</th>
-                <th pSortableColumn="amount" [style]="{'width': '5rem'}">Amount</th>
+                <th pSortableColumn="vendor">Source</th>
+                <th pSortableColumn="note">Note</th>
+                <th pSortableColumn="amount">Amount</th>
                 <th [style]="{'width': '6rem'}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit</th>
             </tr>
         </ng-template>
@@ -16,18 +16,15 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
                 <td>
                     <p-cellEditor>
                         <ng-template pTemplate="input">
-                            <span class="p-float-label">
                                 <p-calendar
                                     id="date"
                                     [showIcon]="true"
                                     [(ngModel)]="category.date"
-                                    [style]="{'width':'7rem'}"
                                     appendTo="body"
                                     dateFormat="mm/dd/y"
+                                    [style]="{'width': '7rem'}"
                                 >
                                 </p-calendar>
-                                <label htmlFor="date">Date</label>
-                            </span>
                         </ng-template>
                         <ng-template pTemplate="output">
                             {{ category.date | date:'M/d/yy' }}
@@ -37,43 +34,34 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
                 <td>
                     <p-cellEditor>
                         <ng-template pTemplate="input">
-                            <span class="p-float-label">
                                 <input 
                                     pInputText
                                     id="source"
                                     [(ngModel)]="category.source"
-                                    [style]="{'width':'7rem'}"
                                 />
-                            <label htmlFor="source">Source</label>
-                            </span>
                         </ng-template>
                         <ng-template pTemplate="output">
-                            {{ category.source }}
+                            {{ category.source | titlecase}}
                         </ng-template>
                     </p-cellEditor>
                 </td>
                 <td>
                     <p-cellEditor>
                         <ng-template pTemplate="input">
-                            <span class="p-float-label">
                                 <input 
                                     pInputText
                                     id="note"
                                     [(ngModel)]="category.note"
-                                    [style]="{'width':'7rem'}"
                                 />
-                            <label htmlFor="note">Note</label>
-                            </span>
                         </ng-template>
                         <ng-template pTemplate="output">
-                            {{ category.note }}
+                            {{ category.note | titlecase }}
                         </ng-template>
                     </p-cellEditor>
                 </td>
                 <td>
                     <p-cellEditor class="">
                         <ng-template pTemplate="input">
-                            <span class="p-float-label">
                                 <p-inputNumber 
                                     id="amount"
                                     [(ngModel)]="category.amount"
@@ -81,10 +69,7 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
                                     mode="decimal"
                                     [minFractionDigits]="2"
                                     [maxFractionDigits]="2"
-                                    [style]="{'width':'5rem'}"
                                 > </p-inputNumber>
-                                <label htmlFor="amount">$ Amount</label>
-                            </span>
                         </ng-template>
                         <ng-template pTemplate="output">
                             {{ category.amount | currency }}

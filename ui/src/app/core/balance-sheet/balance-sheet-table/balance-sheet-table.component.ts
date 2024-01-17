@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { Observable, first, take } from 'rxjs';
-import { Store } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { BalanceSheetEntry } from '../../../model/core.model';
 import { FormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
@@ -11,19 +11,24 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { BalanceSheetActions } from '../../../store/balanceSheet/bsState.actions';
 import { CoreApiService } from '../../../shared/api/core-api.service';
 import { TooltipModule } from 'primeng/tooltip';
+import {CardModule} from 'primeng/card';
+import { CalendarState } from '../../../store/calendar/calendar.state';
 
 
 @Component({
   selector: 'app-balance-sheet-table',
   standalone: true,
-  imports: [CommonModule, TableModule, FormsModule, CalendarModule, InputTextModule, InputNumberModule, TooltipModule],
+  imports: [CommonModule, TableModule, FormsModule, CalendarModule, InputTextModule, InputNumberModule, TooltipModule, CardModule],
   templateUrl: './balance-sheet-table.component.html',
   styleUrl: './balance-sheet-table.component.scss'
 })
 export class BalanceSheetTableComponent implements OnInit {
+  @Select(CalendarState.activeMonthStartDate) activeMonthStartDate$!: Observable<Date>;
+  protected activeMonthStartDate!: Date ;
   protected balanceSheetData$: Observable<BalanceSheetEntry[]> = this.store.select((state: any) => state.balanceSheet.entries);
   protected assets: BalanceSheetEntry[] = [];
   protected liabilities: BalanceSheetEntry[] = [];
+  protected subheader: string = '';
 
   constructor(
     private store: Store,
@@ -31,8 +36,16 @@ export class BalanceSheetTableComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.activeMonthStartDate$.subscribe((startDate: Date) => {      
+      this.activeMonthStartDate = startDate;
+      const activeMonth: string = startDate.toLocaleString(undefined, { month: 'short' });
+      const fullyear: string = startDate.getFullYear().toString();
+      this.subheader = `as of  ${activeMonth} 1, ${fullyear}`;
+    })
     this.balanceSheetData$.subscribe((data: BalanceSheetEntry[]) => {     
       if (data) {
+        console.log(data);
+        
         this.resetTableData();  
         this.setMonthEntriesToBsType(data);
       };

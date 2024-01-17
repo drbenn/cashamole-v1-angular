@@ -11,11 +11,12 @@ import { CoreApiService } from '../../../shared/api/core-api.service';
 import { TooltipModule } from 'primeng/tooltip';
 import { Invest } from '../../../model/core.model';
 import { InvestActions } from '../../../store/invest/invest.actions';
+import {CardModule} from 'primeng/card';
 
 @Component({
   selector: 'app-invest-table',
   standalone: true,
-  imports: [CommonModule, TableModule, FormsModule, CalendarModule, InputTextModule, InputNumberModule, TooltipModule],
+  imports: [CommonModule, TableModule, FormsModule, CalendarModule, InputTextModule, InputNumberModule, TooltipModule, CardModule],
   templateUrl: './invest-table.component.html',
   styleUrl: './invest-table.component.scss'
 })
