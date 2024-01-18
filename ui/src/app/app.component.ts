@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { NavComponent } from './shared/nav/nav.component';
 import { FooterComponent } from './shared/footer/footer.component';
-import { CoreApiService } from './shared/api/core-api.service';
+import { CoreApiService } from './api-services/core-api.service';
 
 @Component({
   selector: 'app-root',

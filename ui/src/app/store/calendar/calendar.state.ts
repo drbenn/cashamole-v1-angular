@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { CalendarActions } from './calendar.actions';
-import { DateRange } from '../../model/calendar.model';
+import { DateRange } from '../../models/calendar.model';
 import { BalanceSheetActions } from '../balanceSheet/bsState.actions';
 import { IncomeActions } from '../income/income.actions';
 import { ExpenseActions } from '../expense/expense.actions';
@@ -65,6 +65,7 @@ export class CalendarState {
     this.store.dispatch(new BalanceSheetActions.GetAndSetMonthBalanceRecords(yearMonthId));
     this.store.dispatch(new IncomeActions.GetAndSetMonthIncomeRecords(yearMonthId));
     this.store.dispatch(new ExpenseActions.GetAndSetMonthExpenseRecords(yearMonthId));
+    this.store.dispatch(new InvestActions.GetAndSetMonthInvestRecords(yearMonthId));
 
     ctx.patchState({ 
         monthYearDisplay: monthYear,

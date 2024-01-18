@@ -1,0 +1,22 @@
+<main class="flex flex-column flex-nowrap justify-content-center align-items-center pt-8"
+[ngStyle]="{'background': 'linear-gradient(165deg, white, white, white, mintcream, #9ce0c115, white)'}"
+>
+    <div>
+        <app-month-cash-flow-summary></app-month-cash-flow-summary>
+    </div>
+    <div class="w-10 flex flex-row flex-wrap justify-content-evenly align-items-start pt-4 my-6">
+        <section>
+            <app-new-expense-transaction></app-new-expense-transaction>
+        </section>
+         <section *ngIf="latestData">
+            @for (category of expenseCategoryArray; track expenseCategoryObject[category].exp_id) {
+                <section class="mb-4">
+            <app-expense-table [tableTitle]="category | titlecase" [tableData]="expenseCategoryObject[category]"></app-expense-table>
+                </section>
+            } @empty {
+                No Transactions Available
+            }
+         </section>
+    </div>
+    
+</main>

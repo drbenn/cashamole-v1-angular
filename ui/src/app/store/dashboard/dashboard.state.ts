@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Action, State, StateContext, Store } from '@ngxs/store';
 import { Router } from '@angular/router';
-// import { ExpenseActions } from './expese.actions';
-// import { Expense } from '../../model/core.model';
-import { CoreApiService } from '../../shared/api/core-api.service';
+import { CoreApiService } from '../../api-services/core-api.service';
 import { DashboardActions } from './dashboard.actions';
-import { BalanceSheetEntry, Expense, Income } from '../../model/core.model';
+import { BalanceSheetEntry, Expense, Income, Invest } from '../../models/core.model';
 
 
 
@@ -14,6 +12,8 @@ export interface DashboardStateModel {
     monthExpenses: number,
     monthIncome: number,
     monthInvest: number,
+    monthPreTaxInvest: number,
+    monthPostTaxInvest: number,
     monthNetCashFlow: number,
     monthAssets: number,
     monthLiabilities: number,
@@ -26,6 +26,8 @@ export interface DashboardStateModel {
     monthExpenses: 0,
     monthIncome: 0,
     monthInvest: 0,
+    monthPreTaxInvest: 0,
+    monthPostTaxInvest: 0,
     monthNetCashFlow: 0,
     monthAssets: 0,
     monthLiabilities: 0,
@@ -88,14 +90,22 @@ export class DashboardState {
     action: DashboardActions.UpdateMonthInvestTotal
   ) {
     let sum: number = 0;
+    let sumPretax: number = 0;
+    let sumPosttax: number = 0;
     if ( action.payload === null) {
         ctx.patchState({ 
-            monthInvest: sum
+            monthInvest: sum,
+            monthPreTaxInvest: sumPretax,
+            monthPostTaxInvest: sumPosttax,
         });
     } else {
         sum = this.reduceToSum(action.payload);
+        sumPretax = this.reduceToSum(action.payload.filter((item: Invest) => item.institution.includes('401')));
+        sumPosttax = this.reduceToSum(action.payload.filter((item: Invest) => !item.institution.includes('401')));
         ctx.patchState({ 
             monthInvest: sum,
+            monthPreTaxInvest: sumPretax,
+            monthPostTaxInvest: sumPosttax,
         });
     };
   };

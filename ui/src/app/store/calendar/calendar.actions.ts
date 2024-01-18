@@ -1,4 +1,4 @@
-import { DateRange } from "../../model/calendar.model";
+import { DateRange } from "../../models/calendar.model";
 
 export namespace CalendarActions {
 

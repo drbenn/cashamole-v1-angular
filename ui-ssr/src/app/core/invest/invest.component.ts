@@ -3,14 +3,13 @@ import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { Invest } from '../../model/core.model';
-import { MonthNetCashFlowBannerComponent } from '../../shared/month-net-cash-flow-banner/month-net-cash-flow-banner.component';
 import { InvestTableComponent } from './invest-table/invest-table.component';
 import { NewInvestTransactionComponent } from './new-invest-transaction/new-invest-transaction.component';
 
 @Component({
   selector: 'app-invest',
   standalone: true,
-  imports: [CommonModule, NewInvestTransactionComponent, InvestTableComponent, MonthNetCashFlowBannerComponent],
+  imports: [CommonModule, NewInvestTransactionComponent, InvestTableComponent],
   templateUrl: './invest.component.html',
   styleUrl: './invest.component.scss'
 })

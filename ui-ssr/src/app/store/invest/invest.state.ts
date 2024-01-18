@@ -50,6 +50,9 @@ export class InvestState {
         });
       } else {
         const resData: Invest[] = JSON.parse(res.data)
+        console.log('GET AND SET INVEST MONTH INVETS RECORDS');
+        console.log(resData);
+                
         this.store.dispatch(new DashboardActions.UpdateMonthInvestTotal(resData));
         ctx.patchState({ 
             investments: JSON.parse(res.data)

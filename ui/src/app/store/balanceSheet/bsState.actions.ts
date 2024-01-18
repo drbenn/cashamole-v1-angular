@@ -1,4 +1,4 @@
-import { BalanceSheetEntry } from "../../model/core.model";
+import { BalanceSheetEntry } from "../../models/core.model";
 
 export namespace BalanceSheetActions {
 

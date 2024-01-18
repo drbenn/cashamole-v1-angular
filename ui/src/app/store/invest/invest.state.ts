@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Action, State, StateContext, Store } from '@ngxs/store';
 import { Router } from '@angular/router';
 import { InvestActions } from './invest.actions';
-import { Invest } from '../../model/core.model';
-import { CoreApiService } from '../../shared/api/core-api.service';
+import { Invest } from '../../models/core.model';
+import { CoreApiService } from '../../api-services/core-api.service';
 import { DashboardActions } from '../dashboard/dashboard.actions';
 
 

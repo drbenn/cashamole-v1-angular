@@ -1,0 +1,16 @@
+<main class="flex flex-column flex-nowrap justify-content-center align-items-center pt-8"
+[ngStyle]="{'background': 'linear-gradient(165deg, white, white, white, mintcream, #9ce0c115, white)'}"
+>
+    <div>
+        <app-month-cash-invested-summary></app-month-cash-invested-summary>
+    </div>
+    <div class="w-10 flex flex-row flex-wrap justify-content-evenly align-items-start pt-4 my-6">
+        <section>
+            <app-new-invest-transaction></app-new-invest-transaction>
+        </section>
+         <section>
+             <app-invest-table tableTitle="Cash Invested" [tableData]="activeMonthInvestments"></app-invest-table>
+         </section>
+    </div>
+    
+</main>

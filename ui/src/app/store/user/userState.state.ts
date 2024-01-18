@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Action, NgxsOnInit, State, StateContext, Store } from '@ngxs/store';
-import { User } from '../../model/user.models';
+import { User } from '../../models/user.models';
 import { UserActions } from './userState.actions';
 import { CookieService } from 'ngx-cookie-service';
-import { UserApiService } from '../../shared/api/user-api.service';
+import { UserApiService } from '../../api-services/user-api.service';
 import { Router } from '@angular/router';
 import { ChipActions } from '../chip/chipState.actions';
 import { BalanceSheetActions } from '../balanceSheet/bsState.actions';

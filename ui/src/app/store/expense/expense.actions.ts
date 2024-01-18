@@ -1,4 +1,4 @@
-import { Expense } from "../../model/core.model";
+import { Expense } from "../../models/core.model";
 
 export namespace ExpenseActions {
 

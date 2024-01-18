@@ -1,0 +1,35 @@
+@use '../../../styles/variables.scss' as vars;
+
+:host {
+    display: block;
+    max-width: 70rem;
+}
+
+.icon-hover {
+    transition: 100ms ease-in;
+    padding: 0.5rem;
+    border-radius: 100rem;
+    cursor: pointer;
+} 
+
+.icon-hover:hover {
+    transition: 100ms ease-in;
+    background-color: vars.$biscay-green;
+} 
+
+:host ::ng-deep .p-inputnumber-input  {
+    width: 5rem;
+}
+
+:host ::ng-deep .p-button-icon  {
+    font-size: 0.8rem;
+}
+
+:host ::ng-deep .p-button.p-button-icon-only {
+    width: 2.55rem;
+    padding: 0.5rem;
+}
+
+.cancel-icon-color {
+    color: #555555;
+}

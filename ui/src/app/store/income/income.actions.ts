@@ -1,4 +1,4 @@
-import { Income } from "../../model/core.model";
+import { Income } from "../../models/core.model";
 
 export namespace IncomeActions {
 

@@ -1,7 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { UserApiService } from '../api/user-api.service';
+import { UserApiService } from '../../api-services/user-api.service';
 import { Observable, first, take } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { UserStateModel } from '../../store/user/userState.state';
@@ -10,7 +10,7 @@ import {CalendarModule} from 'primeng/calendar';
 import { FormsModule } from '@angular/forms';
 import { CalendarStateModel } from '../../store/calendar/calendar.state';
 import { CalendarActions } from '../../store/calendar/calendar.actions';
-import { DateRange } from '../../model/calendar.model';
+import { DateRange } from '../../models/calendar.model';
 import {SidebarModule} from 'primeng/sidebar';
 
 @Component({

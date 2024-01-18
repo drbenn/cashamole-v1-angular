@@ -1,4 +1,4 @@
-import { Invest } from "../../model/core.model";
+import { Invest } from "../../models/core.model";
 
 export namespace InvestActions {
 

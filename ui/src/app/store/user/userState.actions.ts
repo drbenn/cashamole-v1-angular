@@ -1,4 +1,4 @@
-import { User, UserLoginData } from "../../model/user.models";
+import { User, UserLoginData } from "../../models/user.models";
 
 export namespace UserActions {
 

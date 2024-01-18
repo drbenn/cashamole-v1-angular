@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Action, State, StateContext, Store } from '@ngxs/store';
 import { Router } from '@angular/router';
 import { BalanceSheetActions } from './bsState.actions';
-import { BalanceSheetEntry } from '../../model/core.model';
-import { CoreApiService } from '../../shared/api/core-api.service';
+import { BalanceSheetEntry } from '../../models/core.model';
+import { CoreApiService } from '../../api-services/core-api.service';
 import { DashboardActions } from '../dashboard/dashboard.actions';
 
 

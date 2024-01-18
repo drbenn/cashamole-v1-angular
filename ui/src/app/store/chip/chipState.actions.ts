@@ -1,4 +1,4 @@
-import { Chip } from "../../model/chips.model";
+import { Chip } from "../../models/chips.model";
 
 export namespace ChipActions {
 

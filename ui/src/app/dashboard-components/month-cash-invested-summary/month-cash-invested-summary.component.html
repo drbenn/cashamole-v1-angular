@@ -1,0 +1,56 @@
+
+@if (monthTotalInvest !== 0) {
+    <p-card class="">
+        <div class="mb-2 ml-4 font-base underline">Month Cash Invested Summary</div>
+        <main class="flex flex-no-wrap flex-row justify-content-between align-items-center text-base h-4rem px-4"
+            [ngStyle]="{'width': '34rem'}"
+        >
+            <div class="flex flex-no-wrap flex-column justify-content-between align-items-center h-full text-center">
+                <div>
+                    {{ monthPretaxInvest | currency: 'USD' }}
+                </div>
+                <div class="text-700 text-green-300">
+                    Pre-Tax Investment
+                </div>
+            </div>
+        
+            <div class="mx-3 text-2xl font-light">
+                +
+            </div>
+        
+            <div class="flex flex-no-wrap flex-column justify-content-between align-items-center h-full text-center">
+                <div>
+                    {{ monthPosttaxInvest | currency: 'USD' }}
+                </div>
+                <div class="text-700 text-green-300">
+                    Post-Tax Investment
+                </div>
+            </div>
+        
+            <div class="mx-3 text-2xl font-light">
+                =
+            </div>
+
+            <div class="flex flex-no-wrap flex-column justify-content-between align-items-center h-full mr-3 text-center">
+                <div>
+                    {{ monthTotalInvest | currency: 'USD' }}
+                </div>
+                <div class="text-700 text-green-300 w-6rem">
+                    Total Cash Invested
+                </div>
+            </div>
+
+            <div class="flex flex-no-wrap flex-column justify-content-between align-items-center h-full pl-4 ml-2 text-center 
+                border-300"
+                [ngStyle]="{'border-left': '1px solid'}"
+            >
+                <div>
+                    {{ monthInvestmentsAsPercentOfCashflow | percent:'1.2-2' }}
+                </div>
+                <div class="text-700 text-green-300 w-5rem">
+                    Invested Cash Flow
+                </div>
+            </div>
+        </main>
+    </p-card>
+}
