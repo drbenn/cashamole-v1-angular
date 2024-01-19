@@ -4,11 +4,11 @@
     <div>
         <app-month-cash-invested-summary></app-month-cash-invested-summary>
     </div>
-    <div class="w-10 flex flex-row flex-wrap justify-content-evenly align-items-start pt-4 my-6">
-        <section>
+    <div class="w-10 flex flex-row flex-wrap justify-content-evenly align-items-start pt-4 my-3">
+        <section class="my-3">
             <app-new-invest-transaction></app-new-invest-transaction>
         </section>
-         <section>
+         <section class="my-3">
              <app-invest-table tableTitle="Cash Invested" [tableData]="activeMonthInvestments"></app-invest-table>
          </section>
     </div>

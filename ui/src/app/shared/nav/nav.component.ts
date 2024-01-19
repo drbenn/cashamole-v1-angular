@@ -12,11 +12,13 @@ import { CalendarStateModel } from '../../store/calendar/calendar.state';
 import { CalendarActions } from '../../store/calendar/calendar.actions';
 import { DateRange } from '../../models/calendar.model';
 import {SidebarModule} from 'primeng/sidebar';
+import { MenuModule } from 'primeng/menu';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-nav',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, CalendarModule, FormsModule, SidebarModule],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, CalendarModule, FormsModule, SidebarModule, MenuModule],
   templateUrl: './nav.component.html',
   styleUrl: './nav.component.scss'
 })
@@ -24,10 +26,31 @@ export class NavComponent {
   @Select((state: {user: UserStateModel }) => state.user.loggedInUser.username) loggedInUser$! : Observable<string>;
   @Select((state: {calendar: CalendarStateModel }) => state.calendar.monthDateRange) monthDateRange$!: Observable<any>;
   public loggedInUserVal!: string;
-  monthDate!: Date;
+  protected monthDate!: Date;
   protected isMobileView: boolean = false;
   protected visibleSidebar!: boolean;
   private MOBILE_VIEW_WINDOW_SIZE: number = 950;
+
+  protected items: MenuItem[] = [
+    {
+      label: 'Profile Settings',
+      icon: 'pi pi-cog',
+      command: () => {
+        alert('User profile settings under construction')
+      }
+  },
+  { separator: true },
+  {
+    label: 'Logout',
+    icon: 'pi pi-sign-out',
+    command: () => {
+      this.logoutUser(true);
+    }
+  }
+    // { label: 'Angular.io', icon: 'pi pi-info', url: 'http://angular.io' },
+    // { separator: true },
+    // { label: 'Installation', icon: 'pi pi-cog', routerLink: ['/installation'] }
+  ];
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {

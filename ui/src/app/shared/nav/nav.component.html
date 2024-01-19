@@ -89,14 +89,25 @@
             @if (!loggedInUserVal && !isMobileView) {
                 <li routerLinkActive="active"><a (click)="logoutUser(false)" routerLink="login" routerLinkActive="active">Login</a></li>
             }
-            @if (loggedInUserVal && !isMobileView) {
+            <!-- @if (loggedInUserVal && !isMobileView) {
                 <li routerLinkActive="active"><a (click)="logoutUser(true)">Logout</a></li>
-            }
+            } -->
             @if (loggedInUserVal && !isMobileView) {
-                <li class="cashamole-green font-light text-sm">{{ loggedInUserVal | titlecase }}</li>
+                <p-menu #menu [model]="items" [popup]="true"></p-menu>
+                <li class="cashamole-green font-light text-sm text-center user-icon-hover"
+                    [ngStyle]="{'transform': 'translate(0rem, 0.25rem)'}"
+                    (click)="menu.toggle($event)"
+                >
+                    <div>
+                        <i class="pi pi-user" style="font-size: 1rem"></i>     
+                    </div>
+                    <div class="font-base">
+                        {{ loggedInUserVal | titlecase }}
+                    </div>
+                </li>
             }
             @if (isMobileView) {
-                <li class="cursor-pointer mobile-hamburger-hover" (click)="visibleSidebar = true" ><i class="pi pi-align-justify text-3xl" ></i></li>
+                <li class="cursor-pointer mobile-hamburger-hover" (click)="visibleSidebar = true" ><i class="pi pi-align-justify text-3xl"></i></li>
             }
         </ul>
     </div>

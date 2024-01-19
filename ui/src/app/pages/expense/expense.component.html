@@ -4,13 +4,13 @@
     <div>
         <app-month-cash-flow-summary></app-month-cash-flow-summary>
     </div>
-    <div class="w-10 flex flex-row flex-wrap justify-content-evenly align-items-start pt-4 my-6">
-        <section>
+    <div class="w-10 flex flex-row flex-wrap justify-content-evenly align-items-start pt-4 my-3">
+        <section class="my-3">
             <app-new-expense-transaction></app-new-expense-transaction>
         </section>
          <section *ngIf="latestData">
             @for (category of expenseCategoryArray; track expenseCategoryObject[category].exp_id) {
-                <section class="mb-4">
+                <section class="my-3">
             <app-expense-table [tableTitle]="category | titlecase" [tableData]="expenseCategoryObject[category]"></app-expense-table>
                 </section>
             } @empty {

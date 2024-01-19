@@ -4,11 +4,11 @@
     <div>
         <app-month-cash-flow-summary></app-month-cash-flow-summary>
     </div>
-    <div class="w-10 flex flex-row flex-wrap justify-content-evenly align-items-start pt-4 my-6">
-        <section>
+    <div class="w-10 flex flex-row flex-wrap justify-content-evenly align-items-start pt-4 my-3">
+        <section class="my-3">
             <app-new-income-transaction></app-new-income-transaction>
         </section>
-         <section>
+         <section class="my-3">
              <app-income-table tableTitle="income" [tableData]="activeMonthIncome"></app-income-table>
          </section>
     </div>

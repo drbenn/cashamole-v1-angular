@@ -3,7 +3,7 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
 >
     <div class="w-full flex flex-column flex-wrap justify-content-start align-items-start">
         <main class="flex flex-row flex-wrap justify-content-center align-items-start">
-            <div class="border-noround border-1 border-gray-200 px-3 mx-2">
+            <div class="border-noround border-1 border-gray-200 px-3 mx-2 mb-3">
                 <!-- <p-card header="Assets" [style]="{'padding': '1rem'}"
                 pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-1000
                 > -->
@@ -12,7 +12,7 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
                 >
                 Assets
                 </div>
-                    <p-table [value]="assets" dataKey="record_id" editMode="row" [tableStyle]="{ 'min-width': '20rem','width': '10vw', 'max-width': '40rem' }" styleClass="p-datatable-sm">
+                    <p-table [value]="assets" dataKey="record_id" editMode="row" [tableStyle]="{ 'min-width': '25rem','width': '10vw', 'max-width': '40rem' }" styleClass="p-datatable-sm">
                         <ng-template pTemplate="header">
                             <tr>
                                 <th pSortableColumn="date" [style]="{'width': '9rem'}">Date</th>
@@ -154,7 +154,7 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
                 >
                 Liabilities
                 </div>
-                    <p-table [value]="liabilities" dataKey="record_id" editMode="row" [tableStyle]="{ 'min-width': '20rem','width': '10vw', 'max-width': '40rem' }" styleClass="p-datatable-sm">
+                    <p-table [value]="liabilities" dataKey="record_id" editMode="row" [tableStyle]="{ 'min-width': '25rem','width': '10vw', 'max-width': '40rem' }" styleClass="p-datatable-sm">
                         <ng-template pTemplate="header">
                             <tr>
                                 <th pSortableColumn="date" [style]="{'width': '9rem'}">Date</th>

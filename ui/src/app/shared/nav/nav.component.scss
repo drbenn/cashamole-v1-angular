@@ -15,6 +15,19 @@
   // text-shadow: 0px 0px 1px #838383a3;
 }
 
+.user-icon-hover {
+  border: 1px solid #00000050;
+  border-radius: 20rem;
+  background-color: white;
+  transition: 100ms ease-in;
+  padding: 0.25rem 0.5rem;
+}
+
+.user-icon-hover:hover {
+  transition:  100ms ease-in;
+  background-color: #9ce0c120;
+}
+
 .logo-in-view {
   opacity: 1;
   width: 100%;
