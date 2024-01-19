@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { UserApiService } from '../../api-services/user-api.service';
@@ -11,18 +11,20 @@ import { FormsModule } from '@angular/forms';
 import { CalendarStateModel } from '../../store/calendar/calendar.state';
 import { CalendarActions } from '../../store/calendar/calendar.actions';
 import { DateRange } from '../../models/calendar.model';
-import {SidebarModule} from 'primeng/sidebar';
+import {Sidebar, SidebarModule} from 'primeng/sidebar';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
+import { DividerModule } from 'primeng/divider';
 
 @Component({
   selector: 'app-nav',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, CalendarModule, FormsModule, SidebarModule, MenuModule],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, CalendarModule, FormsModule, SidebarModule, MenuModule, DividerModule],
   templateUrl: './nav.component.html',
   styleUrl: './nav.component.scss'
 })
 export class NavComponent {
+  @ViewChild('sidebarRef') sidebarRef!: Sidebar;
   @Select((state: {user: UserStateModel }) => state.user.loggedInUser.username) loggedInUser$! : Observable<string>;
   @Select((state: {calendar: CalendarStateModel }) => state.calendar.monthDateRange) monthDateRange$!: Observable<any>;
   public loggedInUserVal!: string;
@@ -36,7 +38,7 @@ export class NavComponent {
       label: 'Profile Settings',
       icon: 'pi pi-cog',
       command: () => {
-        alert('User profile settings under construction')
+        this.userSettingsAlert();
       }
   },
   { separator: true },
@@ -79,6 +81,14 @@ export class NavComponent {
     this.loggedInUser$.subscribe((username:string) => {
       this.loggedInUserVal = username;
     });
+  };
+
+  protected userSettingsAlert(): void {
+    alert('User profile settings under construction')
+  };
+
+  protected closeCallback(e: any): void {
+    this.sidebarRef.close(e);
   };
 
   protected sidebarClose(): void {

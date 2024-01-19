@@ -69,13 +69,13 @@
             }
             <!-- <li><a routerLink="/home" routerLinkActive="active">Home</a></li> -->
             @if (loggedInUserVal && !isMobileView) {
-                <li routerLinkActive="active"><a routerLink="expense" routerLinkActive="active">+Expense</a></li>
+                <li routerLinkActive="active"><a routerLink="expense" routerLinkActive="active">Expense</a></li>
             }
             @if (loggedInUserVal && !isMobileView) {
-                <li routerLinkActive="active"><a routerLink="income" routerLinkActive="active">+Income</a></li>
+                <li routerLinkActive="active"><a routerLink="income" routerLinkActive="active">Income</a></li>
             }
             @if (loggedInUserVal && !isMobileView) {
-                <li routerLinkActive="active"><a routerLink="invest" routerLinkActive="active">+Invest</a></li>
+                <li routerLinkActive="active"><a routerLink="invest" routerLinkActive="active">Invest</a></li>
             }
             @if (loggedInUserVal && !isMobileView) {
                 <li routerLinkActive="active"><a routerLink="balance-sheeet" routerLinkActive="active">Balance Sheet</a></li>
@@ -114,38 +114,54 @@
 
 </nav>
 
-<p-sidebar [visible]="visibleSidebar" [fullScreen]="true" [baseZIndex]="10000" (onHide)="sidebarClose()" [showCloseIcon]="true">
+<p-sidebar #sidebarRef  [visible]="visibleSidebar" position="right" (onHide)="sidebarClose()">
     <div class="flex flex-nowrap flex-column justify-content-start align-items-center">
         <div class="text-center text-2xl flex flex-nowrap flex-column justify-content-start align-items-start"
-            [ngStyle]="{'width': '10rem'}"
+            [ngStyle]="{'width': '80%'}"
         >
+            <div class="text-600 text-3xl font-bold">Navigation</div>
+            <p-divider [ngStyle]="{'width': '100%'}"></p-divider>
             @if (loggedInUserVal && isMobileView) {
-                <div><a routerLink="expense" routerLinkActive="active">+ Expense</a></div>
+                <div class="ml-3"><a routerLink="expense" routerLinkActive="active" (click)="closeCallback($event)">Expense</a></div>
             }
             @if (loggedInUserVal && isMobileView) {
-                <div class="mt-3"><a routerLink="income" routerLinkActive="active">+ Income</a></div>
+                <div class="mt-3 ml-3"><a routerLink="income" routerLinkActive="active" (click)="closeCallback($event)">Income</a></div>
             }
             @if (loggedInUserVal && isMobileView) {
-                <div class="mt-3"><a routerLink="invest" routerLinkActive="active">+ Invest</a></div>
+                <div class="mt-3 ml-3"><a routerLink="invest" routerLinkActive="active" (click)="closeCallback($event)">Invest</a></div>
             }
             @if (loggedInUserVal && isMobileView) {
-                <div class="mt-3"><a routerLink="balance-sheeet" routerLinkActive="active">Balance Sheet</a></div>
+                <div class="mt-3 ml-3"><a routerLink="balance-sheeet" routerLinkActive="active" (click)="closeCallback($event)">Balance Sheet</a></div>
             }
             <!-- <div><a routerLink="/how-to" routerLinkActive="active">How-to</a></div>
             <div><a routerLink="/donate" routerLinkActive="active">Donate</a></div> -->
     
             @if (!loggedInUserVal && isMobileView) {
-                <div class="mt-3"><a routerLink="register" routerLinkActive="active">Register</a></div>
+                <div class="mt-3 ml-3"><a routerLink="register" routerLinkActive="active" (click)="closeCallback($event)">Register</a></div>
             }
             @if (!loggedInUserVal && isMobileView) {
-                <div class="mt-3"><a (click)="logoutUser(false)" routerLink="login" routerLinkActive="active">Login</a></div>
+                <div class="mt-3 ml-3"><a (click)="logoutUser(false)" routerLink="login" routerLinkActive="active" (click)="closeCallback($event)">Login</a></div>
             }
             @if (loggedInUserVal && isMobileView) {
-                <div class="mt-7 cursor-pointer"><a (click)="logoutUser(true)">Logout</a></div>
+                <p-divider [ngStyle]="{'width': '100%'}"></p-divider>
             }
             @if (loggedInUserVal && isMobileView) {
+                <span class="font-base text-base cashamole-green">
+                    <i class="pi pi-user" style="font-size: 1.25rem"></i> &nbsp;  {{ loggedInUserVal | titlecase }}
+                </span>
+            }
+            @if (loggedInUserVal && isMobileView) {
+                <p-divider [ngStyle]="{'width': '100%'}"></p-divider>
+            }
+            @if (loggedInUserVal && isMobileView) {
+                <div class="mt-1 cursor-pointer ml-3"><a (click)="userSettingsAlert(); closeCallback($event)">User Settings</a></div>
+            }
+            @if (loggedInUserVal && isMobileView) {
+                <div class="mt-3 cursor-pointer ml-3"><a (click)="logoutUser(true); closeCallback($event)">Logout</a></div>
+            }
+            <!-- @if (loggedInUserVal && isMobileView) {
                 <div class="cashamole-green font-light text-3xl mt-3 cursor-default">{{ loggedInUserVal | titlecase }}</div>
-            }
+            } -->
         </div>
     </div>
 

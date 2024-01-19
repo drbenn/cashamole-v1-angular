@@ -16,15 +16,15 @@
 }
 
 .user-icon-hover {
-  border: 1px solid #00000050;
+  // border: 1px solid #00000050;
   border-radius: 20rem;
   background-color: white;
-  transition: 100ms ease-in;
+  transition: 120ms ease-in;
   padding: 0.25rem 0.5rem;
 }
 
 .user-icon-hover:hover {
-  transition:  100ms ease-in;
+  transition:  120ms ease-in;
   background-color: #9ce0c120;
 }
 
@@ -92,7 +92,7 @@ nav ul {
   
 nav li {
   display: inline-block;
-  margin-left: 20px;
+  margin-left: 2.5rem;
   cursor: pointer;
 }
   
