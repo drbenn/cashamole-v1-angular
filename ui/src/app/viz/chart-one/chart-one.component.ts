@@ -30,7 +30,7 @@ export class ChartOneComponent implements OnInit {
             this.monthIncome = data.monthIncome;
             this.monthExpenses = data.monthExpenses;
             this.monthNetCashFlow = data.monthNetCashFlow;
-            console.log(this.monthIncome, this.monthExpenses, this.monthNetCashFlow);
+            // console.log(this.monthIncome, this.monthExpenses, this.monthNetCashFlow);
 
             // entire data object must be replaced for live data udate/render
             this.basicData = {

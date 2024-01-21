@@ -5,15 +5,14 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { ChartModule } from 'primeng/chart';
 
-
 @Component({
-  selector: 'app-expense-composition',
+  selector: 'app-liability-composition',
   standalone: true,
   imports: [CardModule, ChartModule],
-  templateUrl: './expense-composition.component.html',
-  styleUrl: './expense-composition.component.scss'
+  templateUrl: './liability-composition.component.html',
+  styleUrl: './liability-composition.component.scss'
 })
-export class ExpenseCompositionComponent implements OnInit {
+export class LiabilityCompositionComponent implements OnInit {
   protected dashboardData$: Observable<any> = this.store.select((state: any) => state.dashboard);
   protected chartData: any;
   protected chartOptions: any;
@@ -27,7 +26,7 @@ export class ExpenseCompositionComponent implements OnInit {
     this.dashboardData$.subscribe((data: DashboardStateModel) => {
       // console.log(data);
       this.chartData = {
-        labels: ['Discretionary', 'Groceries', 'Recurring'],
+        labels: ['Mortgage', 'Car Note', 'Credit Card'],
         datasets: [
           {
             data: [data.monthExpenses, data.monthIncome, data.monthInvest],

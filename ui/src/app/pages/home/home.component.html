@@ -1,13 +1,47 @@
 
-<div 
-class="flex flex-nowrap flex-column justify-content-center a"
-
+<main 
+class="flex flex-wrap flex-row justify-content-center align-items-center min-h-screen"
+[ngStyle]="{'background': 'linear-gradient(165deg, white, white, white, mintcream, #9ce0c115, white)'}"
 pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-1000
 >
-    <div class="w-20rem h-20rem bg-red-600">
+    <section class="flex flex-wrap flex-row justify-content-evenly align-items-start w-12 mt-3">
+        <!-- [ngStyle]="{'width': '30rem'}" -->
+        <div class="w-30rem h-content m-6"
+        >
+            <app-expense-composition></app-expense-composition>
+        </div>
+        <div class="w-30rem h-content m-6">
+            <app-net-cash-flow-time></app-net-cash-flow-time>
+        </div>
+        <div class="w-30rem h-content m-6">
+            <app-asset-vs-liability-time></app-asset-vs-liability-time>
+        </div>
+        <div class="h-content m-6"
+            [ngStyle]="{'width': '55rem'}"
+        >
+            <app-net-worth-time></app-net-worth-time>
+        </div>
+        <div class="w-30rem h-content m-6">
+            <app-asset-composition></app-asset-composition>
+        </div>
+        <div class="w-30rem h-content m-6">
+            <app-liability-composition></app-liability-composition>
+        </div>
+        <div class="w-30rem h-content m-6">
+            <app-expense-history></app-expense-history>
+        </div>
+        <!-- <div class="w-30rem h-content m-6">
+            <app-chart-one></app-chart-one>
+        </div> -->
 
-        <app-chart-one></app-chart-one>
-    </div>
-    Home
-</div>
+
+
+        
+    </section>
+    
+    
+    
+
+
+</main>
 

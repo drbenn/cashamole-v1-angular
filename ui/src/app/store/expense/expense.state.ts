@@ -10,7 +10,7 @@ import { DashboardActions } from '../dashboard/dashboard.actions';
 
 
 export interface ExpenseStateModel {
-    expenses: Expense[]
+    expenses: Expense[],
 }
 
 @State<ExpenseStateModel>({

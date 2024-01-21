@@ -18,8 +18,10 @@
     "@angular/platform-browser": "^17.0.0",
     "@angular/platform-browser-dynamic": "^17.0.0",
     "@angular/router": "^17.0.0",
+    "@ngxs/devtools-plugin": "^3.8.2",
     "@ngxs/store": "^3.8.2",
     "chart.js": "^4.4.1",
+    "chartjs-chart-treemap": "^2.3.0",
     "ngx-cookie-service": "^17.0.1",
     "primeflex": "^3.3.1",
     "primeicons": "^6.0.1",
@@ -32,6 +34,7 @@
     "@angular-devkit/build-angular": "^17.0.1",
     "@angular/cli": "^17.0.1",
     "@angular/compiler-cli": "^17.0.0",
+    "@types/chart.js": "^2.9.41",
     "typescript": "~5.2.2"
   }
 }
