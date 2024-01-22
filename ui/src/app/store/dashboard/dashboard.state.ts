@@ -3,7 +3,7 @@ import { Action, State, StateContext, Store } from '@ngxs/store';
 import { Router } from '@angular/router';
 import { CoreApiService } from '../../api-services/core-api.service';
 import { DashboardActions } from './dashboard.actions';
-import { BalanceSheetEntry, Expense, Income, Invest } from '../../models/core.model';
+import { BalanceSheetEntry, DashboardHistoryBalance, DashboardHistoryExpense, DashboardHistoryIncome, DashboardHistoryInvestment, Expense, Income, Invest } from '../../models/core.model';
 
 
 
@@ -17,7 +17,11 @@ export interface DashboardStateModel {
     monthNetCashFlow: number,
     monthAssets: number,
     monthLiabilities: number,
-    monthNetWorth: number
+    monthNetWorth: number,
+    expenseHistoryByMonth: DashboardHistoryExpense[],
+    incomeHistoryByMonth: DashboardHistoryIncome[],
+    investHistoryByMonth: DashboardHistoryInvestment[],
+    balanceHistoryByMonth: DashboardHistoryBalance[]
 }
 
 @State<DashboardStateModel>({
@@ -31,7 +35,11 @@ export interface DashboardStateModel {
     monthNetCashFlow: 0,
     monthAssets: 0,
     monthLiabilities: 0,
-    monthNetWorth: 0
+    monthNetWorth: 0,
+    expenseHistoryByMonth: [],
+    incomeHistoryByMonth: [],
+    investHistoryByMonth: [],
+    balanceHistoryByMonth: []
     },
   }
 )
@@ -42,6 +50,22 @@ export class DashboardState {
     private router: Router,
     private coreApi: CoreApiService
     ) {}
+
+    @Action(DashboardActions.SetDashboardHistoryOnLogin)
+    setDashboardHistoryOnLogin(
+    ctx: StateContext<DashboardStateModel>,
+    action: DashboardActions.SetDashboardHistoryOnLogin
+  ) {
+
+    console.log(action.payload);
+    
+    ctx.patchState({ 
+      expenseHistoryByMonth: action.payload.expenses,
+      incomeHistoryByMonth: action.payload.income,
+      investHistoryByMonth: action.payload.investments,
+      balanceHistoryByMonth: action.payload.balances
+    });
+  };
 
 
   @Action(DashboardActions.UpdateMonthExpenseTotal)

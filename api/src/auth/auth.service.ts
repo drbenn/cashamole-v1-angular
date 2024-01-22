@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Connection } from 'mysql2';
 import { InjectClient } from 'nest-mysql';
-import { InsertUser, LoginUserDto, RegisterUserDto, UserBasicProfile, UserExist, UserLoginData } from './auth-dto/auth-dto';
+import { DashboardHistoryData, InsertUser, LoginUserDto, RegisterUserDto, UserBasicProfile, UserExist, UserLoginData } from './auth-dto/auth-dto';
 import * as bcryptjs from 'bcryptjs';
 import { IncomeDto } from 'src/income/income-dto/income-dto';
 import { ExpenseDto } from 'src/expense/expense-dto/expense-dto';
@@ -215,6 +215,7 @@ export class AuthService {
         const userExpenses: ExpenseDto[] = await this.getUserExpenses(userBasicProfile.id, yearMonthString);
         const userBalanceSheetEntries: BalanceRecordDto[] = await this.getUserBalanceSheetEntries(userBasicProfile.id, yearMonthString);
         const userChips: ChipDto[] = await this.getUserChips(userBasicProfile.id);
+        const dashboardHistory: DashboardHistoryData = await this.getDashboardHistoryData(userBasicProfile.id);
 
         // mysql float values are stored strings and must therefore be transformed to numbers after retrieved for application use
         
@@ -237,7 +238,8 @@ export class AuthService {
             investments: userInvestments,
             expenses: userExpenses,
             balanceSheetEntries: userBalanceSheetEntries,
-            chips: userChips
+            chips: userChips,
+            dashboardHistory: dashboardHistory
         };
         return userLoginData;
     };
@@ -284,6 +286,103 @@ export class AuthService {
         const userChips = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], userChips[0]);
         return this.checkForReturnValues(results);
+    };
+
+    async getDashboardHistoryData(userId: number): Promise<DashboardHistoryData> {
+        // const sqlQuery: string = `
+            // SELECT LEFT(date, 7) AS unique_date, category, SUM(amount) AS total_expense
+            // FROM user${userId}_expenses
+            // GROUP BY LEFT(date, 7), category
+
+        //     UNION ALL
+            
+            // SELECT LEFT(date, 7) AS unique_date, source, SUM(amount) AS total_income
+            // FROM user${userId}_income
+            // GROUP BY LEFT(date, 7), source
+            
+        //     UNION ALL
+            
+            // SELECT LEFT(date, 7) AS unique_date, institution, SUM(amount) AS total_invest
+            // FROM user${userId}_invest
+            // GROUP BY LEFT(date, 7), institution
+        //     ;`;
+        const expenseSqlQuery: string = `               
+            SELECT LEFT(date, 7) AS unique_date, category, SUM(amount) AS total_expense
+            FROM user${userId}_expenses
+            GROUP BY LEFT(date, 7), category
+        ;`;
+
+        const incomeSqlQuery: string = `               
+            SELECT LEFT(date, 7) AS unique_date, source, SUM(amount) AS total_income
+            FROM user${userId}_income
+            GROUP BY LEFT(date, 7), source
+        ;`;
+
+        const investSqlQuery: string = `               
+            SELECT LEFT(date, 7) AS unique_date, institution, SUM(amount) AS total_invest
+            FROM user${userId}_invest
+            GROUP BY LEFT(date, 7), institution
+        ;`;
+        
+        const balanceSqlQuery: string = `               
+            SELECT LEFT(date, 7) AS unique_date, description, type , SUM(amount) AS total_balance
+            FROM user${userId}_bal_sheet
+            GROUP BY LEFT(date, 7), description, type
+        ;`;
+ 
+        const expense = await this.connection.query(expenseSqlQuery);
+        const expenseResults = Object.assign([{}], expense[0]);
+        const income = await this.connection.query(incomeSqlQuery);
+        const incomeResults = Object.assign([{}], income[0]);
+        const invest = await this.connection.query(investSqlQuery);
+        const investResults = Object.assign([{}], invest[0]);
+        const balances = await this.connection.query(balanceSqlQuery);
+        const balanceResults = Object.assign([{}], balances[0]);
+        const dashboardHistoryObject: DashboardHistoryData = this.dashboardHistoryToObject(expenseResults, incomeResults, investResults, balanceResults);
+        return dashboardHistoryObject;
+    };
+
+    // Set results into organized json for ease of consumption and setting to state
+    private dashboardHistoryToObject(expenseResults: any, incomeResults: any, investResults: any, balancesResults: any): DashboardHistoryData {
+        const dashboardHistoryData: DashboardHistoryData = {
+            expenses: [],
+            income: [],
+            investments: [],
+            balances: []
+        };
+
+        if (expenseResults && expenseResults.length) {
+            expenseResults.forEach((item: any) => {
+                if (item.total_expense) {
+                    dashboardHistoryData.expenses.push(item);
+                };
+            })
+        };
+
+        if (incomeResults && incomeResults.length) {
+            incomeResults.forEach((item: any) => {
+                if (item.total_income) {
+                    dashboardHistoryData.income.push(item);
+                };
+            })
+        };
+
+        if (investResults && investResults.length) {
+            investResults.forEach((item: any) => {
+                if (item.total_invest) {
+                    dashboardHistoryData.investments.push(item);
+                };
+            })
+        };
+
+        if (balancesResults && balancesResults.length) {
+            balancesResults.forEach((item: any) => {
+                if (item.total_balance) {
+                    dashboardHistoryData.balances.push(item);
+                };
+            })
+        };
+        return dashboardHistoryData;
     };
 
     private checkForReturnValues(results: any): IncomeDto[] | ExpenseDto[] | BalanceRecordDto[] | ChipDto[] | null | any {

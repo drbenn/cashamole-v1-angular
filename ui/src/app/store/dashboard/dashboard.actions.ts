@@ -1,5 +1,11 @@
+import { DashboardHistoryData } from "../../models/core.model";
+
 export namespace DashboardActions {
 
+    export class SetDashboardHistoryOnLogin {
+        static readonly type =  '[Dashboard] Set history on login';
+        constructor(public payload: DashboardHistoryData) {}
+    };
     export class UpdateMonthExpenseTotal {
         static readonly type =  '[Dashboard] Update expense month total';
         constructor(public payload: any) {}

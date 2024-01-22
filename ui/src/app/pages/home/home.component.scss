@@ -1,0 +1,16 @@
+.neumorphism {
+    border-radius: 15px;
+    // background: #e0e0e0;
+    background: #f1f1f174;
+    box-shadow: inset 20px 20px 60px #e2e2e2b9,
+                inset -20px -20px 60px #ffffff61;
+}
+
+.glassmorphism {
+    background: rgba( 255, 255, 255, 0.2 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 4px );
+    -webkit-backdrop-filter: blur( 4px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+}

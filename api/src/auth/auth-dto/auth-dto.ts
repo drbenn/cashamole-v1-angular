@@ -43,4 +43,37 @@ export class UserLoginData {
     expenses: ExpenseDto[];
     balanceSheetEntries: BalanceRecordDto[] | null;
     chips: ChipDto[] | null;
+    dashboardHistory?: DashboardHistoryData;
+}
+
+export class DashboardHistoryExpense {
+    unique_date: string;
+    category: string;
+    total_expense: string;
+}
+
+export class DashboardHistoryIncome {
+    unique_date: string;
+    source: string;
+    total_income: string;
+}
+
+export class DashboardHistoryInvestment {
+    unique_date: string;
+    institution: string;
+    total_invest: string;
+}
+
+export class DashboardHistoryBalance {
+    unique_date: string;
+    type: string | 'asset' | 'liability';
+    description: string;
+    total_balance: string;
+}
+
+export class DashboardHistoryData {
+    expenses: DashboardHistoryExpense[];
+    income: DashboardHistoryIncome[];
+    investments: DashboardHistoryInvestment[];
+    balances: DashboardHistoryBalance[]
 }

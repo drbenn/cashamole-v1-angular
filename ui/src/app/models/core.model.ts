@@ -39,3 +39,35 @@ export interface BasicApiResponse {
     message: string,
     data: any
 }
+
+export interface DashboardHistoryData {
+    expenses: DashboardHistoryExpense[],
+    income: DashboardHistoryIncome[],
+    investments: DashboardHistoryInvestment[],
+    balances: DashboardHistoryBalance[]
+}
+
+export interface DashboardHistoryExpense {
+    unique_date: string,
+    category: string,
+    total_expense: string,
+}
+
+export interface DashboardHistoryIncome {
+    unique_date: string,
+    source: string,
+    total_income: string,
+}
+
+export interface DashboardHistoryInvestment {
+    unique_date: string,
+    institution: string,
+    total_invest: string,
+}
+
+export interface DashboardHistoryBalance {
+    unique_date: string,
+    type: string | 'asset' | 'liability',
+    description: string,
+    total_balance: string,
+}

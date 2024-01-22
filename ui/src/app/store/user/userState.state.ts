@@ -11,6 +11,7 @@ import { ExpenseActions } from '../expense/expense.actions';
 import { IncomeActions } from '../income/income.actions';
 import { CalendarActions } from '../calendar/calendar.actions';
 import { InvestActions } from '../invest/invest.actions';
+import { DashboardActions } from '../dashboard/dashboard.actions';
 
 
 export interface UserStateModel {
@@ -70,6 +71,7 @@ export class UserState implements NgxsOnInit {
     this.store.dispatch(new ExpenseActions.SetExpensesOnLogin(action.payload.expenses));
     this.store.dispatch(new BalanceSheetActions.SetBalanceSheetEntriesOnLogin(action.payload.balanceSheetEntries));
     this.store.dispatch(new ChipActions.SetChipsOnLogin(action.payload.chips));
+    this.store.dispatch(new DashboardActions.SetDashboardHistoryOnLogin(action.payload.dashboardHistory));
     ctx.patchState({ 
       isInitUserDataLoaded: true,
       loggedInUser: action.payload.basicProfile
