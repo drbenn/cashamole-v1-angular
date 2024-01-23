@@ -8,15 +8,17 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
     >
         <form action="" [formGroup]="newRecordForm" (ngSubmit)="onSubmit()" class="max-w-30rem">
 
-            <div class="mt-4">
-                <p-selectButton
-                    [options]="bsTypes"
-                    formControlName="type"
-                    optionLabel="type"
-                    optionValue="type"
-                    #type
-                    (click)="handleBsSelectClick(type.value)"
-                ></p-selectButton>
+            <div class="mt-4 w-full flex flex-row flex-nowrap justify-content-center align-items-center">
+                <div>
+                    <p-selectButton
+                        [options]="bsTypes"
+                        formControlName="type"
+                        optionLabel="type"
+                        optionValue="type"
+                        #type
+                        (click)="handleBsSelectClick(type.value)"
+                    ></p-selectButton>
+                </div>
             </div>
 
             <div class="mt-4 max-w-30rem">

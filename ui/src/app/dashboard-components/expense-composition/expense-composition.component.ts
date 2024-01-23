@@ -4,6 +4,7 @@ import { CardModule } from 'primeng/card';
 import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { ChartModule } from 'primeng/chart';
+import { DashboardColorsService } from '../dashboard-colors.service';
 
 
 @Component({
@@ -18,7 +19,10 @@ export class ExpenseCompositionComponent implements OnInit {
   protected chartData: any;
   protected chartOptions: any;
 
-  constructor(private store: Store) {}
+  constructor(
+    private store: Store,
+    private dashboardColorService: DashboardColorsService
+    ) {}
 
   ngOnInit(): void {
     const documentStyle = getComputedStyle(document.documentElement);

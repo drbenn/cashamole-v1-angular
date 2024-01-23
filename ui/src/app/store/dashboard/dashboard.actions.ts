@@ -26,7 +26,19 @@ export namespace DashboardActions {
         constructor(public payload: any) {}
     };
 
+    export class SetDashboardAnnualFilter {
+        static readonly type =  '[Dashboard] Set dashboard filters for specific year';
+        constructor(public payload: any) {}
+    };
 
+    export class SetDashboardMonthFilter {
+        static readonly type =  '[Dashboard] Set dashboard filters for specific month/year';
+        constructor(public payload: any) {}
+    };
+
+    export class SetDashboardAllTimeFilter {
+        static readonly type =  '[Dashboard] Set dashboard filters for all user data';
+    };
     
 
     
