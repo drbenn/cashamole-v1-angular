@@ -191,6 +191,8 @@ export class AuthService {
 
     async validateLoginCredentials(loginUserDto: LoginUserDto): Promise<number> {
         const sqlQuery: string = `SELECT id, password FROM users WHERE username='${loginUserDto.username}'`;
+        console.log('before 149/151-ish query --- missing loginUserDto.username?');
+        console.log(sqlQuery);
         const hashSaltPasswordFromDbQuery = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], hashSaltPasswordFromDbQuery[0]);
         const dbHashSaltPassword: string = `${results[0].password}`;
@@ -246,6 +248,10 @@ export class AuthService {
 
     async getUserBasicProfile(userId: number): Promise<UserBasicProfile> {
         const sqlQuery: string = `SELECT id, username, email, join_date FROM users WHERE id='${userId}'`;
+        console.log('before 249/251-ish query --- missing id?');
+        console.log(sqlQuery);
+        
+        
         const basicUserData = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], basicUserData[0]);
         return results[0];

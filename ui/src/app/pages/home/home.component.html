@@ -29,6 +29,7 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
                             [(ngModel)]="selectedYear"
                             optionLabel="type"
                             inputId="float-label"
+                            (onChange)="handleAnnualYearDropdownChange()"
                         >
                         </p-dropdown>
                         <!-- <label for="float-label">Select a Year</label>

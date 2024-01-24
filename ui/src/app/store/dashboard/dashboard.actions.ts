@@ -27,17 +27,17 @@ export namespace DashboardActions {
     };
 
     export class SetDashboardAnnualFilter {
-        static readonly type =  '[Dashboard] Set dashboard filters for specific year';
+        static readonly type =  '[Dashboard] Set dashboard filters for annual display';
         constructor(public payload: any) {}
     };
 
     export class SetDashboardMonthFilter {
-        static readonly type =  '[Dashboard] Set dashboard filters for specific month/year';
+        static readonly type =  '[Dashboard] Set dashboard filters for month display';
         constructor(public payload: any) {}
     };
 
     export class SetDashboardAllTimeFilter {
-        static readonly type =  '[Dashboard] Set dashboard filters for all user data';
+        static readonly type =  '[Dashboard] Set dashboard filters for all-time user data';
     };
     
 

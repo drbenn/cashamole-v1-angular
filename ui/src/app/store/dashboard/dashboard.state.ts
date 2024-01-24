@@ -228,25 +228,35 @@ export class DashboardState {
     ctx: StateContext<DashboardStateModel>,
     action: DashboardActions.SetDashboardAnnualFilter
   ) {
-    let sum: number = 0;
-    let sumPretax: number = 0;
-    let sumPosttax: number = 0;
-    if ( action.payload === null) {
-        ctx.patchState({ 
-            monthInvest: sum,
-            monthPreTaxInvest: sumPretax,
-            monthPostTaxInvest: sumPosttax,
-        });
-    } else {
-        sum = this.reduceToSum(action.payload);
-        sumPretax = this.reduceToSum(action.payload.filter((item: Invest) => item.institution.includes('401')));
-        sumPosttax = this.reduceToSum(action.payload.filter((item: Invest) => !item.institution.includes('401')));
-        ctx.patchState({ 
-            monthInvest: sum,
-            monthPreTaxInvest: sumPretax,
-            monthPostTaxInvest: sumPosttax,
-        });
-    };
+    /**
+     *  For test data that will probably have transactions in the future to front-run demo and updating db.
+     *  Will curtail data to this month, not restricting to this day of the month because somethings like
+     *  recurring payments will hopefully be auto-generated in post 1.0 versions
+     */
+    const today: Date = new Date();
+    const months: string[] = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Dec'];
+    const todayFullYear: string = today.getFullYear().toString();
+    const todayShortMonth: string = today.toLocaleDateString('en-US', { month: 'short' });
+    let month: string = (months.findIndex((month: string) => month === todayShortMonth) + 1).toString();
+    if (month.length === 1) { month = '0' + month};
+    
+    const year: string = action.payload.toString();
+    const expenseHistory: DashboardHistoryExpense[] = ctx.getState().expenseHistoryByMonth;
+    const incomeHistory: DashboardHistoryIncome[] = ctx.getState().incomeHistoryByMonth;
+    const investHistory: DashboardHistoryInvestment[] = ctx.getState().investHistoryByMonth;
+    const balanceHistory: DashboardHistoryBalance[] = ctx.getState().balanceHistoryByMonth;
+
+    const filteredExpenseHistory: DashboardHistoryExpense[] = expenseHistory.filter((expense: DashboardHistoryExpense) => year === todayFullYear ? expense.unique_date.slice(0, 4) === year && <number><unknown>expense.unique_date.slice(5,8) <= <number><unknown>month : expense.unique_date.slice(0, 4) === year);
+    const filteredIncomeHistory: DashboardHistoryIncome[] = incomeHistory.filter((income: DashboardHistoryIncome) => year === todayFullYear ? income.unique_date.slice(0,4) === year && <number><unknown>income.unique_date.slice(5,8) <= <number><unknown>month : income.unique_date.slice(0,4) === year);
+    const filtreredInvestHistory: DashboardHistoryInvestment[] = investHistory.filter((invest: DashboardHistoryInvestment) => year === todayFullYear ? invest.unique_date.slice(0,4) === year && <number><unknown>invest.unique_date.slice(5,8) <= <number><unknown>month : invest.unique_date.slice(0,4) === year);
+    const filtreredBalanceHistory: DashboardHistoryBalance[] = balanceHistory.filter((balance: DashboardHistoryBalance) => year === todayFullYear ? balance.unique_date.slice(0,4) === year && <number><unknown>balance.unique_date.slice(5,8) <= <number><unknown>month : balance.unique_date.slice(0,4) === year);
+    
+    ctx.patchState({ 
+      filteredExpenseHistoryByMonth: filteredExpenseHistory,
+      filteredIncomeHistoryByMonth: filteredIncomeHistory,
+      filteredInvestHistoryByMonth: filtreredInvestHistory,
+      filteredBalanceHistoryByMonth: filtreredBalanceHistory,
+    });
   };
 
   @Action(DashboardActions.SetDashboardMonthFilter)
@@ -254,14 +264,14 @@ export class DashboardState {
     ctx: StateContext<DashboardStateModel>,
     action: DashboardActions.SetDashboardMonthFilter
   ) {
-    console.log('FILTER BY MONTH IN STATE');
+    console.log('Dashboard state month filter');
     console.log(action.payload);
     const months: string[] = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Dec'];
-    const monthString: string = action.payload.month;
-    console.log(monthString);
+    // const monthString: string = action.payload.month;
+    // console.log(monthString);
     
-    const monthIndex: number = months.findIndex(month => month === monthString);
-    console.log(monthIndex);
+    // const monthIndex: number = months.findIndex(month => month === monthString);
+    // console.log(monthIndex);
     
     // let month: string = months[months.findIndex(action.payload.month) + 1];
     // if (month.length === 1) { month = '0' + month};
@@ -275,12 +285,12 @@ export class DashboardState {
 
     console.log(expenseHistory);
 
-    const filteredExpenseHistory: DashboardHistoryExpense[] = expenseHistory.filter((expense: DashboardHistoryExpense) => expense.unique_date.slice(7,8) === month);
-    const filteredIncomeHistory: DashboardHistoryIncome[] = incomeHistory.filter((income: DashboardHistoryIncome) => income.unique_date.slice(0,4) === year && income.unique_date.slice(6,8) === month);
-    const filtreredInvestHistory: DashboardHistoryInvestment[] = investHistory.filter((invest: DashboardHistoryInvestment) => invest.unique_date.slice(0,4) === year && invest.unique_date.slice(6,8) === month);
-    const filtreredBalanceHistory: DashboardHistoryBalance[] = balanceHistory.filter((balance: DashboardHistoryBalance) => balance.unique_date.slice(0,4) === year && balance.unique_date.slice(6,8) === month);
+    // const filteredExpenseHistory: DashboardHistoryExpense[] = expenseHistory.filter((expense: DashboardHistoryExpense) => expense.unique_date.slice(7,8) === month);
+    // const filteredIncomeHistory: DashboardHistoryIncome[] = incomeHistory.filter((income: DashboardHistoryIncome) => income.unique_date.slice(0,4) === year && income.unique_date.slice(6,8) === month);
+    // const filtreredInvestHistory: DashboardHistoryInvestment[] = investHistory.filter((invest: DashboardHistoryInvestment) => invest.unique_date.slice(0,4) === year && invest.unique_date.slice(6,8) === month);
+    // const filtreredBalanceHistory: DashboardHistoryBalance[] = balanceHistory.filter((balance: DashboardHistoryBalance) => balance.unique_date.slice(0,4) === year && balance.unique_date.slice(6,8) === month);
     
-    console.log(filteredExpenseHistory);
+    // console.log(filteredExpenseHistory);
     
     ctx.patchState({ 
       filteredExpenseHistoryByMonth: [],
@@ -294,14 +304,36 @@ export class DashboardState {
   @Action(DashboardActions.SetDashboardAllTimeFilter)
   setDashboardAllTimeFilter(
     ctx: StateContext<DashboardStateModel>,
-    action: DashboardActions.SetDashboardAllTimeFilter
-  ) {
+  ) {    
+    console.log('Dashboard state all-time filter')
+
+    /**
+     *  For test data that will probably have transactions in the future to front-run demo and updating db.
+     *  Will curtail data to this month, not restricting to this day of the month because somethings like
+     *  recurring payments will hopefully be auto-generated in post 1.0 versions
+     */
+    const today: Date = new Date();
+    const months: string[] = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Dec'];
+    const todayFullYear: string = today.getFullYear().toString();
+    const todayShortMonth: string = today.toLocaleDateString('en-US', { month: 'short' });
+    let month: string = (months.findIndex((month: string) => month === todayShortMonth) + 1).toString();
+    if (month.length === 1) { month = '0' + month};
+    
+    const expenseHistory: DashboardHistoryExpense[] = ctx.getState().expenseHistoryByMonth;
+    const incomeHistory: DashboardHistoryIncome[] = ctx.getState().incomeHistoryByMonth;
+    const investHistory: DashboardHistoryInvestment[] = ctx.getState().investHistoryByMonth;
+    const balanceHistory: DashboardHistoryBalance[] = ctx.getState().balanceHistoryByMonth;
+
+    const filteredExpenseHistory: DashboardHistoryExpense[] = expenseHistory.filter((expense: DashboardHistoryExpense) => expense.unique_date.slice(0, 4) === todayFullYear ? expense.unique_date.slice(0, 4) === todayFullYear && <number><unknown>expense.unique_date.slice(5,8) <= <number><unknown>month : true );
+    const filteredIncomeHistory: DashboardHistoryIncome[] = incomeHistory.filter((income: DashboardHistoryIncome) => income.unique_date.slice(0,4) === todayFullYear ? income.unique_date.slice(0,4) === todayFullYear && <number><unknown>income.unique_date.slice(5,8) <= <number><unknown>month : true );
+    const filtreredInvestHistory: DashboardHistoryInvestment[] = investHistory.filter((invest: DashboardHistoryInvestment) => invest.unique_date.slice(0,4) === todayFullYear ? invest.unique_date.slice(0,4) === todayFullYear && <number><unknown>invest.unique_date.slice(5,8) <= <number><unknown>month : true );
+    const filtreredBalanceHistory: DashboardHistoryBalance[] = balanceHistory.filter((balance: DashboardHistoryBalance) => balance.unique_date.slice(0,4) === todayFullYear ? balance.unique_date.slice(0,4) === todayFullYear && <number><unknown>balance.unique_date.slice(5,8) <= <number><unknown>month : true );
 
     ctx.patchState({ 
-      filteredExpenseHistoryByMonth: [],
-      filteredIncomeHistoryByMonth: [],
-      filteredInvestHistoryByMonth: [],
-      filteredBalanceHistoryByMonth: [],
+      filteredExpenseHistoryByMonth: filteredExpenseHistory,
+      filteredIncomeHistoryByMonth: filteredIncomeHistory,
+      filteredInvestHistoryByMonth: filtreredInvestHistory,
+      filteredBalanceHistoryByMonth: filtreredBalanceHistory,
     });
 
   };

@@ -75,8 +75,12 @@ export class HomeComponent implements OnInit {
         };
 
         if (item.type === 'Annual') {
-            this.store.dispatch(new DashboardActions.SetDashboardAnnualFilter(this.selectedYear.type));
             this.isYearActiveChoice = true;
+            console.log('annual item');
+            console.log(item);
+            
+            
+            this.store.dispatch(new DashboardActions.SetDashboardAnnualFilter(this.selectedYear.type));
         } else {
             this.isYearActiveChoice = false;
         };
@@ -89,5 +93,13 @@ export class HomeComponent implements OnInit {
             this.store.dispatch(new DashboardActions.SetDashboardAllTimeFilter());
         };   
     };
+
+    protected handleAnnualYearDropdownChange() {
+        console.log('in handle year change only');
+        console.log(this.selectedYear);
+        this.store.dispatch(new DashboardActions.SetDashboardAnnualFilter(this.selectedYear.type));
+        
+        
+    }
 
 }
