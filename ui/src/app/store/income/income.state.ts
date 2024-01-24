@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Action, State, StateContext, Store } from '@ngxs/store';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Router } from '@angular/router';
 import { IncomeActions } from './income.actions';
 import { Income } from '../../models/core.model';
@@ -24,8 +24,12 @@ export class IncomeState {
     private store: Store,
     private router: Router,
     private coreApi: CoreApiService
-    ) {}
+  ) {}
 
+  @Selector()
+  static allMonthIncome(state: IncomeStateModel): Income[] {
+    return state.income;
+  };
 
   @Action(IncomeActions.SetIncomeOnLogin)
   setIncomeOnLogin(
@@ -35,6 +39,7 @@ export class IncomeState {
     ctx.patchState({ 
       income: action.payload
     });
+    this.updateDashboardIncome(action.payload);
   };
 
   @Action(IncomeActions.GetAndSetMonthIncomeRecords)
@@ -48,12 +53,14 @@ export class IncomeState {
         ctx.patchState({ 
           income: []
         });
+        this.updateDashboardIncome([]);
       } else {
         const resData: Income[] = JSON.parse(res.data)
         this.store.dispatch(new DashboardActions.UpdateMonthIncomeTotal(resData));
         ctx.patchState({ 
           income: JSON.parse(res.data)
         });
+        this.updateDashboardIncome(JSON.parse(res.data));
       };
     });
   };
@@ -68,6 +75,7 @@ export class IncomeState {
     updatedIncome.push(action.payload);
     this.store.dispatch(new DashboardActions.UpdateMonthIncomeTotal(updatedIncome));
     ctx.patchState({ income: updatedIncome });
+    this.updateDashboardIncome(updatedIncome);
   };
 
   @Action(IncomeActions.EditIncomeRecord)
@@ -111,5 +119,10 @@ export class IncomeState {
       });
       this.store.dispatch(new DashboardActions.UpdateMonthIncomeTotal(updatedIncomeRecords)); 
       ctx.patchState({ income: updatedIncomeRecords });
+      this.updateDashboardIncome(updatedIncomeRecords);
+  };
+
+  private updateDashboardIncome(income: Income[]) {
+    this.store.dispatch(new DashboardActions.SetMonthIncomeForDashboard(income));
   };
 }

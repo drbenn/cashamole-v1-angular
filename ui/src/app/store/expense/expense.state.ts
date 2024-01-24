@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Action, State, StateContext, Store } from '@ngxs/store';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Router } from '@angular/router';
 import { ExpenseActions } from './expense.actions';
 import { Expense } from '../../models/core.model';
@@ -26,8 +26,12 @@ export class ExpenseState {
     private store: Store,
     private router: Router,
     private coreApi: CoreApiService
-    ) {}
+  ) {}
 
+  @Selector()
+  static allMonthExpenses(state: ExpenseStateModel): Expense[] {
+    return state.expenses;
+  };
 
   @Action(ExpenseActions.SetExpensesOnLogin)
   setExpenseOnLogin(
@@ -37,6 +41,7 @@ export class ExpenseState {
     ctx.patchState({ 
       expenses: action.payload
     });
+    this.updateDashboardExpenses(action.payload);
   }
 
   @Action(ExpenseActions.GetAndSetMonthExpenseRecords)
@@ -50,12 +55,14 @@ export class ExpenseState {
         ctx.patchState({ 
           expenses: []
         });
+        this.updateDashboardExpenses([]);
       } else {
         const resData: Expense[] = JSON.parse(res.data)
         this.store.dispatch(new DashboardActions.UpdateMonthExpenseTotal(resData));
         ctx.patchState({
           expenses: resData
         });
+        this.updateDashboardExpenses(resData);
       };
     });
   };
@@ -70,6 +77,7 @@ export class ExpenseState {
     updatedExpenses.push(action.payload);
     this.store.dispatch(new DashboardActions.UpdateMonthExpenseTotal(updatedExpenses));
     ctx.patchState({ expenses: updatedExpenses });
+    this.updateDashboardExpenses(updatedExpenses);
   };
 
   @Action(ExpenseActions.EditUserExpenseRecord)
@@ -113,5 +121,10 @@ export class ExpenseState {
       });
       this.store.dispatch(new DashboardActions.UpdateMonthExpenseTotal(updatedExpenseRecords)); 
       ctx.patchState({ expenses: updatedExpenseRecords });
+      this.updateDashboardExpenses(updatedExpenseRecords);
+  };
+
+  private updateDashboardExpenses(expenses: Expense[]) {
+    this.store.dispatch(new DashboardActions.SetMonthExpensesForDashboard(expenses));
   };
 }

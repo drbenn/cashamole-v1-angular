@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { CoreApiService } from '../../api-services/core-api.service';
 import { DashboardActions } from './dashboard.actions';
 import { BalanceSheetEntry, DashboardHistoryBalance, DashboardHistoryExpense, DashboardHistoryIncome, DashboardHistoryInvestment, Expense, Income, Invest } from '../../models/core.model';
+import { ExpenseState, ExpenseStateModel } from '../expense/expense.state';
 
 
 
@@ -27,6 +28,10 @@ export interface DashboardStateModel {
     filteredIncomeHistoryByMonth: DashboardHistoryIncome[],
     filteredInvestHistoryByMonth: DashboardHistoryInvestment[],
     filteredBalanceHistoryByMonth: DashboardHistoryBalance[],
+    monthExpenseDetail: Expense[],
+    monthIncomeDetail: Income[],
+    monthInvestmentsDetail: Invest[],
+    monthBalancesDetail: BalanceSheetEntry[],
 }
 
 @State<DashboardStateModel>({
@@ -50,6 +55,10 @@ export interface DashboardStateModel {
     filteredIncomeHistoryByMonth: [],
     filteredInvestHistoryByMonth: [],
     filteredBalanceHistoryByMonth: [],
+    monthExpenseDetail: [],
+    monthIncomeDetail: [],
+    monthInvestmentsDetail: [],
+    monthBalancesDetail: [],
     },
   }
 )
@@ -261,44 +270,48 @@ export class DashboardState {
 
   @Action(DashboardActions.SetDashboardMonthFilter)
   setDashboardMonthFilter(
-    ctx: StateContext<DashboardStateModel>,
-    action: DashboardActions.SetDashboardMonthFilter
   ) {
-    console.log('Dashboard state month filter');
-    console.log(action.payload);
-    const months: string[] = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Dec'];
-    // const monthString: string = action.payload.month;
-    // console.log(monthString);
-    
-    // const monthIndex: number = months.findIndex(month => month === monthString);
-    // console.log(monthIndex);
-    
-    // let month: string = months[months.findIndex(action.payload.month) + 1];
-    // if (month.length === 1) { month = '0' + month};
-    const year: string = action.payload.year;
+    console.log(' Not sure really need this anymore!');
+  };
 
-
-    const expenseHistory: DashboardHistoryExpense[] = ctx.getState().expenseHistoryByMonth;
-    const incomeHistory: DashboardHistoryIncome[] = ctx.getState().incomeHistoryByMonth;
-    const investHistory: DashboardHistoryInvestment[] = ctx.getState().investHistoryByMonth;
-    const balanceHistory: DashboardHistoryBalance[] = ctx.getState().balanceHistoryByMonth;
-
-    console.log(expenseHistory);
-
-    // const filteredExpenseHistory: DashboardHistoryExpense[] = expenseHistory.filter((expense: DashboardHistoryExpense) => expense.unique_date.slice(7,8) === month);
-    // const filteredIncomeHistory: DashboardHistoryIncome[] = incomeHistory.filter((income: DashboardHistoryIncome) => income.unique_date.slice(0,4) === year && income.unique_date.slice(6,8) === month);
-    // const filtreredInvestHistory: DashboardHistoryInvestment[] = investHistory.filter((invest: DashboardHistoryInvestment) => invest.unique_date.slice(0,4) === year && invest.unique_date.slice(6,8) === month);
-    // const filtreredBalanceHistory: DashboardHistoryBalance[] = balanceHistory.filter((balance: DashboardHistoryBalance) => balance.unique_date.slice(0,4) === year && balance.unique_date.slice(6,8) === month);
-    
-    // console.log(filteredExpenseHistory);
-    
+  @Action(DashboardActions.SetMonthExpensesForDashboard)
+  setMonthExpensesForDashboard(
+    ctx: StateContext<DashboardStateModel>,
+    action: DashboardActions.SetMonthExpensesForDashboard
+  ) {
     ctx.patchState({ 
-      filteredExpenseHistoryByMonth: [],
-      filteredIncomeHistoryByMonth: [],
-      filteredInvestHistoryByMonth: [],
-      filteredBalanceHistoryByMonth: [],
+      monthExpenseDetail: action.payload,
     });
+  };
 
+  @Action(DashboardActions.SetMonthIncomeForDashboard)
+  setMonthIncomeForDashboard(
+    ctx: StateContext<DashboardStateModel>,
+    action: DashboardActions.SetMonthIncomeForDashboard
+  ) {
+    ctx.patchState({ 
+      monthIncomeDetail: action.payload,
+    });
+  };
+
+  @Action(DashboardActions.SetMonthInvestmentsForDashboard)
+  setMonthInvestmentsForDashboard(
+    ctx: StateContext<DashboardStateModel>,
+    action: DashboardActions.SetMonthInvestmentsForDashboard
+  ) {
+    ctx.patchState({ 
+      monthInvestmentsDetail: action.payload,
+    });
+  };
+
+  @Action(DashboardActions.SetMonthBalancesForDashboard)
+  setMonthBalancesForDashboard(
+    ctx: StateContext<DashboardStateModel>,
+    action: DashboardActions.SetMonthBalancesForDashboard
+  ) {
+    ctx.patchState({ 
+      monthBalancesDetail: action.payload,
+    });
   };
 
   @Action(DashboardActions.SetDashboardAllTimeFilter)

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Action, State, StateContext, Store } from '@ngxs/store';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Router } from '@angular/router';
 import { InvestActions } from './invest.actions';
 import { Invest } from '../../models/core.model';
@@ -24,8 +24,12 @@ export class InvestState {
     private store: Store,
     private router: Router,
     private coreApi: CoreApiService
-    ) {}
+  ) {}
 
+  @Selector()
+  static allMonthInvestments(state: InvestStateModel): Invest[] {
+    return state.investments;
+  };
 
   @Action(InvestActions.SetInvestOnLogin)
   setInvestOnLogin(
@@ -35,6 +39,7 @@ export class InvestState {
     ctx.patchState({ 
       investments: action.payload
     });
+    this.updateDashboardInvestments(action.payload);
   };
 
   @Action(InvestActions.GetAndSetMonthInvestRecords)
@@ -48,12 +53,14 @@ export class InvestState {
         ctx.patchState({ 
             investments: []
         });
+        this.updateDashboardInvestments([]);
       } else {
         const resData: Invest[] = JSON.parse(res.data)
         this.store.dispatch(new DashboardActions.UpdateMonthInvestTotal(resData));
         ctx.patchState({ 
             investments: JSON.parse(res.data)
         });
+        this.updateDashboardInvestments(JSON.parse(res.data));
       };
     });
   };
@@ -68,6 +75,7 @@ export class InvestState {
     updatedInvest.push(action.payload);
     this.store.dispatch(new DashboardActions.UpdateMonthInvestTotal(updatedInvest));
     ctx.patchState({ investments: updatedInvest });
+    this.updateDashboardInvestments(updatedInvest);
   };
 
   @Action(InvestActions.EditInvestRecord)
@@ -111,5 +119,10 @@ export class InvestState {
       });
       this.store.dispatch(new DashboardActions.UpdateMonthInvestTotal(updatedInvestRecords)); 
       ctx.patchState({ investments: updatedInvestRecords });
+      this.updateDashboardInvestments(updatedInvestRecords);
+  };
+
+  private updateDashboardInvestments(investments: Invest[]) {
+    this.store.dispatch(new DashboardActions.SetMonthInvestmentsForDashboard(investments));
   };
 }
