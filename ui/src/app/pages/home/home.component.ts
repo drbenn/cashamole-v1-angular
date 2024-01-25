@@ -21,6 +21,7 @@ import { BalanceSheetEntry, Expense, Income, Invest } from '../../models/core.mo
 import { IncomeState } from '../../store/income/income.state';
 import { InvestState } from '../../store/invest/invest.state';
 import { BalanceSheetState } from '../../store/balanceSheet/bsState.state';
+import { IncomeHistoryComponent } from '../../dashboard-components/income-history/income-history.component';
 
 
 export interface OptionType {
@@ -33,11 +34,12 @@ export interface OptionType {
     standalone: true,
     templateUrl: './home.component.html',
     styleUrl: './home.component.scss',
-    imports: [CommonModule, FormsModule, SelectButtonModule, DropdownModule, ChartOneComponent, AssetCompositionComponent, ExpenseCompositionComponent, ExpenseHistoryComponent, NetWorthTimeComponent, AssetVsLiabilityTimeComponent, LiabilityCompositionComponent, NetCashFlowTimeComponent]
+    imports: [CommonModule, FormsModule, SelectButtonModule, DropdownModule, ChartOneComponent, AssetCompositionComponent, ExpenseCompositionComponent, ExpenseHistoryComponent, NetWorthTimeComponent, AssetVsLiabilityTimeComponent, LiabilityCompositionComponent, NetCashFlowTimeComponent, IncomeHistoryComponent]
 })
 export class HomeComponent implements OnInit {
     @Select(CalendarState.activeMonthStartDate) activeMonthStartDate$!: Observable<Date>;
     @Select(DashboardState.yearOptions) yearOptions$!: Observable<string[]>;
+    @Select(DashboardState.selectedDashboardView) selectedView$!: Observable<'monthly' | 'annual' | 'all-time'>;
 
     protected timeTypes: OptionType[] = [{ type: 'Y-T-D'}, { type: "Month"}, { type: "Annual"}, { type: "All"}];
     protected selectedTimeType: OptionType = this.timeTypes[1];
@@ -46,6 +48,7 @@ export class HomeComponent implements OnInit {
     protected isYearActiveChoice: boolean = false;
     protected yearTypes: OptionType[] = [];
     protected selectedYear!: OptionType;
+    protected selectedView: 'monthly' | 'annual' | 'all-time' = 'monthly';
     // private monthOnlyMonth!: string;
     // private monthOnlyYear!: string;
 
@@ -61,6 +64,7 @@ export class HomeComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
+        this.selectedView$.subscribe((view: 'monthly' | 'annual' | 'all-time') => this.selectedView = view);
         // this.activeMonthStartDate$.subscribe((startDate: Date) => {
         //     console.log('==================');
             
@@ -101,7 +105,7 @@ export class HomeComponent implements OnInit {
         };
 
         if (item.type === 'Y-T-D') {
-            this.store.dispatch(new DashboardActions.SetDashboardAnnualFilter(this.yearTypes[0]));
+            this.store.dispatch(new DashboardActions.SetDashboardAnnualFilter(parseInt(this.yearTypes[0].type)));
         }; 
 
         if (item.type === 'All') {

@@ -5,20 +5,20 @@ import { Observable } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { ChartModule } from 'primeng/chart';
 import { ExpenseStateModel } from '../../store/expense/expense.state';
-import { DashboardHistoryExpense } from '../../models/core.model';
-
+import { DashboardHistoryIncome, Income } from '../../models/core.model';
 import { DashboardService } from '../dashboard.service';
 import { BarChartDataInputs } from '../../models/dashboard.models';
 
+
 @Component({
-  selector: 'app-expense-history',
+  selector: 'app-income-history',
   standalone: true,
   imports: [CardModule, ChartModule],
-  templateUrl: './expense-history.component.html',
-  styleUrl: './expense-history.component.scss'
+  templateUrl: './income-history.component.html',
+  styleUrl: './income-history.component.scss'
 })
-export class ExpenseHistoryComponent implements OnInit {
-  @Select(DashboardState.expenseHistoryChartData) data$!: Observable<{ userView: string, data: DashboardHistoryExpense[] }>;
+export class IncomeHistoryComponent implements OnInit {
+  @Select(DashboardState.incomeHistoryChartData) data$!: Observable<{ userView: string, data: DashboardHistoryIncome[] }>;
   protected chartData: any;
   protected chartOptions: any;
 
@@ -27,15 +27,15 @@ export class ExpenseHistoryComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.data$.subscribe((data: { userView: string, data: DashboardHistoryExpense[] }) => {
+    this.data$.subscribe((data: { userView: string, data: DashboardHistoryIncome[] }) => {
       if (data.userView === 'annual') {
-        const annualChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForAnnual(data.data);        
+        const annualChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForAnnual(data.data);
         this.updateChart(annualChartData);
-      };
+      }
       if (data.userView=== 'all-time') {
         const allTimeChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForAllTime(data.data);
         this.updateChart(allTimeChartData);
-      };
+      }
     });
   };
 
@@ -84,7 +84,7 @@ export class ExpenseHistoryComponent implements OnInit {
     };
   };
 
-  // private configureDataInputsForAnnual(data: DashboardHistoryExpense[]): BarChartDataInputs {
+  // private configureDataInputsForAnnual(data: DashboardHistoryIncome[]): BarChartDataInputs {
   //   const chartDataSet: number[] = this.sumDataIntoMonthBaskets(data);
   //   const labels: string[] = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   //   const backgroundColors: string[] = this.dashboardService.chartTransparentColors(chartDataSet.length);
@@ -97,11 +97,11 @@ export class ExpenseHistoryComponent implements OnInit {
   //   };
   // };
 
-  // private configureDataInputsForAllTime(data: DashboardHistoryExpense[]): BarChartDataInputs {
+  // private configureDataInputsForAllTime(data: DashboardHistoryIncome[]): BarChartDataInputs {
   //   // get unique years for filter
   //   const dataYears: string[] = Array.from(
   //     new Set(
-  //       data.map((item: DashboardHistoryExpense) => item.unique_date.slice(0, 4))
+  //       data.map((item: DashboardHistoryIncome) => item.unique_date.slice(0, 4))
   //   ));
   //   dataYears.sort();
 
@@ -117,25 +117,26 @@ export class ExpenseHistoryComponent implements OnInit {
   //   };
   // };
 
-  // private sumDataIntoMonthBaskets(data: DashboardHistoryExpense[]): number[] {
+  // private sumDataIntoMonthBaskets(data: DashboardHistoryIncome[]): number[] {
   //   const twelveMonthsData: number[] = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  //   data.forEach((item: DashboardHistoryExpense) => {
+  //   data.forEach((item: DashboardHistoryIncome) => {
   //     const month: number = parseInt(item.unique_date.slice(5,8));
-  //     const amount: number = parseFloat(item.total_expense);
+  //     const amount: number = parseFloat(item.total_income);
   //     twelveMonthsData[month - 1] = twelveMonthsData[month - 1] + amount;
   //   });
   //   return twelveMonthsData;
   // };
 
-  // private sumDataIntoYearBaskets(data: DashboardHistoryExpense[], dataYears: string[]): number[] {
+  // private sumDataIntoYearBaskets(data: DashboardHistoryIncome[], dataYears: string[]): number[] {
   //   const xYearData: number[] = new Array(dataYears.length).fill(0);
-  //   data.forEach((item: DashboardHistoryExpense) => {
+  //   data.forEach((item: DashboardHistoryIncome) => {
   //     const year: number = parseInt(item.unique_date.slice(0,4));
-  //     const amount: number = parseFloat(item.total_expense);
+  //     const amount: number = parseFloat(item.total_income);
   //     const itemIndex: number = dataYears.findIndex((_year: string) => _year === year.toString());
   //     xYearData[itemIndex] = xYearData[itemIndex] + amount;
   //   });
   //   return xYearData;
   // };
-
 }
+
+
