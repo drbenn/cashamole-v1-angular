@@ -1,8 +1,8 @@
 <main
 class="w-full bg-white flex flex-column justify-content-center align-items-center"
 [ngStyle]="{'min-height': '5rem'}"
-pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-1000
 >
+<span class="fadein animation-duration-300">
 
     <form action="" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
@@ -64,6 +64,7 @@ pAnimateOnScroll enterClass="fadein" leaveClass="fadeout" animation-duration-100
             >Submit</button>
         </div>
     </form>
+</span>
 </main>
 
 <p>Form Status: {{ registerForm.status }}</p>

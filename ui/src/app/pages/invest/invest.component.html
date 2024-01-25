@@ -1,6 +1,7 @@
 <main class="flex flex-column flex-nowrap justify-content-center align-items-center pt-8"
 [ngStyle]="{'background': 'linear-gradient(165deg, white, white, white, mintcream, #9ce0c115, white)'}"
 >
+<span class="fadein animation-duration-300">
     <div>
         <app-month-cash-invested-summary></app-month-cash-invested-summary>
     </div>
@@ -12,5 +13,5 @@
              <app-invest-table tableTitle="Cash Invested" [tableData]="activeMonthInvestments"></app-invest-table>
          </section>
     </div>
-    
+</span>  
 </main>
