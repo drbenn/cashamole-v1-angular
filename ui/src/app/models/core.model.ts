@@ -71,3 +71,9 @@ export interface DashboardHistoryBalance {
     description: string,
     total_balance: string,
 }
+
+export interface DashboardHistoryNetWorth {
+    unique_date: string,
+    net_worth: string,
+}
+

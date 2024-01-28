@@ -40,15 +40,19 @@ export class HomeComponent implements OnInit {
     @Select(CalendarState.activeMonthStartDate) activeMonthStartDate$!: Observable<Date>;
     @Select(DashboardState.yearOptions) yearOptions$!: Observable<string[]>;
     @Select(DashboardState.selectedDashboardView) selectedView$!: Observable<'monthly' | 'annual' | 'all-time'>;
+    @Select(DashboardState.activeYearMonthOptions) activeYearMonthOptions$!: Observable<string[]>;
 
     protected timeTypes: OptionType[] = [{ type: 'Y-T-D'}, { type: "Month"}, { type: "Annual"}, { type: "All"}];
-    protected selectedTimeType: OptionType = this.timeTypes[1];
+    protected selectedTimeType: OptionType = this.timeTypes[3];
     protected monthNote: string = 'Select active month in navigation';
     protected isMonthActiveChoice: boolean = false;
     protected isYearActiveChoice: boolean = false;
-    protected yearTypes: OptionType[] = [];
-    protected selectedYear!: OptionType;
-    protected selectedView: 'monthly' | 'annual' | 'all-time' = 'monthly';
+    protected yearOptions: OptionType[] = [];
+    protected monthOptions: OptionType[] = [];
+    protected selectedAnnualYear!: OptionType;
+    protected selectedMonthlyYear!: OptionType;
+    protected selectedMonth!: OptionType;
+    protected selectedView: 'monthly' | 'annual' | 'all-time' = 'all-time';
     // private monthOnlyMonth!: string;
     // private monthOnlyYear!: string;
 
@@ -64,7 +68,16 @@ export class HomeComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.selectedView$.subscribe((view: 'monthly' | 'annual' | 'all-time') => this.selectedView = view);
+        this.selectedView$.subscribe((type: 'monthly' | 'annual' | 'all-time') => this.selectedView = type);
+        this.activeYearMonthOptions$.subscribe((months: string[]) => {
+            if (months) {
+                const monthTypes: OptionType[] = [];
+                months.forEach((month: string) => monthTypes.push({ type: month }));
+                this.monthOptions = monthTypes;
+                this.selectedMonth = this.monthOptions[this.monthOptions.length - 1];
+            };
+        });
+
         // this.activeMonthStartDate$.subscribe((startDate: Date) => {
         //     console.log('==================');
             
@@ -82,39 +95,77 @@ export class HomeComponent implements OnInit {
             if (years && years.length) {
                 const yearTypes: OptionType[] = [];
                 years.forEach((year: string) => yearTypes.push({ type: year }));
-                this.yearTypes = yearTypes;
-                this.selectedYear = this.yearTypes[0];
+                this.yearOptions = yearTypes;
+                this.selectedAnnualYear = this.yearOptions[0];
+                this.selectedMonthlyYear = this.yearOptions[0];
+                this.store.dispatch(new DashboardActions.SetActiveAnnualYearForDashboard(this.selectedAnnualYear.type));
+                this.store.dispatch(new DashboardActions.SetActiveMonthlyYearForDashboard(this.selectedMonthlyYear.type));
             };
         }); 
     };
 
-    protected handleChartTimePeriodSelect(item: any, monthlyData?: { expenses: Expense[], income: Income[], investments: Invest[], balances: BalanceSheetEntry[] }): void {
+    protected handleChartTimePeriodSelect(item: { type: 'Y-T-D' | 'Month' | 'Annual' | 'All' }): void {
         const type: 'Y-T-D' | 'Month' | 'Annual' | 'All' = item.type;
+        let dataView: { type: 'monthly' | 'annual' | 'all-time' | null, year: string | null, month: string | null } = {type: null, year: null, month: null };
+        console.log(dataView);
+        
         if (item.type === 'Month') {
-            this.store.dispatch(new DashboardActions.SetDashboardMonthFilter({ expenses: monthlyData?.expenses, income: monthlyData?.income , investments: monthlyData?.investments , balances: monthlyData?.balances }));
+            // this.store.dispatch(new DashboardActions.SetDashboardMonthFilter({ expenses: monthlyData?.expenses, income: monthlyData?.income , investments: monthlyData?.investments , balances: monthlyData?.balances }));
+            dataView = {type: 'monthly', year: this.selectedMonthlyYear.type, month: this.selectedMonth.type };
             this.isMonthActiveChoice = true;
         } else {
             this.isMonthActiveChoice = false;
         };
 
         if (item.type === 'Annual') {
+            dataView = {type: 'annual', year: this.selectedAnnualYear.type, month: null };
             this.isYearActiveChoice = true;
-            this.store.dispatch(new DashboardActions.SetDashboardAnnualFilter(this.selectedYear.type));
+            // this.store.dispatch(new DashboardActions.SetDashboardAnnualFilter(this.selectedYear.type));
+            // this.store.dispatch(new DashboardActions.SetActiveAnnualYearForDashboard(this.selectedYear.type));
         } else {
             this.isYearActiveChoice = false;
         };
 
         if (item.type === 'Y-T-D') {
-            this.store.dispatch(new DashboardActions.SetDashboardAnnualFilter(parseInt(this.yearTypes[0].type)));
+            dataView = {type: 'annual', year: this.selectedAnnualYear.type, month: null };
+            // this.store.dispatch(new DashboardActions.SetDashboardAnnualFilter(parseInt(this.yearOptions[0].type)));
+            // this.store.dispatch(new DashboardActions.SetActiveAnnualYearForDashboard(this.yearOptions[0].type));
+            this.isMonthActiveChoice = false;
+            this.isYearActiveChoice = false;
         }; 
 
         if (item.type === 'All') {
-            this.store.dispatch(new DashboardActions.SetDashboardAllTimeFilter());
-        };   
+            dataView = {type: 'all-time', year: null, month: null };
+            // this.store.dispatch(new DashboardActions.SetDashboardAllTimeFilter());
+            this.isMonthActiveChoice = false;
+            this.isYearActiveChoice = false;
+        };
+        console.log(dataView);
+        
+        this.store.dispatch(new DashboardActions.FilterDataForSelectedTimePeriodView(dataView))
     };
 
     protected handleAnnualYearDropdownChange() {
-        this.store.dispatch(new DashboardActions.SetDashboardAnnualFilter(this.selectedYear.type));        
+        console.log(this.selectedAnnualYear.type);
+        
+        // this.store.dispatch(new DashboardActions.SetDashboardAnnualFilter(this.selectedYear.type));
+        this.store.dispatch(new DashboardActions.SetActiveAnnualYearForDashboard(this.selectedAnnualYear.type));
+
+        this.handleChartTimePeriodSelect({ type: 'Annual'});
+    };
+
+    protected handleMonthlyYearDropdownChange() {
+        console.log(this.selectedMonthlyYear.type);
+        this.store.dispatch(new DashboardActions.SetActiveAnnualYearForDashboard(this.selectedMonthlyYear.type));
+
+        this.handleChartTimePeriodSelect({ type: 'Month'});
+    };
+
+    protected handlMonthlyMonthDropdownChange() {
+        console.log(this.selectedMonth.type);
+        // this.selectedMonth = this.monthOptions[this.monthOptions.length - 1];
+        this.handleChartTimePeriodSelect({ type: 'Month'});
+        
     };
 
 }

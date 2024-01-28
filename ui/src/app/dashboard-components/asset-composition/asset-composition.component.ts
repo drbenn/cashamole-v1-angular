@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { DashboardStateModel } from '../../store/dashboard/dashboard.state';
+import { DashboardState } from '../../store/dashboard/dashboard.state';
 import { CardModule } from 'primeng/card';
 import { Observable } from 'rxjs';
-import { Store } from '@ngxs/store';
+import { Select } from '@ngxs/store';
 import { ChartModule } from 'primeng/chart';
+import { DashboardHistoryBalance } from '../../models/core.model';
+import { DashboardService } from '../dashboard.service';
+import { BarChartDataInputs } from '../../models/dashboard.models';
 
 @Component({
   selector: 'app-asset-composition',
@@ -13,42 +16,78 @@ import { ChartModule } from 'primeng/chart';
   styleUrl: './asset-composition.component.scss'
 })
 export class AssetCompositionComponent implements OnInit {
-  protected dashboardData$: Observable<any> = this.store.select((state: any) => state.dashboard);
+  @Select(DashboardState.assetCompositionChartData) data$!: Observable<{ userView: string, data: DashboardHistoryBalance[]}>;
   protected chartData: any;
   protected chartOptions: any;
 
-  constructor(private store: Store) {}
+  constructor(
+    private dashboardService: DashboardService
+  ) {};
 
   ngOnInit(): void {
-    const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue('--text-color');
+    this.data$.subscribe((data: { userView: string, data: DashboardHistoryBalance[]}) => {
+      if (data) {
 
-    this.dashboardData$.subscribe((data: DashboardStateModel) => {
-      // console.log(data);
-      this.chartData = {
-        labels: ['401k', 'Checking', 'Roth'],
-        datasets: [
-          {
-            data: [data.monthExpenses, data.monthIncome, data.monthInvest],
-            backgroundColor: ['rgba(255, 159, 64, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(54, 162, 235, 0.2)'],
-            borderColor: ['rgb(255, 159, 64)', 'rgb(75, 192, 192)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)'],
-            borderWidth: 1,
-            hoverBackgroundColor: ['salmon', 'lime', 'teal']     
-          }
-        ]
+        if (data.userView === 'annual' ||  data.userView === 'monthly') {
+          const chartData: BarChartDataInputs  = this.configureBalanceDataInputsIntoCategories(data.data);
+          this.updateChart(chartData);
+        };
       };
-  
-      this.chartOptions = {
-        plugins: {
-          legend: {
-              position: 'left',
-              labels: {
-                  color: '#00000090',
-                  position: 'left'
-              }
-          }
+    });
+  };
+
+  private updateChart(data: BarChartDataInputs) {
+    this.chartData = {
+      labels: data.labels,
+      datasets: [
+        {
+          data: data.chartDataSet,
+          backgroundColor: data.backgroundColors,
+          borderColor: data.borderColors,
+          borderWidth: 1,
+          hoverBackgroundColor: data.borderColors     
         }
-      };
-    })
-  }
+      ]
+    };
+
+    this.chartOptions = {
+      plugins: {
+        legend: {
+            position: 'left',
+            labels: {
+                color: '#00000090',
+                position: 'left'
+            }
+        }
+      }
+    };
+  };
+
+  private configureBalanceDataInputsIntoCategories(data: DashboardHistoryBalance[]) {
+    // get unique categories
+    const categories: string[] = Array.from(
+      new Set(
+        data.map((item: DashboardHistoryBalance) => item.description)
+    ));
+    categories.sort();
+
+    // get colors
+    const backgroundColors: string[] = this.dashboardService.chartTransparentColors(categories.length);
+    const borderColors: string[] = this.dashboardService.chartOpaqueColors(categories.length);
+
+    // get data
+    const categoryData: number[] = new Array(categories.length).fill(0);
+    data.forEach((item: DashboardHistoryBalance) => {
+      const categoryIndex: number = categories.findIndex((category: string) => category === item.description);
+      categoryData[categoryIndex] += parseFloat(item.total_balance);
+    });
+
+    return {
+      chartDataSet: categoryData,
+      labels: categories,
+      backgroundColors: backgroundColors,
+      borderColors: borderColors
+    };
+  };
+
 }

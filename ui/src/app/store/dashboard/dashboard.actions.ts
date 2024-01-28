@@ -60,6 +60,26 @@ export namespace DashboardActions {
         constructor(public payload: any) {}
     };
 
+    export class SetActiveAnnualYearForDashboard {
+        static readonly type =  '[Dashboard] Set dashboard active annual year for state side filtering';
+        constructor(public payload: string) {}
+    };
+
+    export class SetActiveMonthlyYearForDashboard {
+        static readonly type =  '[Dashboard] Set dashboard active monthly year for state side filtering';
+        constructor(public payload: string) {}
+    };
+
+    export class SetActiveMonthlyMonthForDashboard {
+        static readonly type =  '[Dashboard] Set dashboard active monthly month for state side filtering';
+        constructor(public payload: string) {}
+    };
+
+    export class FilterDataForSelectedTimePeriodView {
+        static readonly type =  '[Dashboard] Filter dashboard data to accomodate active view';
+        constructor(public payload: { type: 'monthly' | 'annual' | 'all-time' | null, year: string | null, month: string | null } ) {}
+    };
+
     // export class SetYTDExpensesForDashboardOnLogin {
     //     static readonly type =  '[Dashboard] Set dashboard filters for YTD expenses on login';
     //     constructor(public payload: any) {}
