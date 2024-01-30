@@ -26,10 +26,6 @@ export class InvestState {
     private coreApi: CoreApiService
   ) {}
 
-  @Selector()
-  static allMonthInvestments(state: InvestStateModel): Invest[] {
-    return state.investments;
-  };
 
   @Action(InvestActions.SetInvestOnLogin)
   setInvestOnLogin(
@@ -39,7 +35,6 @@ export class InvestState {
     ctx.patchState({ 
       investments: action.payload
     });
-    this.updateDashboardInvestments(action.payload);
   };
 
   @Action(InvestActions.GetAndSetMonthInvestRecords)
@@ -49,18 +44,14 @@ export class InvestState {
   ) {
     this.coreApi.getActiveInvestRecordsByMonth(action.payload).subscribe((res: any) => {
       if (res.data === 'null') {
-        this.store.dispatch(new DashboardActions.UpdateMonthInvestTotal(null));
         ctx.patchState({ 
             investments: []
         });
-        this.updateDashboardInvestments([]);
       } else {
         const resData: Invest[] = JSON.parse(res.data)
-        this.store.dispatch(new DashboardActions.UpdateMonthInvestTotal(resData));
         ctx.patchState({ 
             investments: JSON.parse(res.data)
         });
-        this.updateDashboardInvestments(JSON.parse(res.data));
       };
     });
   };
@@ -73,9 +64,7 @@ export class InvestState {
     let updatedInvest: Invest[] = ctx.getState().investments;
     updatedInvest === null ? updatedInvest = [] : updatedInvest = updatedInvest; 
     updatedInvest.push(action.payload);
-    this.store.dispatch(new DashboardActions.UpdateMonthInvestTotal(updatedInvest));
     ctx.patchState({ investments: updatedInvest });
-    this.updateDashboardInvestments(updatedInvest);
   };
 
   @Action(InvestActions.EditInvestRecord)
@@ -91,17 +80,6 @@ export class InvestState {
     const month: string = (action.payload.date.getMonth() + 1).toString().padStart(2, '0');
     const yearMonthId: string = `${year}-${month}`;
     this.store.dispatch(new InvestActions.GetAndSetMonthInvestRecords(yearMonthId));
-    // let currentInvestRecords: Invest[] = ctx.getState().invest;
-    // currentInvestRecords === null ? currentInvestRecords = [] : currentInvestRecords = currentInvestRecords; 
-    // const updatedInvestRecords: Invest[] = [];
-    // currentInvestRecords.forEach((record: Invest) => {
-    //   if (record.inc_id === action.payload.inc_id) {
-    //     updatedInvestRecords.push(action.payload);
-    //   } else {
-    //     updatedInvestRecords.push(record);
-    //   }
-    // })
-    // ctx.patchState({ invest: updatedInvestRecords });
   };
 
   @Action(InvestActions.DeactivateUserInvestRecord)
@@ -117,12 +95,7 @@ export class InvestState {
           updatedInvestRecords.push(record);
         };
       });
-      this.store.dispatch(new DashboardActions.UpdateMonthInvestTotal(updatedInvestRecords)); 
       ctx.patchState({ investments: updatedInvestRecords });
-      this.updateDashboardInvestments(updatedInvestRecords);
   };
 
-  private updateDashboardInvestments(investments: Invest[]) {
-    this.store.dispatch(new DashboardActions.SetMonthInvestmentsForDashboard(investments));
-  };
 }

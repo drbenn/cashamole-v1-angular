@@ -15,7 +15,6 @@ import {Sidebar, SidebarModule} from 'primeng/sidebar';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import { DividerModule } from 'primeng/divider';
-import { DashboardActions } from '../../store/dashboard/dashboard.actions';
 
 @Component({
   selector: 'app-nav',
@@ -151,6 +150,5 @@ export class NavComponent {
 
     const activeMonth: string = firstDayOfSelectedMonth.toLocaleString(undefined, { month: 'short' });
     const fullyear: string = firstDayOfSelectedMonth.getFullYear().toString();
-    this.store.dispatch(new DashboardActions.SetDashboardMonthFilter({ month: activeMonth, year: fullyear }));
   };
 }

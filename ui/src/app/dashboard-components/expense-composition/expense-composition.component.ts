@@ -28,7 +28,6 @@ export class ExpenseCompositionComponent implements OnInit {
   ngOnInit(): void {
     this.data$.subscribe((data: { userView: string, data: DashboardHistoryExpense[]}) => {
       if (data) {
-
         if (data.userView === 'annual' ||  data.userView === 'all-time' || data.userView === 'monthly') {
           const annualExpenses: BarChartDataInputs  = this.configureExpenseDataInputsIntoCategories(data.data);
           this.updateChart(annualExpenses);

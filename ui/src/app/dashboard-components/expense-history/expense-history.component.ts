@@ -21,6 +21,7 @@ export class ExpenseHistoryComponent implements OnInit {
   @Select(DashboardState.expenseHistoryChartData) data$!: Observable<{ userView: string, data: DashboardHistoryExpense[] }>;
   protected chartData: any;
   protected chartOptions: any;
+  protected userView!: string;
 
   constructor(
     private dashboardService: DashboardService
@@ -28,14 +29,19 @@ export class ExpenseHistoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.data$.subscribe((data: { userView: string, data: DashboardHistoryExpense[] }) => {
-      if (data.userView === 'annual') {
-        const annualChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForAnnual(data.data);        
+      this.userView = data.userView;
+      if (data.userView === 'monthly') {
+        const annualChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForMonthly(data.data);
         this.updateChart(annualChartData);
-      };
+      }
+      if (data.userView === 'annual') {
+        const annualChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForAnnual(data.data);
+        this.updateChart(annualChartData);
+      }
       if (data.userView=== 'all-time') {
         const allTimeChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForAllTime(data.data);
         this.updateChart(allTimeChartData);
-      };
+      }
     });
   };
 

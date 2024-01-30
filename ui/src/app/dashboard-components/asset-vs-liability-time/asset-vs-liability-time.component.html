@@ -1,3 +1,9 @@
-<p-card header="Assets & Liabilties Over Time">
-    <p-chart type="line" [data]="chartData" [options]="chartOptions"></p-chart>
-</p-card>
+@if (userView === 'monthly') {
+    <p-card header="Assets & Liabilties Over Time">
+        <p-chart type="bar" [data]="chartData" [options]="chartOptions"></p-chart>
+    </p-card>
+} @else {
+    <p-card header="Assets & Liabilties Over Time">
+        <p-chart type="line" [data]="chartData" [options]="chartOptions"></p-chart>
+    </p-card>
+}

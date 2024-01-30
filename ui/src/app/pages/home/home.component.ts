@@ -53,44 +53,30 @@ export class HomeComponent implements OnInit {
     protected selectedMonthlyYear!: OptionType;
     protected selectedMonth!: OptionType;
     protected selectedView: 'monthly' | 'annual' | 'all-time' = 'all-time';
-    // private monthOnlyMonth!: string;
-    // private monthOnlyYear!: string;
-
-    // month select dashboard observables
-    @Select(ExpenseState.allMonthExpenses) allMonthExpenses$!: Observable<Expense[]>;
-    @Select(IncomeState.allMonthIncome) allMonthIncome$!: Observable<Income[]>;
-    @Select(InvestState.allMonthInvestments) allMonthInvestments$!: Observable<Invest[]>;
-    @Select(BalanceSheetState.allMonthBalances) allMonthBalances$!: Observable<BalanceSheetEntry[]>;
-
 
     constructor(
         private store: Store
     ) {}
 
     ngOnInit(): void {
+        
         this.selectedView$.subscribe((type: 'monthly' | 'annual' | 'all-time') => this.selectedView = type);
         this.activeYearMonthOptions$.subscribe((months: string[]) => {
             if (months) {
                 const monthTypes: OptionType[] = [];
                 months.forEach((month: string) => monthTypes.push({ type: month }));
                 this.monthOptions = monthTypes;
-                this.selectedMonth = this.monthOptions[this.monthOptions.length - 1];
+                // selected month must be dynamically updated dependent on months available
+                if (!this.selectedMonth) {
+                    this.selectedMonth = this.monthOptions[this.monthOptions.length - 1];
+                } else {
+                    const jok = this.monthOptions.findIndex((month: any) => month.type === this.selectedMonth.type)
+                    const indexOfSelectedMonth = this.monthOptions.findIndex((month: any) => month.type === this.selectedMonth.type);
+                    indexOfSelectedMonth === -1 ? this.selectedMonth = this.monthOptions[this.monthOptions.length - 1] : this.selectedMonth = this.selectedMonth;
+                };
             };
         });
 
-        // this.activeMonthStartDate$.subscribe((startDate: Date) => {
-        //     console.log('==================');
-            
-        //     console.log(startDate);
-            
-        //     const activeMonth: string = startDate.toLocaleString(undefined, { month: 'short' });
-        //     const fullyear: string = startDate.getFullYear().toString();
-        //     this.monthOnlyMonth = activeMonth;
-        //     this.monthOnlyYear = fullyear;
-        //     this.handleChartTimePeriodSelect({type: 'Month'});
-        // });
-        forkJoin([this.allMonthExpenses$, this.allMonthIncome$, this.allMonthInvestments$, this.allMonthBalances$]).subscribe((fork: any) => console.log(fork)
-        )
         this.yearOptions$.subscribe((years: string[]) => {
             if (years && years.length) {
                 const yearTypes: OptionType[] = [];
@@ -102,15 +88,16 @@ export class HomeComponent implements OnInit {
                 this.store.dispatch(new DashboardActions.SetActiveMonthlyYearForDashboard(this.selectedMonthlyYear.type));
             };
         }); 
+
+        setTimeout(()=> {
+            this.handleChartTimePeriodSelect({type: "All"}), 300
+        });
     };
 
     protected handleChartTimePeriodSelect(item: { type: 'Y-T-D' | 'Month' | 'Annual' | 'All' }): void {
-        const type: 'Y-T-D' | 'Month' | 'Annual' | 'All' = item.type;
         let dataView: { type: 'monthly' | 'annual' | 'all-time' | null, year: string | null, month: string | null } = {type: null, year: null, month: null };
-        console.log(dataView);
         
         if (item.type === 'Month') {
-            // this.store.dispatch(new DashboardActions.SetDashboardMonthFilter({ expenses: monthlyData?.expenses, income: monthlyData?.income , investments: monthlyData?.investments , balances: monthlyData?.balances }));
             dataView = {type: 'monthly', year: this.selectedMonthlyYear.type, month: this.selectedMonth.type };
             this.isMonthActiveChoice = true;
         } else {
@@ -120,52 +107,37 @@ export class HomeComponent implements OnInit {
         if (item.type === 'Annual') {
             dataView = {type: 'annual', year: this.selectedAnnualYear.type, month: null };
             this.isYearActiveChoice = true;
-            // this.store.dispatch(new DashboardActions.SetDashboardAnnualFilter(this.selectedYear.type));
-            // this.store.dispatch(new DashboardActions.SetActiveAnnualYearForDashboard(this.selectedYear.type));
         } else {
             this.isYearActiveChoice = false;
         };
 
         if (item.type === 'Y-T-D') {
             dataView = {type: 'annual', year: this.selectedAnnualYear.type, month: null };
-            // this.store.dispatch(new DashboardActions.SetDashboardAnnualFilter(parseInt(this.yearOptions[0].type)));
-            // this.store.dispatch(new DashboardActions.SetActiveAnnualYearForDashboard(this.yearOptions[0].type));
             this.isMonthActiveChoice = false;
             this.isYearActiveChoice = false;
         }; 
 
         if (item.type === 'All') {
             dataView = {type: 'all-time', year: null, month: null };
-            // this.store.dispatch(new DashboardActions.SetDashboardAllTimeFilter());
             this.isMonthActiveChoice = false;
             this.isYearActiveChoice = false;
         };
         console.log(dataView);
-        
         this.store.dispatch(new DashboardActions.FilterDataForSelectedTimePeriodView(dataView))
     };
 
     protected handleAnnualYearDropdownChange() {
-        console.log(this.selectedAnnualYear.type);
-        
-        // this.store.dispatch(new DashboardActions.SetDashboardAnnualFilter(this.selectedYear.type));
         this.store.dispatch(new DashboardActions.SetActiveAnnualYearForDashboard(this.selectedAnnualYear.type));
-
         this.handleChartTimePeriodSelect({ type: 'Annual'});
     };
 
     protected handleMonthlyYearDropdownChange() {
-        console.log(this.selectedMonthlyYear.type);
         this.store.dispatch(new DashboardActions.SetActiveAnnualYearForDashboard(this.selectedMonthlyYear.type));
-
         this.handleChartTimePeriodSelect({ type: 'Month'});
     };
 
     protected handlMonthlyMonthDropdownChange() {
-        console.log(this.selectedMonth.type);
-        // this.selectedMonth = this.monthOptions[this.monthOptions.length - 1];
-        this.handleChartTimePeriodSelect({ type: 'Month'});
-        
+        this.handleChartTimePeriodSelect({ type: 'Month'});  
     };
 
 }

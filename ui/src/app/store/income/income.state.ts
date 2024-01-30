@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { IncomeActions } from './income.actions';
 import { Income } from '../../models/core.model';
 import { CoreApiService } from '../../api-services/core-api.service';
-import { DashboardActions } from '../dashboard/dashboard.actions';
 
 
 export interface IncomeStateModel {
@@ -39,7 +38,6 @@ export class IncomeState {
     ctx.patchState({ 
       income: action.payload
     });
-    this.updateDashboardIncome(action.payload);
   };
 
   @Action(IncomeActions.GetAndSetMonthIncomeRecords)
@@ -49,18 +47,14 @@ export class IncomeState {
   ) {
     this.coreApi.getActiveIncomeRecordsByMonth(action.payload).subscribe((res: any) => {
       if (res.data === 'null') {
-        this.store.dispatch(new DashboardActions.UpdateMonthIncomeTotal(null));
         ctx.patchState({ 
           income: []
         });
-        this.updateDashboardIncome([]);
       } else {
         const resData: Income[] = JSON.parse(res.data)
-        this.store.dispatch(new DashboardActions.UpdateMonthIncomeTotal(resData));
         ctx.patchState({ 
           income: JSON.parse(res.data)
         });
-        this.updateDashboardIncome(JSON.parse(res.data));
       };
     });
   };
@@ -73,9 +67,7 @@ export class IncomeState {
     let updatedIncome: Income[] = ctx.getState().income;
     updatedIncome === null ? updatedIncome = [] : updatedIncome = updatedIncome; 
     updatedIncome.push(action.payload);
-    this.store.dispatch(new DashboardActions.UpdateMonthIncomeTotal(updatedIncome));
     ctx.patchState({ income: updatedIncome });
-    this.updateDashboardIncome(updatedIncome);
   };
 
   @Action(IncomeActions.EditIncomeRecord)
@@ -91,17 +83,6 @@ export class IncomeState {
     const month: string = (action.payload.date.getMonth() + 1).toString().padStart(2, '0');
     const yearMonthId: string = `${year}-${month}`;
     this.store.dispatch(new IncomeActions.GetAndSetMonthIncomeRecords(yearMonthId));
-    // let currentIncomeRecords: Income[] = ctx.getState().income;
-    // currentIncomeRecords === null ? currentIncomeRecords = [] : currentIncomeRecords = currentIncomeRecords; 
-    // const updatedIncomeRecords: Income[] = [];
-    // currentIncomeRecords.forEach((record: Income) => {
-    //   if (record.inc_id === action.payload.inc_id) {
-    //     updatedIncomeRecords.push(action.payload);
-    //   } else {
-    //     updatedIncomeRecords.push(record);
-    //   }
-    // })
-    // ctx.patchState({ income: updatedIncomeRecords });
   };
 
   @Action(IncomeActions.DeactivateUserIncomeRecord)
@@ -117,12 +98,7 @@ export class IncomeState {
           updatedIncomeRecords.push(record);
         };
       });
-      this.store.dispatch(new DashboardActions.UpdateMonthIncomeTotal(updatedIncomeRecords)); 
       ctx.patchState({ income: updatedIncomeRecords });
-      this.updateDashboardIncome(updatedIncomeRecords);
   };
 
-  private updateDashboardIncome(income: Income[]) {
-    this.store.dispatch(new DashboardActions.SetMonthIncomeForDashboard(income));
-  };
 }

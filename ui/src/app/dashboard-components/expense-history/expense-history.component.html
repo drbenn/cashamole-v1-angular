@@ -1,3 +1,9 @@
-<p-card header="Expense History">
-    <p-chart type="bar" [data]="chartData" [options]="chartOptions"></p-chart>
-</p-card>
+@if (userView === 'monthly') {
+    <p-card header="Expense History">
+        <p-chart type="bar" [data]="chartData" [options]="chartOptions"></p-chart>
+    </p-card>
+} @else {
+    <p-card header="Expense History">
+        <p-chart type="line" [data]="chartData" [options]="chartOptions"></p-chart>
+    </p-card>
+}

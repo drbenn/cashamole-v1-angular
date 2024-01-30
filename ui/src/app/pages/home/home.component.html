@@ -58,7 +58,17 @@ class="flex flex-wrap flex-column justify-content-center align-items-center min-
     </div>
     <section class="flex flex-wrap flex-row justify-content-evenly align-items-start w-full mt-0 mb-8 px-6">
 
-
+        @if (selectedView === 'monthly' || selectedView === 'annual' || selectedView === 'all-time') {
+            <div class="w-28rem h-content m-5">
+                <app-net-cash-flow-time></app-net-cash-flow-time>
+            </div>
+        }
+        
+        @if (selectedView === 'monthly' || selectedView === 'annual' || selectedView === 'all-time') {
+            <div class="w-28rem h-content m-5">
+                <app-asset-vs-liability-time></app-asset-vs-liability-time>
+            </div>
+        }
         @if (selectedView === 'monthly' || selectedView === 'annual' ) {
             <div class="w-28rem h-content m-5">
                 <app-asset-composition></app-asset-composition>
@@ -73,37 +83,27 @@ class="flex flex-wrap flex-column justify-content-center align-items-center min-
 
         @if (selectedView === 'monthly' || selectedView === 'annual' || selectedView === 'all-time') {
             <div class="w-28rem h-content m-5">
+                <app-net-worth-time></app-net-worth-time>
+            </div>
+        }
+
+        @if (selectedView === 'monthly' || selectedView === 'annual' || selectedView === 'all-time') {
+            <div class="w-28rem h-content m-5">
                 <app-expense-composition></app-expense-composition>
             </div>
         }
         
-        @if (selectedView === 'annual' || selectedView === 'all-time') {
+        @if (selectedView === 'monthly' || selectedView === 'annual' || selectedView === 'all-time') {
             <div class="w-28rem h-content m-5">
                 <app-income-history></app-income-history>
             </div>
         }
-        @if (selectedView === 'annual' || selectedView === 'all-time') {
+        @if (selectedView === 'monthly' || selectedView === 'annual' || selectedView === 'all-time') {
             <div class="w-28rem h-content m-5">
                 <app-expense-history></app-expense-history>
             </div>
         }
-        @if (selectedView === 'monthly' || selectedView === 'annual' || selectedView === 'all-time') {
-            <div class="w-28rem h-content m-5">
-                <app-asset-vs-liability-time></app-asset-vs-liability-time>
-            </div>
-        }
 
-        @if (selectedView === 'monthly' || selectedView === 'annual' || selectedView === 'all-time') {
-            <div class="w-28rem h-content m-5">
-                <app-net-worth-time></app-net-worth-time>
-            </div>
-        }
-        
-
-
-        <div class="w-28rem h-content m-5">
-            <app-net-cash-flow-time></app-net-cash-flow-time>
-        </div>
 
 
 

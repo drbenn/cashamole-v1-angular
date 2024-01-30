@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DashboardHistoryBalance, DashboardHistoryExpense, DashboardHistoryIncome } from '../models/core.model';
+import { DashboardHistoryBalance, DashboardHistoryExpense, DashboardHistoryIncome, DashboardHistoryNetWorth } from '../models/core.model';
 import { BarChartDataInputs } from '../models/dashboard.models';
 
 
@@ -26,8 +26,32 @@ export class DashboardService {
     return hexColorsArray.slice(0, colorsRequired);
   };
 
+  public configureDataInputsForMonthly(data: DashboardHistoryIncome[] | DashboardHistoryExpense[] | DashboardHistoryBalance[] | DashboardHistoryNetWorth[] ): BarChartDataInputs {
+    let chartDataSet: number = 0;
+    data.forEach((item: any) => {
+      if (item.total_income) {
+        chartDataSet += parseFloat(item.total_income);
+      } else if (item.total_expense) {
+        chartDataSet += parseFloat(item.total_expense);
+      } else if (item.total_balance) {
+        chartDataSet += parseFloat(item.total_balance);
+      } else if (item.net_worth) {
+        chartDataSet += parseFloat(item.net_worth);
+      };
+    });
+    const labelOptions: string[] = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const label: string = labelOptions[parseInt(data[0].unique_date.slice(5, 7)) - 1];
+    const backgroundColors: string[] = this.chartTransparentColors(1);
+    const borderColors: string[] = this.chartTransparentColors(1);
+    return {
+      chartDataSet: [chartDataSet],
+      labels: [label],
+      backgroundColors: backgroundColors,
+      borderColors: borderColors
+    };
+  };
 
-  public configureDataInputsForAnnual(data: DashboardHistoryIncome[] | DashboardHistoryExpense[] | DashboardHistoryBalance[]): BarChartDataInputs {
+  public configureDataInputsForAnnual(data: DashboardHistoryIncome[] | DashboardHistoryExpense[] | DashboardHistoryBalance[] | DashboardHistoryNetWorth[] ): BarChartDataInputs {
     const chartDataSet: number[] = this.sumDataIntoMonthBaskets(data);
     const labels: string[] = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const backgroundColors: string[] = this.chartTransparentColors(chartDataSet.length);
@@ -40,11 +64,11 @@ export class DashboardService {
     };
   };
 
-  public configureDataInputsForAllTime(data: DashboardHistoryIncome[] | DashboardHistoryExpense[] | DashboardHistoryBalance[]): BarChartDataInputs {
+  public configureDataInputsForAllTime(data: DashboardHistoryIncome[] | DashboardHistoryExpense[] | DashboardHistoryBalance[] | DashboardHistoryNetWorth[] ): BarChartDataInputs {
     // get unique years for filter
     const dataYears: string[] = Array.from(
       new Set(
-        data.map((item: DashboardHistoryIncome | DashboardHistoryExpense | DashboardHistoryBalance) => item.unique_date.slice(0, 4))
+        data.map((item: DashboardHistoryIncome | DashboardHistoryExpense | DashboardHistoryBalance | DashboardHistoryNetWorth) => item.unique_date.slice(0, 4))
     ));
     dataYears.sort();
 
@@ -60,7 +84,7 @@ export class DashboardService {
     };
   };
 
-  public sumDataIntoMonthBaskets(data: DashboardHistoryIncome[] | DashboardHistoryExpense[] | DashboardHistoryBalance[]): number[] {
+  public sumDataIntoMonthBaskets(data: DashboardHistoryIncome[] | DashboardHistoryExpense[] | DashboardHistoryBalance[] | DashboardHistoryNetWorth[] ): number[] {
     const twelveMonthsData: number[] = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     data.forEach((item: any) => {
       const month: number = parseInt(item.unique_date.slice(5,8));
@@ -74,12 +98,15 @@ export class DashboardService {
       if (item && item.total_balance) {
         amount = parseFloat(item.total_balance);
       };
+      if (item && item.net_worth) {
+        amount = parseFloat(item.net_worth);
+      };
       twelveMonthsData[month - 1] = twelveMonthsData[month - 1] + amount;
     });
     return twelveMonthsData;
   };
 
-  public sumDataIntoYearBaskets(data: DashboardHistoryIncome[] | DashboardHistoryExpense[] | DashboardHistoryBalance[], dataYears: string[]): number[] {
+  public sumDataIntoYearBaskets(data: DashboardHistoryIncome[] | DashboardHistoryExpense[] | DashboardHistoryBalance[] | DashboardHistoryNetWorth[] , dataYears: string[]): number[] {
     const xYearData: number[] = new Array(dataYears.length).fill(0);
     data.forEach((item: any) => {
       const year: number = parseInt(item.unique_date.slice(0,4));
@@ -92,6 +119,9 @@ export class DashboardService {
       };
       if (item && item.total_balance) {
         amount = parseFloat(item.total_balance);
+      };
+      if (item && item.net_worth) {
+        amount = parseFloat(item.net_worth);
       };
       const itemIndex: number = dataYears.findIndex((_year: string) => _year === year.toString());
       xYearData[itemIndex] = xYearData[itemIndex] + amount;

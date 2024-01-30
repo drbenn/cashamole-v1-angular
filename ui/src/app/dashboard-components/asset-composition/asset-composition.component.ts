@@ -27,8 +27,16 @@ export class AssetCompositionComponent implements OnInit {
   ngOnInit(): void {
     this.data$.subscribe((data: { userView: string, data: DashboardHistoryBalance[]}) => {
       if (data) {
-
-        if (data.userView === 'annual' ||  data.userView === 'monthly') {
+        console.log(data);
+        
+        if (data.userView === 'annual') {
+          // filter data to last month of annual data
+          const lastMonth: string = data.data[data.data.length - 1].unique_date.slice(5, 7);
+          const lastMonthData: DashboardHistoryBalance[] = data.data.filter((item: DashboardHistoryBalance) => item.unique_date.slice(5, 7) === lastMonth);
+          const chartData: BarChartDataInputs  = this.configureBalanceDataInputsIntoCategories(lastMonthData);
+          this.updateChart(chartData);
+        };
+        if (data.userView === 'monthly') {
           const chartData: BarChartDataInputs  = this.configureBalanceDataInputsIntoCategories(data.data);
           this.updateChart(chartData);
         };

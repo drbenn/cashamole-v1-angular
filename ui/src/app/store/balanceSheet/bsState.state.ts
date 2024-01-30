@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { BalanceSheetActions } from './bsState.actions';
 import { BalanceSheetEntry } from '../../models/core.model';
 import { CoreApiService } from '../../api-services/core-api.service';
-import { DashboardActions } from '../dashboard/dashboard.actions';
 
 
 export interface BalanceSheetStateModel {
@@ -26,11 +25,6 @@ export class BalanceSheetState {
     private coreApi: CoreApiService
     ) {}
 
-  @Selector()
-  static allMonthBalances(state: BalanceSheetStateModel): BalanceSheetEntry[] {
-    return state.entries;
-  };
-
   @Action(BalanceSheetActions.SetBalanceSheetEntriesOnLogin)
   SetBalanceSheetEntriesOnLogin(
     ctx: StateContext<BalanceSheetStateModel>,
@@ -39,7 +33,6 @@ export class BalanceSheetState {
     ctx.patchState({ 
       entries: action.payload
     });
-    this.updateDashboardBalanceSheetEntries(action.payload);
   }
 
   @Action(BalanceSheetActions.GetAndSetMonthBalanceRecords)
@@ -49,18 +42,14 @@ export class BalanceSheetState {
   ) {
     this.coreApi.getActiveBalanceRecordsByMonth(action.payload).subscribe((res: any) => {
       if (res.data === 'null') {
-        this.store.dispatch(new DashboardActions.UpdateMonthBalanceSheetTotal(null));
         ctx.patchState({ 
           entries: []
         });
-        this.updateDashboardBalanceSheetEntries([]);
       } else {
         const resData: BalanceSheetEntry[] = JSON.parse(res.data)
-        this.store.dispatch(new DashboardActions.UpdateMonthBalanceSheetTotal(resData));
         ctx.patchState({ 
           entries: JSON.parse(res.data)
         });
-        this.updateDashboardBalanceSheetEntries(JSON.parse(res.data));
       };
     });
   };
@@ -74,7 +63,6 @@ export class BalanceSheetState {
       currentBalanceRecords === null ? currentBalanceRecords = [] : currentBalanceRecords = currentBalanceRecords; 
       currentBalanceRecords.push(action.payload);
       const updatedBalanceRecords: BalanceSheetEntry[] = currentBalanceRecords.map((obj: BalanceSheetEntry) => obj);
-      this.store.dispatch(new DashboardActions.UpdateMonthBalanceSheetTotal(updatedBalanceRecords));
       ctx.patchState({ entries: updatedBalanceRecords });
   };
 
@@ -91,17 +79,6 @@ export class BalanceSheetState {
     const month: string = (action.payload.date.getMonth() + 1).toString().padStart(2, '0');
     const yearMonthId: string = `${year}-${month}`;
     this.store.dispatch(new BalanceSheetActions.GetAndSetMonthBalanceRecords(yearMonthId));
-    // let currentBalanceRecords: BalanceSheetEntry[] = ctx.getState().entries;
-    // currentBalanceRecords === null ? currentBalanceRecords = [] : currentBalanceRecords = currentBalanceRecords; 
-    // const updatedBalanceRecords: BalanceSheetEntry[] = [];
-    // currentBalanceRecords.forEach((record: BalanceSheetEntry) => {
-    //   if (record.record_id === action.payload.record_id) {
-    //     updatedBalanceRecords.push(action.payload);
-    //   } else {
-    //     updatedBalanceRecords.push(record);
-    //   }
-    // })
-    // ctx.patchState({ entries: updatedBalanceRecords });
   };
 
   @Action(BalanceSheetActions.DeactivateUserBalanceRecord)
@@ -117,12 +94,7 @@ export class BalanceSheetState {
           updatedBalanceRecords.push(record);
         };
       });
-      this.store.dispatch(new DashboardActions.UpdateMonthBalanceSheetTotal(updatedBalanceRecords)); 
       ctx.patchState({ entries: updatedBalanceRecords });
-      this.updateDashboardBalanceSheetEntries(updatedBalanceRecords);
   };
 
-  private updateDashboardBalanceSheetEntries(entries: BalanceSheetEntry[]) {
-    this.store.dispatch(new DashboardActions.SetMonthBalancesForDashboard(entries));
-  };
 }
