@@ -6,7 +6,7 @@ import { Select } from '@ngxs/store';
 import { ChartModule } from 'primeng/chart';
 import { DashboardHistoryBalance } from '../../models/core.model';
 import { DashboardService } from '../dashboard.service';
-import { BarChartDataInputs } from '../../models/dashboard.models';
+import { ChartJsDataInputs } from '../../models/dashboard.models';
 
 @Component({
   selector: 'app-liability-composition',
@@ -31,17 +31,17 @@ export class LiabilityCompositionComponent implements OnInit {
           // filter data to last month of annual data
           const lastMonth: string = data.data[data.data.length - 1].unique_date.slice(5, 7);
           const lastMonthData: DashboardHistoryBalance[] = data.data.filter((item: DashboardHistoryBalance) => item.unique_date.slice(5, 7) === lastMonth);
-          const chartData: BarChartDataInputs  = this.configureBalanceDataInputsIntoCategories(lastMonthData);
+          const chartData: ChartJsDataInputs  = this.configureBalanceDataInputsIntoCategories(lastMonthData);
           this.updateChart(chartData);
         } else if (data.userView === 'monthly') {
-          const chartData: BarChartDataInputs  = this.configureBalanceDataInputsIntoCategories(data.data);
+          const chartData: ChartJsDataInputs  = this.configureBalanceDataInputsIntoCategories(data.data);
           this.updateChart(chartData);
         };
       };
     });
   };
 
-  private updateChart(data: BarChartDataInputs) {
+  private updateChart(data: ChartJsDataInputs) {
     this.chartData = {
       labels: data.labels,
       datasets: [

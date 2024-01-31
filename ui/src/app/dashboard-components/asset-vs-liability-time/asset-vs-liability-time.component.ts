@@ -6,7 +6,7 @@ import { Select } from '@ngxs/store';
 import { ChartModule } from 'primeng/chart';
 import { DashboardHistoryBalance } from '../../models/core.model';
 import { DashboardService } from '../dashboard.service';
-import { BarChartDataInputs } from '../../models/dashboard.models';
+import { ChartJsDataInputs } from '../../models/dashboard.models';
 
 @Component({
   selector: 'app-asset-vs-liability-time',
@@ -29,23 +29,23 @@ export class AssetVsLiabilityTimeComponent implements OnInit {
     this.data$.subscribe((data: { userView: string, assetData: DashboardHistoryBalance[], liabilityData: DashboardHistoryBalance[] }) => {
       this.userView = data.userView;
       if (data.userView === 'monthly') {
-        const annualAssetChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForMonthly(data.assetData);
-        const annualLiabilityChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForMonthly(data.liabilityData);
+        const annualAssetChartData: ChartJsDataInputs  = this.dashboardService.configureDataInputsForMonthly(data.assetData);
+        const annualLiabilityChartData: ChartJsDataInputs  = this.dashboardService.configureDataInputsForMonthly(data.liabilityData);
         this.updateChart(annualAssetChartData, annualLiabilityChartData);
       } else if (data.userView === 'annual') {
-        const annualAssetChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForAnnual(data.assetData);
-        const annualLiabilityChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForAnnual(data.liabilityData);
+        const annualAssetChartData: ChartJsDataInputs  = this.dashboardService.configureDataInputsForAnnual(data.assetData);
+        const annualLiabilityChartData: ChartJsDataInputs  = this.dashboardService.configureDataInputsForAnnual(data.liabilityData);
         this.updateChart(annualAssetChartData, annualLiabilityChartData);
       } else if (data.userView=== 'all-time') {
-        const allTimeAssetChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForAllTime(data.assetData);
-        const allTimeLiabilityChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForAllTime(data.liabilityData);
+        const allTimeAssetChartData: ChartJsDataInputs  = this.dashboardService.configureDataInputsForAllTime(data.assetData);
+        const allTimeLiabilityChartData: ChartJsDataInputs  = this.dashboardService.configureDataInputsForAllTime(data.liabilityData);
         this.updateChart(allTimeAssetChartData, allTimeLiabilityChartData);
       };
     });
   
   };
 
-  private updateChart(assetData: BarChartDataInputs, liabilityData: BarChartDataInputs) {
+  private updateChart(assetData: ChartJsDataInputs, liabilityData: ChartJsDataInputs) {
     this.chartData = {
       labels: assetData.labels,
       datasets: [

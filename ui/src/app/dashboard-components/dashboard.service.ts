@@ -6,7 +6,7 @@ import {
   DashboardHistoryIncome,
   DashboardHistoryNetWorth
 } from '../models/core.model';
-import { BarChartDataInputs } from '../models/dashboard.models';
+import { ChartJsDataInputs } from '../models/dashboard.models';
 
 
 @Injectable({
@@ -32,7 +32,7 @@ export class DashboardService {
     return hexColorsArray.slice(0, colorsRequired);
   };
 
-  public configureDataInputsForMonthly(data: DashboardHistoryIncome[] | DashboardHistoryExpense[] | DashboardHistoryBalance[] | DashboardHistoryNetWorth[] | DashboardHistoryCashFlow[]): BarChartDataInputs {
+  public configureDataInputsForMonthly(data: DashboardHistoryIncome[] | DashboardHistoryExpense[] | DashboardHistoryBalance[] | DashboardHistoryNetWorth[] | DashboardHistoryCashFlow[]): ChartJsDataInputs {
     let chartDataSet: number = 0;
     data.forEach((item: any) => {
       if (item.total_income) {
@@ -60,7 +60,7 @@ export class DashboardService {
     };
   };
 
-  public configureDataInputsForAnnual(data: DashboardHistoryIncome[] | DashboardHistoryExpense[] | DashboardHistoryBalance[] | DashboardHistoryNetWorth[] | DashboardHistoryCashFlow[] ): BarChartDataInputs {
+  public configureDataInputsForAnnual(data: DashboardHistoryIncome[] | DashboardHistoryExpense[] | DashboardHistoryBalance[] | DashboardHistoryNetWorth[] | DashboardHistoryCashFlow[] ): ChartJsDataInputs {
     const chartDataSet: number[] = this.sumDataIntoMonthBaskets(data);
     const labels: string[] = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const backgroundColors: string[] = this.chartTransparentColors(chartDataSet.length);
@@ -73,7 +73,7 @@ export class DashboardService {
     };
   };
 
-  public configureDataInputsForAllTime(data: DashboardHistoryIncome[] | DashboardHistoryExpense[] | DashboardHistoryBalance[] | DashboardHistoryNetWorth[] | DashboardHistoryCashFlow[]): BarChartDataInputs {
+  public configureDataInputsForAllTime(data: DashboardHistoryIncome[] | DashboardHistoryExpense[] | DashboardHistoryBalance[] | DashboardHistoryNetWorth[] | DashboardHistoryCashFlow[]): ChartJsDataInputs {
     // get unique years for filter
     const dataYears: string[] = Array.from(
       new Set(

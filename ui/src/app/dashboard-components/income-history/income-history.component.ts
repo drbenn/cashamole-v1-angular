@@ -6,7 +6,7 @@ import { Select } from '@ngxs/store';
 import { ChartModule } from 'primeng/chart';
 import { DashboardHistoryIncome } from '../../models/core.model';
 import { DashboardService } from '../dashboard.service';
-import { BarChartDataInputs } from '../../models/dashboard.models';
+import { ChartJsDataInputs } from '../../models/dashboard.models';
 
 
 @Component({
@@ -30,19 +30,19 @@ export class IncomeHistoryComponent implements OnInit {
     this.data$.subscribe((data: { userView: string, data: DashboardHistoryIncome[] }) => {
       this.userView = data.userView;
       if (data.userView === 'monthly') {
-        const annualChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForMonthly(data.data);
+        const annualChartData: ChartJsDataInputs  = this.dashboardService.configureDataInputsForMonthly(data.data);
         this.updateChart(annualChartData);
       } else if (data.userView === 'annual') {
-        const annualChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForAnnual(data.data);
+        const annualChartData: ChartJsDataInputs  = this.dashboardService.configureDataInputsForAnnual(data.data);
         this.updateChart(annualChartData);
       } else if (data.userView=== 'all-time') {
-        const allTimeChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForAllTime(data.data);
+        const allTimeChartData: ChartJsDataInputs  = this.dashboardService.configureDataInputsForAllTime(data.data);
         this.updateChart(allTimeChartData);
       };
     });
   };
 
-  private updateChart(data: BarChartDataInputs) {
+  private updateChart(data: ChartJsDataInputs) {
     this.chartData = {
       labels: data.labels,
       datasets: [

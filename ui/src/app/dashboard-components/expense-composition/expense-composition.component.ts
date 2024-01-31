@@ -6,7 +6,7 @@ import { Select } from '@ngxs/store';
 import { ChartModule } from 'primeng/chart';
 import { DashboardService } from '../dashboard.service';
 import { DashboardHistoryExpense } from '../../models/core.model';
-import { BarChartDataInputs } from '../../models/dashboard.models';
+import { ChartJsDataInputs } from '../../models/dashboard.models';
 
 
 @Component({
@@ -29,14 +29,14 @@ export class ExpenseCompositionComponent implements OnInit {
     this.data$.subscribe((data: { userView: string, data: DashboardHistoryExpense[]}) => {
       if (data) {
         if (data.userView === 'annual' ||  data.userView === 'all-time' || data.userView === 'monthly') {
-          const annualExpenses: BarChartDataInputs  = this.configureExpenseDataInputsIntoCategories(data.data);
+          const annualExpenses: ChartJsDataInputs  = this.configureExpenseDataInputsIntoCategories(data.data);
           this.updateChart(annualExpenses);
         };
       };
     });
   };
 
-  private updateChart(data: BarChartDataInputs) {
+  private updateChart(data: ChartJsDataInputs) {
     this.chartData = {
       labels: data.labels,
       datasets: [
