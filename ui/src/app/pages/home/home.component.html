@@ -92,6 +92,12 @@ class="flex flex-wrap flex-column justify-content-center align-items-center min-
                 <app-expense-composition></app-expense-composition>
             </div>
         }
+
+        @if (selectedView === 'monthly' || selectedView === 'annual' || selectedView === 'all-time') {
+            <div class="w-28rem h-content m-5">
+                <app-invest-composition></app-invest-composition>
+            </div>
+        }
         
         @if (selectedView === 'monthly' || selectedView === 'annual' || selectedView === 'all-time') {
             <div class="w-28rem h-content m-5">

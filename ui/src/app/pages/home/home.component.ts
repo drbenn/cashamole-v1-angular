@@ -17,6 +17,7 @@ import { Observable } from 'rxjs';
 import { DashboardState } from '../../store/dashboard/dashboard.state';
 import { DropdownModule } from 'primeng/dropdown';
 import { IncomeHistoryComponent } from '../../dashboard-components/income-history/income-history.component';
+import { InvestCompositionComponent } from '../../dashboard-components/invest-composition/invest-composition.component';
 
 
 export interface OptionType {
@@ -29,7 +30,22 @@ export interface OptionType {
     standalone: true,
     templateUrl: './home.component.html',
     styleUrl: './home.component.scss',
-    imports: [CommonModule, FormsModule, SelectButtonModule, DropdownModule, ChartOneComponent, AssetCompositionComponent, ExpenseCompositionComponent, ExpenseHistoryComponent, NetWorthTimeComponent, AssetVsLiabilityTimeComponent, LiabilityCompositionComponent, NetCashFlowTimeComponent, IncomeHistoryComponent]
+    imports: [
+        CommonModule,
+        FormsModule,
+        SelectButtonModule,
+        DropdownModule,
+        ChartOneComponent,
+        AssetCompositionComponent,
+        ExpenseCompositionComponent,
+        ExpenseHistoryComponent,
+        NetWorthTimeComponent,
+        AssetVsLiabilityTimeComponent,
+        LiabilityCompositionComponent,
+        NetCashFlowTimeComponent,
+        IncomeHistoryComponent,
+        InvestCompositionComponent
+    ]
 })
 export class HomeComponent implements OnInit {
     @Select(CalendarState.activeMonthStartDate) activeMonthStartDate$!: Observable<Date>;

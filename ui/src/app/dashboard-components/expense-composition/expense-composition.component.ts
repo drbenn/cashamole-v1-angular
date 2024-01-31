@@ -29,8 +29,8 @@ export class ExpenseCompositionComponent implements OnInit {
     this.data$.subscribe((data: { userView: string, data: DashboardHistoryExpense[]}) => {
       if (data) {
         if (data.userView === 'annual' ||  data.userView === 'all-time' || data.userView === 'monthly') {
-          const annualExpenses: ChartJsDataInputs  = this.configureExpenseDataInputsIntoCategories(data.data);
-          this.updateChart(annualExpenses);
+          const chartExpenses: ChartJsDataInputs  = this.configureExpenseDataInputsIntoCategories(data.data);
+          this.updateChart(chartExpenses);
         };
       };
     });

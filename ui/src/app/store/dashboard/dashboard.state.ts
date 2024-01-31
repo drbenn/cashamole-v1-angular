@@ -123,6 +123,14 @@ export class DashboardState {
   };
 
   @Selector() 
+  static investCompositionChartData(state: DashboardStateModel): { userView: string, data: DashboardHistoryInvestment[] } {
+    return {
+      userView: state.userSelectedView,
+      data: state.activeViewInvestments
+    };
+  };
+
+  @Selector() 
   static assetCompositionChartData(state: DashboardStateModel): { userView: string, data: DashboardHistoryBalance[] } {
     return {
       userView: state.userSelectedView,
