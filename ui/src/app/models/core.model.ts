@@ -77,3 +77,8 @@ export interface DashboardHistoryNetWorth {
     net_worth: string,
 }
 
+export interface DashboardHistoryCashFlow{
+    unique_date: string,
+    cash_flow: string,
+}
+

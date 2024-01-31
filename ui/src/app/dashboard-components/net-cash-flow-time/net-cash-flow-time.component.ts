@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { DashboardStateModel } from '../../store/dashboard/dashboard.state';
+import { DashboardState } from '../../store/dashboard/dashboard.state';
 import { CardModule } from 'primeng/card';
 import { Observable } from 'rxjs';
-import { Store } from '@ngxs/store';
+import { Select } from '@ngxs/store';
 import { ChartModule } from 'primeng/chart';
-import { ExpenseStateModel } from '../../store/expense/expense.state';
+import { DashboardService } from '../dashboard.service';
+import { BarChartDataInputs } from '../../models/dashboard.models';
+import { DashboardHistoryCashFlow } from '../../models/core.model';
 
 @Component({
   selector: 'app-net-cash-flow-time',
@@ -14,60 +16,77 @@ import { ExpenseStateModel } from '../../store/expense/expense.state';
   styleUrl: './net-cash-flow-time.component.scss'
 })
 export class NetCashFlowTimeComponent implements OnInit {
-  protected dashboardData$: Observable<any> = this.store.select((state: any) => state.dashboard);
-  protected expenseData$: Observable<any> = this.store.select((state: any) => state.expense);
+  @Select(DashboardState.netCashFlowChartData) data$!: Observable<{ userView: string, data: DashboardHistoryCashFlow[] }>;
   protected chartData: any;
   protected chartOptions: any;
+  protected userView!: string;
 
-  constructor(private store: Store) {}
+  constructor(
+    private dashboardService: DashboardService
+  ) {}
 
   ngOnInit(): void {
-    this.expenseData$.subscribe((data: ExpenseStateModel) => {
-      // console.log(data);
-    })
-      
-    this.dashboardData$.subscribe((data: DashboardStateModel) => {
-      // console.log(data);
-      this.chartData = {
-        labels: ['Aug', 'Sept', 'Oct', 'Nov', 'Dec', 'Jan'],
-        datasets: [
-          {
-            label: 'Monthly Cash Flow',
-            data: [1500, 2200, -500, 1600, -1500, 1200],
-            borderColor: ['rgb(54, 162, 235)'],
-            borderWidth: 2,
-            tension: 0.3
-          },
-          {
-            // label: 'Net Liaibilities',
-            data: [0, 0, 0, 0, 0, 0],
-            borderColor: ['rgb(255, 64, 64)'],
-            borderWidth: 1,
-            tension: 0.3
-          }
-        ]
+    this.data$.subscribe((data: { userView: string, data: DashboardHistoryCashFlow[] }) => {
+      this.userView = data.userView;
+
+      if (data.userView === 'monthly') {
+        const monthlyNetWorthChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForMonthly(data.data);
+        this.updateChart(monthlyNetWorthChartData);
       };
-  
-      this.chartOptions = {
-        plugins: {
-          legend: {
-              display: false,
+      if (data.userView === 'annual') {
+        const annualNetWorthChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForAnnual(data.data);
+        this.updateChart(annualNetWorthChartData);
+      };
+      if (data.userView=== 'all-time') {
+        const allTimeNetWorthChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForAllTime(data.data);
+        this.updateChart(allTimeNetWorthChartData);
+      };
+    });
+  };
+
+  private updateChart(data: BarChartDataInputs) {
+    this.chartData = {
+      labels: data.labels,
+      datasets: [
+        {
+          label: 'Net Cash Flow',
+          data: data.chartDataSet,
+          backgroundColor: [data.backgroundColors[0]],
+          borderColor: [data.borderColors[0]],
+          hoverBackgroundColor: [data.borderColors[0]],
+          borderWidth: 2,
+          tension: 0.3
+        }
+      ]
+    };
+    this.chartOptions = {
+      plugins: {
+        legend: {
+            display: false,
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            color: '#00000090'
+          },
+          grid: {
+            color: '#00000010',
+            drawBorder: false
           }
         },
-        scales: {
-          x: {
-            ticks: {
-              color: '#00000095'
-            },
-            grid: {
-              color: '#00000000',
-              drawBorder: false
-            }
+        x: {
+          ticks: {
+            color: '#00000095'
+          },
+          grid: {
+            color: '#00000000',
+            drawBorder: false
           }
         }
+      }
+    };
+  };
 
-      };
-
-    })
-  }
-}
+  };

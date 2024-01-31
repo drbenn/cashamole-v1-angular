@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { Router } from '@angular/router';
-import { CoreApiService } from '../../api-services/core-api.service';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { DashboardActions } from './dashboard.actions';
-import { BalanceSheetEntry, DashboardHistoryBalance, DashboardHistoryExpense, DashboardHistoryIncome, DashboardHistoryInvestment, DashboardHistoryNetWorth } from '../../models/core.model';
-
-
+import { 
+  DashboardHistoryBalance,
+  DashboardHistoryCashFlow,
+  DashboardHistoryExpense,
+  DashboardHistoryIncome,
+  DashboardHistoryInvestment,
+  DashboardHistoryNetWorth
+} from '../../models/core.model';
 
 
 export interface DashboardStateModel {
@@ -18,18 +21,16 @@ export interface DashboardStateModel {
     monthAssets: number,
     monthLiabilities: number,
     monthNetWorth: number,
+    yearOptions: string[],
+    yearMonthOptions: string[],
+    activeAnnualYear: string,
+    activeMonthlyYear: string,
+    activeMonthlyMonth: string,
+    userSelectedView: 'monthly' | 'annual' | 'all-time',
     expenseHistoryByMonth: DashboardHistoryExpense[],
     incomeHistoryByMonth: DashboardHistoryIncome[],
     investHistoryByMonth: DashboardHistoryInvestment[],
     balanceHistoryByMonth: DashboardHistoryBalance[],
-    yearOptions: string[],
-    yearMonthOptions: string[],
-
-    activeAnnualYear: string,
-    activeMonthlyYear: string,
-    activeMonthlyMonth: string,
-
-    userSelectedView: 'monthly' | 'annual' | 'all-time',
     activeViewExpenses: DashboardHistoryExpense[],
     activeViewIncome: DashboardHistoryIncome[],
     activeViewInvestments: DashboardHistoryInvestment[],
@@ -50,18 +51,16 @@ export interface DashboardStateModel {
     monthAssets: 0,
     monthLiabilities: 0,
     monthNetWorth: 0,
+    yearOptions:[],
+    yearMonthOptions: [],
+    activeAnnualYear: '',
+    activeMonthlyYear: '',
+    activeMonthlyMonth: '',
+    userSelectedView: 'all-time',
     expenseHistoryByMonth: [],
     incomeHistoryByMonth: [],
     investHistoryByMonth: [],
     balanceHistoryByMonth: [],
-    yearOptions:[],
-    yearMonthOptions: [],
-
-    activeAnnualYear: '',
-    activeMonthlyYear: '',
-    activeMonthlyMonth: '',
-
-    userSelectedView: 'all-time',
     activeViewExpenses: [],
     activeViewIncome: [],
     activeViewInvestments: [],
@@ -73,11 +72,8 @@ export interface DashboardStateModel {
 )
 @Injectable()
 export class DashboardState {
-  constructor(
-    private store: Store,
-    private router: Router,
-    private coreApi: CoreApiService
-    ) {}
+
+  constructor() {}
 
   @Selector() 
   static yearOptions(state: DashboardStateModel): string[] {
@@ -175,6 +171,40 @@ export class DashboardState {
     };
   };
 
+  @Selector() 
+  static netCashFlowChartData(state: DashboardStateModel): { userView: string, data: DashboardHistoryCashFlow[] } {
+    const income: DashboardHistoryIncome[] = state.activeViewIncome;
+    const expenses: DashboardHistoryExpense[] = state.activeViewExpenses;
+    const uniqueDates: string[] = Array.from(
+      new Set(
+        expenses.map((item: DashboardHistoryExpense) => item.unique_date)
+    ));
+    uniqueDates.sort();
+
+    const xYearMonthDataDate: string[] = new Array(uniqueDates.length).fill('');
+    const xYearMonthDataAmount: number[] = new Array(uniqueDates.length).fill(0);
+    uniqueDates.forEach((item: string, index: number ) => {
+      xYearMonthDataDate[index] = item
+    });
+    income.forEach((income: DashboardHistoryIncome) => {
+      const index: number = xYearMonthDataDate.findIndex((date: string) => date === income.unique_date);
+      if (index > -1) {xYearMonthDataAmount[index] += parseFloat(income.total_income)};
+    });
+    expenses.forEach((expense: DashboardHistoryExpense) => {
+      const index: number = xYearMonthDataDate.findIndex((date: string) => date === expense.unique_date);
+      if (index > -1) {xYearMonthDataAmount[index] -= parseFloat(expense.total_expense)};
+    });
+
+    const cashFlowArray: DashboardHistoryCashFlow[] = [];
+    xYearMonthDataDate.forEach((date: string, index: number) => {
+      cashFlowArray.push({ unique_date: date , cash_flow: xYearMonthDataAmount[index].toString() });
+    });
+    return {
+      userView: state.userSelectedView,
+      data: cashFlowArray,
+    };
+  };
+
   @Action(DashboardActions.SetDashboardHistoryOnLogin)
   setDashboardHistoryOnLogin(
   ctx: StateContext<DashboardStateModel>,
@@ -249,10 +279,8 @@ export class DashboardState {
     currentYearLimitedMonths.forEach((_month: string) => {
       const matchingMonth: string = monthStrings[(months.findIndex((month: string) => month === _month))];
       currentYearLimitedMonthsDigits.push(matchingMonth);
-    })
+    });
 
-    // console.log(currentYearLimitedMonths);
-    
     // All values for base filters
     const expenseHistory: DashboardHistoryExpense[] = ctx.getState().expenseHistoryByMonth;
     const incomeHistory: DashboardHistoryIncome[] = ctx.getState().incomeHistoryByMonth;
@@ -489,10 +517,10 @@ export class DashboardState {
       };
     })
     // 4. Add start/end dates to data (if user started recording data before Jan of first year, and up to current date)
-    if (labelDates[0] !== allNetWorthByMonthAndYear[0].unique_date) {
+    if (allNetWorthByMonthAndYear[0].unique_date && labelDates[0] !== allNetWorthByMonthAndYear[0].unique_date) {
       labelDates.unshift(allNetWorthByMonthAndYear[0].unique_date)
     };
-    if (labelDates[labelDates.length - 1] !== allNetWorthByMonthAndYear[allNetWorthByMonthAndYear.length - 1].unique_date) {
+    if (allNetWorthByMonthAndYear[0].unique_date && labelDates[labelDates.length - 1] !== allNetWorthByMonthAndYear[allNetWorthByMonthAndYear.length - 1].unique_date) {
       labelDates.push(allNetWorthByMonthAndYear[allNetWorthByMonthAndYear.length - 1].unique_date);
     };
     // 5. Create array of net worth data from only specific unique_date labelDates for displaying chart data at appropriate intervals
