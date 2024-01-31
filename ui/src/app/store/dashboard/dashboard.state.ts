@@ -2,12 +2,16 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { DashboardActions } from './dashboard.actions';
 import { 
+  BalanceSheetEntry,
   DashboardHistoryBalance,
   DashboardHistoryCashFlow,
   DashboardHistoryExpense,
   DashboardHistoryIncome,
   DashboardHistoryInvestment,
-  DashboardHistoryNetWorth
+  DashboardHistoryNetWorth,
+  Expense,
+  Income,
+  Invest
 } from '../../models/core.model';
 
 
@@ -235,7 +239,136 @@ export class DashboardState {
     });
   };
 
+  /////////////////////////////////////////////////////////////////////
+  //
+  //
+  //      Actions For Updating Summaries in Input Pages
+  //
+  //
+  /////////////////////////////////////////////////////////////////////
 
+
+  @Action(DashboardActions.UpdateMonthExpenseTotal)
+  updateMonthExpenseTotal(
+    ctx: StateContext<DashboardStateModel>,
+    action: DashboardActions.UpdateMonthExpenseTotal
+  ) {
+    let sum: number = 0;
+    if ( action.payload === null) {
+        ctx.patchState({ 
+            monthExpenses: sum
+        });
+    } else {
+        const income: number = <number>ctx.getState().monthIncome;
+        sum = this.reduceToSum(action.payload);
+        ctx.patchState({ 
+            monthExpenses: sum,
+            monthNetCashFlow: income - sum
+        });
+    };
+  };
+
+  @Action(DashboardActions.UpdateMonthIncomeTotal)
+  updateMonthIncomeTotal(
+    ctx: StateContext<DashboardStateModel>,
+    action: DashboardActions.UpdateMonthIncomeTotal
+  ) {
+    let sum: number = 0;
+    if ( action.payload === null) {
+        ctx.patchState({ 
+            monthIncome: sum
+        });
+    } else {
+        const expenses: number = <number>ctx.getState().monthExpenses;
+        sum = this.reduceToSum(action.payload);
+        ctx.patchState({ 
+            monthIncome: sum,
+            monthNetCashFlow: sum - expenses
+        });
+    };
+  };
+
+  @Action(DashboardActions.UpdateMonthInvestTotal)
+  updateMonthInvestTotal(
+    ctx: StateContext<DashboardStateModel>,
+    action: DashboardActions.UpdateMonthInvestTotal
+  ) {
+    let sum: number = 0;
+    let sumPretax: number = 0;
+    let sumPosttax: number = 0;
+    if ( action.payload === null) {
+        ctx.patchState({ 
+            monthInvest: sum,
+            monthPreTaxInvest: sumPretax,
+            monthPostTaxInvest: sumPosttax,
+        });
+    } else {
+        sum = this.reduceToSum(action.payload);
+        sumPretax = this.reduceToSum(action.payload.filter((item: Invest) => item.institution.includes('401')));
+        sumPosttax = this.reduceToSum(action.payload.filter((item: Invest) => !item.institution.includes('401')));
+        ctx.patchState({ 
+            monthInvest: sum,
+            monthPreTaxInvest: sumPretax,
+            monthPostTaxInvest: sumPosttax,
+        });
+    };
+  };
+
+  @Action(DashboardActions.UpdateMonthBalanceSheetTotal)
+  updateMonthBalanceSheetTotal(
+    ctx: StateContext<DashboardStateModel>,
+    action: DashboardActions.UpdateMonthBalanceSheetTotal
+  ) {
+    let sum: number = 0;
+    if ( action.payload === null) {
+        ctx.patchState({ 
+            monthAssets: 0,
+            monthLiabilities: 0,
+            monthNetWorth: 0
+        });
+    } else {
+        let assets: number = 0;
+        let liabilities: number = 0;
+        let netWorth: number = 0;
+        const assetArray: BalanceSheetEntry[] = [];
+        const liabilityArray: BalanceSheetEntry[] = [];
+
+        action.payload.forEach((entry: BalanceSheetEntry) => {
+            if (entry.type === 'asset') {
+                assetArray.push(entry);
+            };
+            if (entry.type === 'liability') {
+                liabilityArray.push(entry)
+            };
+        })
+        assets = this.reduceToSum(assetArray);
+        liabilities = this.reduceToSum(liabilityArray);
+        netWorth = assets - liabilities;
+        ctx.patchState({ 
+            monthAssets: assets,
+            monthLiabilities: liabilities,
+            monthNetWorth: netWorth
+        });
+    };
+  };
+
+  private reduceToSum(items: Expense[] | Income[] | BalanceSheetEntry[]): number {
+    return items.reduce((accum: number, item: Expense | Income | BalanceSheetEntry) => accum + Number(item.amount), 0);
+  }
+
+
+
+
+
+
+  
+  /////////////////////////////////////////////////////////////////////
+  //
+  //
+  //      Actions For Chart Dashboard Data
+  //
+  //
+  /////////////////////////////////////////////////////////////////////
   @Action(DashboardActions.SetActiveAnnualYearForDashboard)
   setActiveAnnualYearForDashboard(
     ctx: StateContext<DashboardStateModel>,

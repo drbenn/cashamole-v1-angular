@@ -44,11 +44,13 @@ export class InvestState {
   ) {
     this.coreApi.getActiveInvestRecordsByMonth(action.payload).subscribe((res: any) => {
       if (res.data === 'null') {
+        this.store.dispatch(new DashboardActions.UpdateMonthInvestTotal(null));
         ctx.patchState({ 
             investments: []
         });
       } else {
         const resData: Invest[] = JSON.parse(res.data)
+        this.store.dispatch(new DashboardActions.UpdateMonthInvestTotal(resData));
         ctx.patchState({ 
             investments: JSON.parse(res.data)
         });
@@ -64,6 +66,7 @@ export class InvestState {
     let updatedInvest: Invest[] = ctx.getState().investments;
     updatedInvest === null ? updatedInvest = [] : updatedInvest = updatedInvest; 
     updatedInvest.push(action.payload);
+    this.store.dispatch(new DashboardActions.UpdateMonthInvestTotal(updatedInvest));
     ctx.patchState({ investments: updatedInvest });
   };
 
@@ -95,6 +98,7 @@ export class InvestState {
           updatedInvestRecords.push(record);
         };
       });
+      this.store.dispatch(new DashboardActions.UpdateMonthInvestTotal(updatedInvestRecords)); 
       ctx.patchState({ investments: updatedInvestRecords });
   };
 
