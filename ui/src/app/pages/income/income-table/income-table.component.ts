@@ -47,7 +47,7 @@ export class IncomeTableComponent implements OnInit {
         next: (value: any) => {
           this.store.dispatch(new IncomeActions.EditIncomeRecord(income));
         },
-        error: (error: any) => {
+        error: (error: Error) => {
           console.error(error);
         }
       }
@@ -62,7 +62,7 @@ export class IncomeTableComponent implements OnInit {
           next: (value: any) => {
             this.store.dispatch(new IncomeActions.DeactivateUserIncomeRecord(income));
           },
-          error: (error: any) => {
+          error: (error: Error) => {
             console.error(error);
           }
         }

@@ -47,7 +47,7 @@ export class ExpenseTableComponent implements OnInit {
         next: (value: any) => {
           this.store.dispatch(new ExpenseActions.EditUserExpenseRecord(expense));
         },
-        error: (error: any) => {
+        error: (error: Error) => {
           console.error(error);
         }
       }
@@ -62,7 +62,7 @@ export class ExpenseTableComponent implements OnInit {
           next: (value: any) => {
             this.store.dispatch(new ExpenseActions.DeactivateUserExpenseRecord(expense));
           },
-          error: (error: any) => {
+          error: (error: Error) => {
             console.error(error);
           }
         }

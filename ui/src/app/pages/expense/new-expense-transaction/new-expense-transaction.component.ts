@@ -136,7 +136,7 @@ export class NewExpenseTransactionComponent implements OnInit {
             // Updates state with new transaction / no need for full data pull on db upon each update
             this.store.dispatch(new ExpenseActions.AddExpense(JSON.parse(value.data)));
           },
-          error: (error: any) => {
+          error: (error: Error) => {
             console.error(error)
           }
         }

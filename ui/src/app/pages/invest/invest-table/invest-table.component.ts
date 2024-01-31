@@ -40,17 +40,13 @@ export class InvestTableComponent implements OnInit {
   };
 
   protected onRowEditSave(invest: Invest): void {
-    console.log('edit invest');
-    console.log(invest);
-    
-    
     this.coreApi.submitUpdatedInvestRecord(invest).pipe(take(1), first())
     .subscribe(
       {
         next: (value: any) => {
           this.store.dispatch(new InvestActions.EditInvestRecord(invest));
         },
-        error: (error: any) => {
+        error: (error: Error) => {
           console.error(error);
         }
       }
@@ -58,8 +54,6 @@ export class InvestTableComponent implements OnInit {
   };
 
   protected removeEntry(invest: Invest, index: number): void {
-    console.log('remove invest');
-    console.log(invest);
     if (invest.inv_id) {
       this.coreApi.deactivateInvestRecord(invest?.inv_id).pipe(take(1), first())
       .subscribe(
@@ -67,7 +61,7 @@ export class InvestTableComponent implements OnInit {
           next: (value: any) => {
             this.store.dispatch(new InvestActions.DeactivateUserInvestRecord(invest));
           },
-          error: (error: any) => {
+          error: (error: Error) => {
             console.error(error);
           }
         }

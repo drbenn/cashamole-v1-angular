@@ -1,5 +1,13 @@
 npx @angular/cli@17 new ui
 
+# TODO
+1. Clean up appstate
+2. User Profile page
+    - Download all user data in Excel files
+3. ElectronJS application with option of using no internet/only local storage
+    - store working data in json
+4. 
+
 # Angular 17 new html template decorators, ie @if {}
 - Although non-breaking, there will be an error 
 - in tsconfig.json must add "_enabledBlockTypes": ["if","for","switch","defer"] in "angularCompilerOptions"

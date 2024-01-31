@@ -44,8 +44,6 @@ export class BalanceSheetTableComponent implements OnInit {
     })
     this.balanceSheetData$.subscribe((data: BalanceSheetEntry[]) => {     
       if (data) {
-        console.log(data);
-        
         this.resetTableData();  
         this.setMonthEntriesToBsType(data);
       };
@@ -80,7 +78,7 @@ export class BalanceSheetTableComponent implements OnInit {
         next: (value: any) => {
           this.store.dispatch(new BalanceSheetActions.EditUserBalanceRecord(balanceSheetEntry));
         },
-        error: (error: any) => {
+        error: (error: Error) => {
           console.error(error);
         }
       }
@@ -95,7 +93,7 @@ export class BalanceSheetTableComponent implements OnInit {
           next: (value: any) => {
             this.store.dispatch(new BalanceSheetActions.DeactivateUserBalanceRecord(balanceSheetEntry));
           },
-          error: (error: any) => {
+          error: (error: Error) => {
             console.error(error);
           }
         }

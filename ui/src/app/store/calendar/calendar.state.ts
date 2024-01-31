@@ -103,11 +103,4 @@ export class CalendarState {
     });
   };
 
-  @Action(CalendarActions.SetMinDateRange)
-  setMinDateRange(
-    ctx: StateContext<CalendarStateModel>,
-    action: CalendarActions.SetMinDateRange
-  ) {
-
-  };
 }

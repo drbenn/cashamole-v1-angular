@@ -12,4 +12,4 @@ export interface ChipStateStructure {
     expense_vendor: Chip[],
     income_source: Chip[],
     invest_institution: Chip[] 
-  }
+}

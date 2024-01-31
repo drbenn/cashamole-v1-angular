@@ -108,7 +108,7 @@ export class NewInvestTransactionComponent implements OnInit {
             // Updates state with new transaction / no need for full data pull on db upon each update
             this.store.dispatch(new InvestActions.AddInvest(JSON.parse(value.data)));
           },
-          error: (error: any) => {
+          error: (error: Error) => {
             console.error(error)
           }
         }

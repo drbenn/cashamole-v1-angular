@@ -32,21 +32,20 @@ export class AssetVsLiabilityTimeComponent implements OnInit {
         const annualAssetChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForMonthly(data.assetData);
         const annualLiabilityChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForMonthly(data.liabilityData);
         this.updateChart(annualAssetChartData, annualLiabilityChartData);
-      }
-      if (data.userView === 'annual') {
+      } else if (data.userView === 'annual') {
         const annualAssetChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForAnnual(data.assetData);
         const annualLiabilityChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForAnnual(data.liabilityData);
         this.updateChart(annualAssetChartData, annualLiabilityChartData);
-      }
-      if (data.userView=== 'all-time') {
+      } else if (data.userView=== 'all-time') {
         const allTimeAssetChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForAllTime(data.assetData);
         const allTimeLiabilityChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForAllTime(data.liabilityData);
         this.updateChart(allTimeAssetChartData, allTimeLiabilityChartData);
-      }
+      };
     });
   
-    }
-    private updateChart(assetData: BarChartDataInputs, liabilityData: BarChartDataInputs) {
+  };
+
+  private updateChart(assetData: BarChartDataInputs, liabilityData: BarChartDataInputs) {
     this.chartData = {
       labels: assetData.labels,
       datasets: [
@@ -70,6 +69,7 @@ export class AssetVsLiabilityTimeComponent implements OnInit {
         }
       ]
     };
+
     this.chartOptions = {
       plugins: {
         legend: {
@@ -100,4 +100,4 @@ export class AssetVsLiabilityTimeComponent implements OnInit {
     };
   };
 
-  };
+}

@@ -67,7 +67,7 @@ export class ChipSelectComponent implements OnInit {
               this.store.dispatch(new ChipActions.RemoveUserChip(fullChip));
             };
           },
-          error: (error: any) => {
+          error: (error: Error) => {
             console.error(error)
           }
   })};};
@@ -81,7 +81,7 @@ export class ChipSelectComponent implements OnInit {
         next: (value: any) => {
           this.store.dispatch(new ChipActions.AddUserChip(JSON.parse(value.data)));
         },
-        error: (error: any) => {
+        error: (error: Error) => {
           console.error(error)
         }
   });};

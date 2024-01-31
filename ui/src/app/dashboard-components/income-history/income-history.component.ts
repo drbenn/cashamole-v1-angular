@@ -32,18 +32,15 @@ export class IncomeHistoryComponent implements OnInit {
       if (data.userView === 'monthly') {
         const annualChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForMonthly(data.data);
         this.updateChart(annualChartData);
-      }
-      if (data.userView === 'annual') {
+      } else if (data.userView === 'annual') {
         const annualChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForAnnual(data.data);
         this.updateChart(annualChartData);
-      }
-      if (data.userView=== 'all-time') {
+      } else if (data.userView=== 'all-time') {
         const allTimeChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForAllTime(data.data);
         this.updateChart(allTimeChartData);
-      }
+      };
     });
   };
-
 
   private updateChart(data: BarChartDataInputs) {
     this.chartData = {
@@ -59,6 +56,7 @@ export class IncomeHistoryComponent implements OnInit {
         }
       ]
     };
+
     this.chartOptions = {
       plugins: {
         legend: {
@@ -90,5 +88,3 @@ export class IncomeHistoryComponent implements OnInit {
   };
 
 }
-
-

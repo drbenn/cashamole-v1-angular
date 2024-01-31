@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { Router } from '@angular/router';
 import { IncomeActions } from './income.actions';
 import { Income } from '../../models/core.model';
 import { CoreApiService } from '../../api-services/core-api.service';
@@ -21,7 +20,6 @@ export interface IncomeStateModel {
 export class IncomeState {
   constructor(
     private store: Store,
-    private router: Router,
     private coreApi: CoreApiService
   ) {}
 

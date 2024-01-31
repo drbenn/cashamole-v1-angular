@@ -109,7 +109,7 @@ export class NewIncomeTransactionComponent implements OnInit {
             // Updates state with new transaction / no need for full data pull on db upon each update
             this.store.dispatch(new IncomeActions.AddIncome(JSON.parse(value.data)));
           },
-          error: (error: any) => {
+          error: (error: Error) => {
             console.error(error)
           }
         }

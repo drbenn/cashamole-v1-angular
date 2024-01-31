@@ -1,5 +1,11 @@
 import { Injectable } from '@angular/core';
-import { DashboardHistoryBalance, DashboardHistoryCashFlow, DashboardHistoryExpense, DashboardHistoryIncome, DashboardHistoryNetWorth } from '../models/core.model';
+import { 
+  DashboardHistoryBalance,
+  DashboardHistoryCashFlow,
+  DashboardHistoryExpense,
+  DashboardHistoryIncome,
+  DashboardHistoryNetWorth
+} from '../models/core.model';
 import { BarChartDataInputs } from '../models/dashboard.models';
 
 
@@ -94,17 +100,13 @@ export class DashboardService {
       let amount: number = 0;
       if (item && item.total_income) {
         amount = parseFloat(item.total_income);
-      };
-      if (item && item.total_expense) {
+      } else if (item && item.total_expense) {
         amount = parseFloat(item.total_expense);
-      };
-      if (item && item.total_balance) {
+      } else if (item && item.total_balance) {
         amount = parseFloat(item.total_balance);
-      };
-      if (item && item.net_worth) {
+      } else if (item && item.net_worth) {
         amount = parseFloat(item.net_worth);
-      };
-      if (item.cash_flow) {
+      } else if (item.cash_flow) {
         amount += parseFloat(item.cash_flow);
       };
       twelveMonthsData[month - 1] = twelveMonthsData[month - 1] + amount;
@@ -119,17 +121,13 @@ export class DashboardService {
       let amount: number = 0;
       if (item && item.total_income) {
         amount = parseFloat(item.total_income);
-      };
-      if (item && item.total_expense) {
+      } else if (item && item.total_expense) {
         amount = parseFloat(item.total_expense);
-      };
-      if (item && item.total_balance) {
+      } else if (item && item.total_balance) {
         amount = parseFloat(item.total_balance);
-      };
-      if (item && item.net_worth) {
+      } else if (item && item.net_worth) {
         amount = parseFloat(item.net_worth);
-      };
-      if (item.cash_flow) {
+      } else if (item.cash_flow) {
         amount += parseFloat(item.cash_flow);
       };
       const itemIndex: number = dataYears.findIndex((_year: string) => _year === year.toString());
@@ -139,5 +137,3 @@ export class DashboardService {
   };
 
 }
-
-

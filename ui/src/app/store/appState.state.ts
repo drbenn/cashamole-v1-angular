@@ -44,8 +44,8 @@ export class AppState {
 
   @Action(Increment)
   increment(ctx: StateContext<number>) {
-    console.log('INCREMENT');
-    console.log(AppState);
+    // console.log('INCREMENT');
+    // console.log(AppState);
     
     ctx.setState(counter => (counter += 1));
   }

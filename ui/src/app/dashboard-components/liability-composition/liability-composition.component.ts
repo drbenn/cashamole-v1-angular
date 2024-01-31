@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { DashboardState, DashboardStateModel } from '../../store/dashboard/dashboard.state';
+import { DashboardState } from '../../store/dashboard/dashboard.state';
 import { CardModule } from 'primeng/card';
 import { Observable } from 'rxjs';
-import { Select, Store } from '@ngxs/store';
+import { Select } from '@ngxs/store';
 import { ChartModule } from 'primeng/chart';
 import { DashboardHistoryBalance } from '../../models/core.model';
 import { DashboardService } from '../dashboard.service';
@@ -33,8 +33,7 @@ export class LiabilityCompositionComponent implements OnInit {
           const lastMonthData: DashboardHistoryBalance[] = data.data.filter((item: DashboardHistoryBalance) => item.unique_date.slice(5, 7) === lastMonth);
           const chartData: BarChartDataInputs  = this.configureBalanceDataInputsIntoCategories(lastMonthData);
           this.updateChart(chartData);
-        };
-        if (data.userView === 'monthly') {
+        } else if (data.userView === 'monthly') {
           const chartData: BarChartDataInputs  = this.configureBalanceDataInputsIntoCategories(data.data);
           this.updateChart(chartData);
         };

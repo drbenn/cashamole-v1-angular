@@ -21,7 +21,7 @@ export class UserRegisterComponent {
     email: ['', [Validators.required, Validators.email, Validators.minLength(3), Validators.maxLength(75)]],
     username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(75)]],
     password: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(75)]]
-  })
+  });
 
   constructor (
     private fb: FormBuilder,
@@ -31,7 +31,7 @@ export class UserRegisterComponent {
 
   protected clearForm() {
     this.registerForm.setValue({ email: '', username:'',  password: '' });
-  }
+  };
 
   protected onSubmit() {
     const values: any = this.registerForm.value;
@@ -43,7 +43,7 @@ export class UserRegisterComponent {
         email: values.email,
         username: values.username,
         password: values.password
-      }
+      };
       // console.log(registerBody);
       this.userApi.registerUser(registerBody).pipe(take(1), first())
       .subscribe(
@@ -59,6 +59,6 @@ export class UserRegisterComponent {
           }
         }
       )
-    }
-  }
+    };
+  };
 }

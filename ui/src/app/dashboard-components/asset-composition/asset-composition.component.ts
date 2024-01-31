@@ -33,8 +33,7 @@ export class AssetCompositionComponent implements OnInit {
           const lastMonthData: DashboardHistoryBalance[] = data.data.filter((item: DashboardHistoryBalance) => item.unique_date.slice(5, 7) === lastMonth);
           const chartData: BarChartDataInputs  = this.configureBalanceDataInputsIntoCategories(lastMonthData);
           this.updateChart(chartData);
-        };
-        if (data.userView === 'monthly') {
+        } else if (data.userView === 'monthly') {
           const chartData: BarChartDataInputs  = this.configureBalanceDataInputsIntoCategories(data.data);
           this.updateChart(chartData);
         };

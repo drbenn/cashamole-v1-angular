@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { DashboardStateModel } from '../../store/dashboard/dashboard.state';
-import {CardModule} from 'primeng/card';
+import { CardModule } from 'primeng/card';
 
 @Component({
   selector: 'app-month-cash-invested-summary',

@@ -109,7 +109,7 @@ export class NavComponent {
             this.router.navigate(['splash']);
           }
         },
-        error: (error: any) => {
+        error: (error: Error) => {
           console.log(error);
         }
       }

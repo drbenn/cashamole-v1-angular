@@ -11,8 +11,4 @@ export namespace CalendarActions {
         constructor(public payload: DateRange) {}
     }
 
-    export class SetMinDateRange {
-        static readonly type =  '[Calendar] Set date range of earliest transaction/balance sheet ';
-        constructor(public payload: any) {}
-    }
 }

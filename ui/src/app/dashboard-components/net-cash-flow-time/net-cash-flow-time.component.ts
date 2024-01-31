@@ -32,12 +32,10 @@ export class NetCashFlowTimeComponent implements OnInit {
       if (data.userView === 'monthly') {
         const monthlyNetWorthChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForMonthly(data.data);
         this.updateChart(monthlyNetWorthChartData);
-      };
-      if (data.userView === 'annual') {
+      } else if (data.userView === 'annual') {
         const annualNetWorthChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForAnnual(data.data);
         this.updateChart(annualNetWorthChartData);
-      };
-      if (data.userView=== 'all-time') {
+      } else if (data.userView=== 'all-time') {
         const allTimeNetWorthChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForAllTime(data.data);
         this.updateChart(allTimeNetWorthChartData);
       };
@@ -59,6 +57,7 @@ export class NetCashFlowTimeComponent implements OnInit {
         }
       ]
     };
+
     this.chartOptions = {
       plugins: {
         legend: {
@@ -89,4 +88,4 @@ export class NetCashFlowTimeComponent implements OnInit {
     };
   };
 
-  };
+}

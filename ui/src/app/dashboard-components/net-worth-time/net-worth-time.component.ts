@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { DashboardState, DashboardStateModel } from '../../store/dashboard/dashboard.state';
+import { DashboardState } from '../../store/dashboard/dashboard.state';
 import { CardModule } from 'primeng/card';
-import { Observable, last } from 'rxjs';
-import { Select, Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import { Select } from '@ngxs/store';
 import { ChartModule } from 'primeng/chart';
-import { ExpenseStateModel } from '../../store/expense/expense.state';
 import { CommonModule } from '@angular/common';
-import { DashboardHistoryBalance, DashboardHistoryNetWorth } from '../../models/core.model';
+import { DashboardHistoryNetWorth } from '../../models/core.model';
 import { DashboardService } from '../dashboard.service';
 import { BarChartDataInputs } from '../../models/dashboard.models';
 
@@ -33,18 +32,15 @@ export class NetWorthTimeComponent implements OnInit {
       if (data.userView === 'monthly') {
         const annualChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForMonthly(data.data);
         this.updateChart(annualChartData);
-      }
-      if (data.userView === 'annual') {
+      } else if (data.userView === 'annual') {
         const annualChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForAnnual(data.data);
         this.updateChart(annualChartData);
-      }
-      if (data.userView=== 'all-time') {
+      } else if (data.userView=== 'all-time') {
         const allTimeChartData: BarChartDataInputs  = this.dashboardService.configureDataInputsForAllTime(data.data);
         this.updateChart(allTimeChartData);
-      }
+      };
     });
   };
-
 
   private updateChart(data: BarChartDataInputs) {
     this.chartData = {
@@ -60,6 +56,7 @@ export class NetWorthTimeComponent implements OnInit {
         }
       ]
     };
+
     this.chartOptions = {
       plugins: {
         legend: {

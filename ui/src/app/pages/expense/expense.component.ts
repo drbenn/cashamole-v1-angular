@@ -42,7 +42,7 @@ export class ExpenseComponent implements OnInit {
         } 
         this.expenseCategoryObject[expense.category].push(expense);
       },
-        (error: any )=> console.log(error)
+        (error: Error )=> console.error(error)
       )
     } else {
       this.expenseCategoryObject = {};

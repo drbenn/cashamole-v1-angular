@@ -13,14 +13,9 @@ import { DashboardActions } from '../../store/dashboard/dashboard.actions';
 import { FormsModule } from '@angular/forms';
 import { Select, Store } from '@ngxs/store';
 import { CalendarState } from '../../store/calendar/calendar.state';
-import { Observable, first, forkJoin, take } from 'rxjs';
+import { Observable } from 'rxjs';
 import { DashboardState } from '../../store/dashboard/dashboard.state';
 import { DropdownModule } from 'primeng/dropdown';
-import { ExpenseState } from '../../store/expense/expense.state';
-import { BalanceSheetEntry, Expense, Income, Invest } from '../../models/core.model';
-import { IncomeState } from '../../store/income/income.state';
-import { InvestState } from '../../store/invest/invest.state';
-import { BalanceSheetState } from '../../store/balanceSheet/bsState.state';
 import { IncomeHistoryComponent } from '../../dashboard-components/income-history/income-history.component';
 
 
@@ -122,7 +117,7 @@ export class HomeComponent implements OnInit {
             this.isMonthActiveChoice = false;
             this.isYearActiveChoice = false;
         };
-        console.log(dataView);
+        // console.log(dataView);
         this.store.dispatch(new DashboardActions.FilterDataForSelectedTimePeriodView(dataView))
     };
 
