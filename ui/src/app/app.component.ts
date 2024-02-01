@@ -22,9 +22,8 @@ export class AppComponent implements OnInit {
       {
         next: (value: any) => {
           console.log('app on init data response from verifyApiConnection');
-          console.log(value.message);
         },
-        error: (error: any) => {
+        error: (error: Error) => {
           console.log('app on init ERROR response from verifyApiConnection');
           console.error(error)
         }

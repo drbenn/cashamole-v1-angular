@@ -22,8 +22,6 @@ export class MonthCashFlowSummaryComponent implements OnInit {
 
   ngOnInit(): void {
       this.dashboardData$.subscribe((data: DashboardStateModel) => {
-        console.log(data);
-        
         this.monthIncome = data.monthIncome;
         this.monthExpense = data.monthExpenses;
         this.monthNetCashflow = data.monthNetCashFlow;

@@ -106,35 +106,39 @@ export class HomeComponent implements OnInit {
     };
 
     protected handleChartTimePeriodSelect(item: { type: 'Y-T-D' | 'Month' | 'Annual' | 'All' }): void {
-        let dataView: { type: 'monthly' | 'annual' | 'all-time' | null, year: string | null, month: string | null } = {type: null, year: null, month: null };
-        
-        if (item.type === 'Month') {
-            dataView = {type: 'monthly', year: this.selectedMonthlyYear.type, month: this.selectedMonth.type };
-            this.isMonthActiveChoice = true;
-        } else {
-            this.isMonthActiveChoice = false;
-        };
+        console.log(item);
+        if (item !== null) {
+            let dataView: { type: 'monthly' | 'annual' | 'all-time' | 'y-t-d' | null, year: string | null, month: string | null } = {type: null, year: null, month: null };
+            
+            if (item.type === 'Month') {
+                dataView = {type: 'monthly', year: this.selectedMonthlyYear.type, month: this.selectedMonth.type };
+                this.isMonthActiveChoice = true;
+            } else {
+                this.isMonthActiveChoice = false;
+            };
+    
+            if (item.type === 'Annual') {
+                dataView = {type: 'annual', year: this.selectedAnnualYear.type, month: null };
+                this.isYearActiveChoice = true;
+            } else {
+                this.isYearActiveChoice = false;
+            };
+    
+            if (item.type === 'Y-T-D') {
+                dataView = {type: 'y-t-d', year: this.selectedAnnualYear.type, month: null };
+                this.isMonthActiveChoice = false;
+                this.isYearActiveChoice = false;
+            }; 
+    
+            if (item.type === 'All') {
+                dataView = {type: 'all-time', year: null, month: null };
+                this.isMonthActiveChoice = false;
+                this.isYearActiveChoice = false;
+            };
+            // console.log(dataView);
+            this.store.dispatch(new DashboardActions.FilterDataForSelectedTimePeriodView(dataView))
 
-        if (item.type === 'Annual') {
-            dataView = {type: 'annual', year: this.selectedAnnualYear.type, month: null };
-            this.isYearActiveChoice = true;
-        } else {
-            this.isYearActiveChoice = false;
-        };
-
-        if (item.type === 'Y-T-D') {
-            dataView = {type: 'annual', year: this.selectedAnnualYear.type, month: null };
-            this.isMonthActiveChoice = false;
-            this.isYearActiveChoice = false;
-        }; 
-
-        if (item.type === 'All') {
-            dataView = {type: 'all-time', year: null, month: null };
-            this.isMonthActiveChoice = false;
-            this.isYearActiveChoice = false;
-        };
-        // console.log(dataView);
-        this.store.dispatch(new DashboardActions.FilterDataForSelectedTimePeriodView(dataView))
+        }
     };
 
     protected handleAnnualYearDropdownChange() {

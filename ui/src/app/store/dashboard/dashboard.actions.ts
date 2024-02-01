@@ -51,7 +51,7 @@ export namespace DashboardActions {
 
     export class FilterDataForSelectedTimePeriodView {
         static readonly type =  '[Dashboard] Filter dashboard data to accomodate active view';
-        constructor(public payload: { type: 'monthly' | 'annual' | 'all-time' | null, year: string | null, month: string | null } ) {}
+        constructor(public payload: { type: 'monthly' | 'annual' | 'all-time' | 'y-t-d' | null, year: string | null, month: string | null } ) {}
     };
 
 }

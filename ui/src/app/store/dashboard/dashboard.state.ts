@@ -30,7 +30,7 @@ export interface DashboardStateModel {
     activeAnnualYear: string,
     activeMonthlyYear: string,
     activeMonthlyMonth: string,
-    userSelectedView: 'monthly' | 'annual' | 'all-time',
+    userSelectedView: 'monthly' | 'annual' | 'all-time' | 'y-t-d',
     expenseHistoryByMonth: DashboardHistoryExpense[],
     incomeHistoryByMonth: DashboardHistoryIncome[],
     investHistoryByMonth: DashboardHistoryInvestment[],
@@ -404,10 +404,7 @@ export class DashboardState {
     ctx: StateContext<DashboardStateModel>,
     action: DashboardActions.FilterDataForSelectedTimePeriodView
   ) {
-    const activeView: 'monthly' | 'annual' | 'all-time' | null = action.payload.type;
-    const activeYear: string = action.payload.year === null ? '' : action.payload.year.toString();
-    const activeMonth: string = action.payload.month === null ? '' : action.payload.month.toString();
-
+    console.log(action.payload);
     // limit data to nothing after the current month of today
     const today: Date = new Date();
     const months: string[] = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Dec'];
@@ -421,6 +418,22 @@ export class DashboardState {
       const matchingMonth: string = monthStrings[(months.findIndex((month: string) => month === _month))];
       currentYearLimitedMonthsDigits.push(matchingMonth);
     });
+
+    // Find year/month for use in filters
+    const activeView: 'monthly' | 'annual' | 'all-time' | 'y-t-d' | null = action.payload.type;
+    const activeMonth: string = action.payload.month === null ? '' : action.payload.month.toString();
+    let activeYear: string = '';
+    if (action.payload.type === 'y-t-d' || action.payload.year === null) {
+      const yearOptions: string[] = ctx.getState().yearOptions;
+      activeYear = yearOptions[yearOptions.length - 1];
+    } else if (
+        action.payload.type === 'monthly' && action.payload.year !== null ||
+        action.payload.type === 'annual' && action.payload.year !== null
+        ) {
+      activeYear = action.payload.year.toString();
+    };
+    console.log(activeYear);
+    
 
     // All values for base filters
     const expenseHistory: DashboardHistoryExpense[] = ctx.getState().expenseHistoryByMonth;
@@ -458,7 +471,7 @@ export class DashboardState {
     };
 
     // activeView annual is also called and accounts for Y-T-D view selection
-    if (activeView === 'annual') {
+    if (activeView === 'annual' || activeView === 'y-t-d') {
       const annualExpenses: DashboardHistoryExpense[] = expenseHistory.filter((item: DashboardHistoryExpense) => {
         return this.annualYearValidationFilter(activeYear, todayFullYear, currentYearLimitedMonthsDigits, item);
       });
@@ -658,10 +671,10 @@ export class DashboardState {
       };
     })
     // 4. Add start/end dates to data (if user started recording data before Jan of first year, and up to current date)
-    if (allNetWorthByMonthAndYear[0].unique_date && labelDates[0] !== allNetWorthByMonthAndYear[0].unique_date) {
+    if (allNetWorthByMonthAndYear.length && allNetWorthByMonthAndYear[0].unique_date && labelDates[0] !== allNetWorthByMonthAndYear[0].unique_date) {
       labelDates.unshift(allNetWorthByMonthAndYear[0].unique_date)
     };
-    if (allNetWorthByMonthAndYear[0].unique_date && labelDates[labelDates.length - 1] !== allNetWorthByMonthAndYear[allNetWorthByMonthAndYear.length - 1].unique_date) {
+    if (allNetWorthByMonthAndYear.length && allNetWorthByMonthAndYear[0].unique_date && labelDates[labelDates.length - 1] !== allNetWorthByMonthAndYear[allNetWorthByMonthAndYear.length - 1].unique_date) {
       labelDates.push(allNetWorthByMonthAndYear[allNetWorthByMonthAndYear.length - 1].unique_date);
     };
     // 5. Create array of net worth data from only specific unique_date labelDates for displaying chart data at appropriate intervals
