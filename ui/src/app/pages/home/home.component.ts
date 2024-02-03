@@ -106,7 +106,7 @@ export class HomeComponent implements OnInit {
     };
 
     protected handleChartTimePeriodSelect(item: { type: 'Y-T-D' | 'Month' | 'Annual' | 'All' }): void {
-        console.log(item);
+        // console.log(item);
         if (item !== null) {
             let dataView: { type: 'monthly' | 'annual' | 'all-time' | 'y-t-d' | null, year: string | null, month: string | null } = {type: null, year: null, month: null };
             

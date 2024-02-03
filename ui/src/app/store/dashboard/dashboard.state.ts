@@ -404,7 +404,7 @@ export class DashboardState {
     ctx: StateContext<DashboardStateModel>,
     action: DashboardActions.FilterDataForSelectedTimePeriodView
   ) {
-    console.log(action.payload);
+    // console.log(action.payload);
     // limit data to nothing after the current month of today
     const today: Date = new Date();
     const months: string[] = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Dec'];
@@ -431,9 +431,7 @@ export class DashboardState {
         action.payload.type === 'annual' && action.payload.year !== null
         ) {
       activeYear = action.payload.year.toString();
-    };
-    console.log(activeYear);
-    
+    };    
 
     // All values for base filters
     const expenseHistory: DashboardHistoryExpense[] = ctx.getState().expenseHistoryByMonth;
@@ -472,6 +470,9 @@ export class DashboardState {
 
     // activeView annual is also called and accounts for Y-T-D view selection
     if (activeView === 'annual' || activeView === 'y-t-d') {
+
+      activeView === 'y-t-d' ? activeYear = todayFullYear : activeYear = activeYear;
+
       const annualExpenses: DashboardHistoryExpense[] = expenseHistory.filter((item: DashboardHistoryExpense) => {
         return this.annualYearValidationFilter(activeYear, todayFullYear, currentYearLimitedMonthsDigits, item);
       });

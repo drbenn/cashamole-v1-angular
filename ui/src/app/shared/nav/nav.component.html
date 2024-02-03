@@ -69,7 +69,10 @@
                     </div>
                 </li>
             }
-            <!-- <li><a routerLink="/home" routerLinkActive="active">Home</a></li> -->
+
+            @if (loggedInUserVal && !isMobileView) {
+                <li routerLinkActive="active"><a routerLink="home" routerLinkActive="active">Dashboard</a></li>
+            }
             @if (loggedInUserVal && !isMobileView) {
                 <li routerLinkActive="active"><a routerLink="expense" routerLinkActive="active">Expense</a></li>
             }
@@ -124,7 +127,10 @@
             <div class="text-600 text-3xl font-bold">Navigation</div>
             <p-divider [ngStyle]="{'width': '100%'}"></p-divider>
             @if (loggedInUserVal && isMobileView) {
-                <div class="ml-3"><a routerLink="expense" routerLinkActive="active" (click)="closeCallback($event)">Expense</a></div>
+                <div class="ml-3"><a routerLink="home" routerLinkActive="active" (click)="closeCallback($event)">Dashboard</a></div>
+            }
+            @if (loggedInUserVal && isMobileView) {
+                <div class="mt-3 ml-3"><a routerLink="expense" routerLinkActive="active" (click)="closeCallback($event)">Expense</a></div>
             }
             @if (loggedInUserVal && isMobileView) {
                 <div class="mt-3 ml-3"><a routerLink="income" routerLinkActive="active" (click)="closeCallback($event)">Income</a></div>

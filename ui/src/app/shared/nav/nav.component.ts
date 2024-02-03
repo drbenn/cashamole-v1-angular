@@ -31,7 +31,7 @@ export class NavComponent {
   protected monthDate!: Date;
   protected isMobileView: boolean = false;
   protected visibleSidebar!: boolean;
-  private MOBILE_VIEW_WINDOW_SIZE: number = 950;
+  private MOBILE_VIEW_WINDOW_SIZE: number = 1000;
 
   protected items: MenuItem[] = [
     {
