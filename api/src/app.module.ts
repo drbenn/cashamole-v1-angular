@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
-import { MailerModule } from '@nestjs-modules/mailer';
 import { MysqlModule } from 'nest-mysql';
 import { AuthModule } from './auth/auth.module';
 import { TransactionModule } from './transaction/transaction.module';
@@ -14,6 +13,8 @@ import { IncomeModule } from './income/income.module';
 import { InvestController } from './invest/invest.controller';
 import { InvestService } from './invest/invest.service';
 import { InvestModule } from './invest/invest.module';
+import { MailerModule } from '@nestjs-modules/mailer';
+
 
 
 
@@ -36,10 +37,12 @@ import { InvestModule } from './invest/invest.module';
   // }),
     MailerModule.forRoot({
       transport: {
-        host: 'smtp.gmail.com',
+        host: process.env.SMTP_HOST,
+        port: parseInt(process.env.SMTP_PORT), 
+        secure: false,
         auth: {
-          user: 'from.user.name@gmail.com',
-          pass: 'pass',
+          user: process.env.SMTP_USER,
+          pass: process.env.PASSWORD,
         }
       }
     }),
@@ -48,7 +51,9 @@ import { InvestModule } from './invest/invest.module';
     BalanceSheetModule,
     ExpenseModule,
     IncomeModule,
-    InvestModule
+    InvestModule,
+    MailerModule
+ 
   ],
   controllers: [AppController, ChipController, InvestController],
   providers: [AppService, ChipService, InvestService],

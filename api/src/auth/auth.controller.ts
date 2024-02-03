@@ -3,6 +3,10 @@ import { JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
 import { InsertUser, LoginUserDto, RegisterUserDto, UserExist, UserLoginData } from './auth-dto/auth-dto';
+import { MailerDto } from 'src/smtp-mailer/mailer-dto/mailer-dto';
+import { SmtpMailerService } from 'src/smtp-mailer/smtp-mailer.service';
+
+
 
 @Controller('auth')
 export class AuthController {
@@ -10,7 +14,8 @@ export class AuthController {
 
   constructor(
     private jwtService: JwtService,
-    private authService: AuthService
+    private authService: AuthService,
+    private smtpMailerService: SmtpMailerService
     ) {}
 
   @Get()
@@ -68,6 +73,13 @@ export class AuthController {
           res.status(HttpStatus.OK).send({message: "registration successful", data: JSON.stringify(insertResponse)});
           // todo: send registration confirmation email
           this.authService.generateDbTablesForNewUser(insertResponse.userId);
+
+
+          // Send Confirmation email to newly registered user
+          const emailDto: MailerDto = {
+            recipients: [{name: username, address: email}]
+          }
+          this.smtpMailerService.sendEmail({ dto: emailDto });
       };
   };
 
