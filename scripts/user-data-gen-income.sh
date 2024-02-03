@@ -1,7 +1,7 @@
 #!/bin/bash
 
-uid=4
-starting_post_tax_salary=70000
+uid=18
+starting_post_tax_salary=65000
 annual_salary_bump=1.08
 annual_inflation=1.04
 declare -a years=("2019" "2020" "2021" "2022" "2023" "2024")
