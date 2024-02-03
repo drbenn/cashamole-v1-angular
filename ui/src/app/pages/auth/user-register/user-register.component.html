@@ -1,4 +1,17 @@
 <p-toast position="top-center"></p-toast>
+<p-dialog header="Demo Testing" [modal]="true" [(visible)]="dialogVisible" [style]="{width: '50vw'}">
+    <p>
+        This application is user input intensive. To get a feel for a lively, active user environment and interact freely, use the following login username and password:
+    </p>
+    <p>
+        username: demo
+        <br>
+        password: demo
+    </p>
+    <p>
+
+    </p>
+</p-dialog>
 
 <main
 class="w-full bg-white flex flex-column justify-content-center align-items-center fadein animation-duration-300"
@@ -64,6 +77,16 @@ class="w-full bg-white flex flex-column justify-content-center align-items-cente
             >Submit</button>
         </div>
     </form>
+
+    <div class="mt-6 text-center"
+    [style]="{'width':'20rem'}"
+    >
+        <a class="cursor-pointer" (click)="showDialog()">
+            <i class="mr-2 point-right pi pi-forward" style="font-size: 1.25rem ; color: #9ce0c1"></i>   
+                Would you like to test a demo?
+            <i class="ml-2 pi point-left pi-spin pi-backward" style="font-size: 1.25rem ; color: #9ce0c1"></i>
+        </a>
+    </div>
 </main>
 
 <!-- <p>Form Status: {{ registerForm.status }}</p>

@@ -12,11 +12,12 @@ import { ButtonModule } from 'primeng/button';
 import { AnimateOnScrollModule } from 'primeng/animateonscroll';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-user-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, InputTextModule, ButtonModule, AnimateOnScrollModule, ToastModule],
+  imports: [CommonModule, ReactiveFormsModule, InputTextModule, ButtonModule, AnimateOnScrollModule, ToastModule, DialogModule],
   templateUrl: './user-login.component.html',
   styleUrl: './user-login.component.scss',
   providers: [MessageService]
@@ -26,6 +27,8 @@ export class UserLoginComponent {
     username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(75)]],
     password: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(75)]]
   })
+  protected dialogVisible: boolean = false;
+
 
   constructor (
     private fb: FormBuilder,
@@ -35,14 +38,18 @@ export class UserLoginComponent {
     private messageService: MessageService
   ) {}
 
+  protected showDialog(): void {
+    this.dialogVisible = true;
+  };
+
   protected routeToForgetPassword() {
     // this.router.navigate(['password-reset']);
     alert('Password reset under construction')
-  }
+  };
   
   protected clearForm() {
     this.loginForm.setValue({ username:'',  password: '' });
-  }
+  };
 
   protected onSubmit() {
     const values: any = this.loginForm.value;

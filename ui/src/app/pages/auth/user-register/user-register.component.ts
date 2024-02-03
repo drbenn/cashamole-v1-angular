@@ -9,12 +9,13 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { DialogModule } from 'primeng/dialog';
 
 
 @Component({
   selector: 'app-user-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, InputTextModule, ButtonModule, ToastModule],
+  imports: [CommonModule, ReactiveFormsModule, InputTextModule, ButtonModule, ToastModule, DialogModule],
   templateUrl: './user-register.component.html',
   styleUrl: './user-register.component.scss',
   providers: [MessageService]
@@ -25,6 +26,7 @@ export class UserRegisterComponent {
     username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(75)]],
     password: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(75)]]
   });
+  protected dialogVisible: boolean = false;
 
   constructor (
     private fb: FormBuilder,
@@ -33,13 +35,12 @@ export class UserRegisterComponent {
     private messageService: MessageService
   ) {}
 
+  protected showDialog(): void {
+    this.dialogVisible = true;
+  };
+
   protected clearForm() {
     this.registerForm.setValue({ email: '', username:'',  password: '' });
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail: 'Registration successful! Please login'
-    })
   };
 
   protected onSubmit() {
@@ -71,11 +72,6 @@ export class UserRegisterComponent {
           },
           error: (error: any) => {
             console.error(error)
-            console.log(error.message);
-    
-            
-
-            
             // todo: error notification
             this.messageService.add({
               severity: 'error',

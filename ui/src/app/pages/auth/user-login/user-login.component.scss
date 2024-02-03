@@ -1,0 +1,31 @@
+.point-right {
+	animation: point-to-right 1s linear infinite;
+} 
+
+.point-left {
+	animation: point-to-left 1s linear infinite;
+} 
+
+@keyframes point-to-right {
+	0% {
+		transform: translateX(-0.25rem);
+	}
+	50% {
+		transform: translateX(0.25rem);
+	}
+    100% {
+		transform: translateX(-0.25rem);
+	}
+}
+
+@keyframes point-to-left {
+	0% {
+		transform: translateX(0.25rem);
+	}
+	50% {
+		transform: translateX(-0.25rem);
+	}
+    100% {
+		transform: translateX(0.25rem);
+    }
+}
