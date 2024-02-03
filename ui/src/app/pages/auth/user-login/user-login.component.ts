@@ -10,13 +10,16 @@ import { UserActions } from '../../../store/user/userState.actions';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { AnimateOnScrollModule } from 'primeng/animateonscroll';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-user-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, InputTextModule, ButtonModule, AnimateOnScrollModule],
+  imports: [CommonModule, ReactiveFormsModule, InputTextModule, ButtonModule, AnimateOnScrollModule, ToastModule],
   templateUrl: './user-login.component.html',
-  styleUrl: './user-login.component.scss'
+  styleUrl: './user-login.component.scss',
+  providers: [MessageService]
 })
 export class UserLoginComponent {
   protected loginForm = this.fb.group({
@@ -28,11 +31,13 @@ export class UserLoginComponent {
     private fb: FormBuilder,
     private userApi: UserApiService,
     private router: Router,
-    private store: Store
+    private store: Store,
+    private messageService: MessageService
   ) {}
 
   protected routeToForgetPassword() {
-    this.router.navigate(['password-reset']);
+    // this.router.navigate(['password-reset']);
+    alert('Password reset under construction')
   }
   
   protected clearForm() {
@@ -62,6 +67,11 @@ export class UserLoginComponent {
           error: (error: any) => {
             // todo: error handling
             console.error(error)
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: `Login error! ${error.error.message}. Please check username and password and try again.`
+            })
           }
         }
       )

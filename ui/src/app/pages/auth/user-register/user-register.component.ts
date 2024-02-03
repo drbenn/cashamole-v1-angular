@@ -7,14 +7,17 @@ import { UserRegister } from '../../../models/user.models';
 import { Router } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 
 @Component({
   selector: 'app-user-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, InputTextModule, ButtonModule],
+  imports: [CommonModule, ReactiveFormsModule, InputTextModule, ButtonModule, ToastModule],
   templateUrl: './user-register.component.html',
-  styleUrl: './user-register.component.scss'
+  styleUrl: './user-register.component.scss',
+  providers: [MessageService]
 })
 export class UserRegisterComponent {
   protected registerForm = this.fb.group({
@@ -26,11 +29,17 @@ export class UserRegisterComponent {
   constructor (
     private fb: FormBuilder,
     private userApi: UserApiService,
-    private router: Router
+    private router: Router,
+    private messageService: MessageService
   ) {}
 
   protected clearForm() {
     this.registerForm.setValue({ email: '', username:'',  password: '' });
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: 'Registration successful! Please login'
+    })
   };
 
   protected onSubmit() {
@@ -50,12 +59,29 @@ export class UserRegisterComponent {
         {
           next: (value: any) => {
             // console.log(value);
-            // todo: success notification
-            this.router.navigate(['home']);
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Registration successful! Please login'
+            })
+            setTimeout(() => {
+              this.router.navigate(['login']);
+            }, 2000)
+            
           },
           error: (error: any) => {
             console.error(error)
-            // todo: error notification 
+            console.log(error.message);
+    
+            
+
+            
+            // todo: error notification
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: `Registration error! ${error.error.message}`
+            })
           }
         }
       )
