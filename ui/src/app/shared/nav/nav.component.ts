@@ -106,7 +106,7 @@ export class NavComponent {
         next: (value: any) => {
           this.store.dispatch(new UserActions.ClearUserStateOnLogout());
           if (navToSplash) {
-            this.router.navigate(['splash']);
+            this.router.navigate(['login']);
           }
         },
         error: (error: Error) => {

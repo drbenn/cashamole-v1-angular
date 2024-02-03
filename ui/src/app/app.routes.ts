@@ -13,7 +13,7 @@ import { HomeComponent } from './pages/home/home.component';
 
 
 export const routes: Routes = [
-    { path: '', component: UserRegisterComponent },
+    { path: '', component: UserLoginComponent },
     { path: 'home', component: HomeComponent },
     { path: 'balance-sheeet', component: BalanceSheetComponent },
     { path: 'income', component: IncomeComponent },
