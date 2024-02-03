@@ -1,0 +1,11 @@
+a:not(.active) {
+    text-decoration: none;
+    color: #fff;
+    transition: 40ms ease-in;
+  }
+  
+  a:not(.active):hover {
+    text-decoration: none;
+    color: #9ce0c1;
+    transition: 40ms ease-in;
+  }
