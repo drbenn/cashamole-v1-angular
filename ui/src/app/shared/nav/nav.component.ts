@@ -1,8 +1,8 @@
 import { Component, HostListener, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { UserApiService } from '../../api-services/user-api.service';
-import { Observable, first, take } from 'rxjs';
+import { Observable, filter, first, take } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { UserStateModel } from '../../store/user/userState.state';
 import { UserActions } from '../../store/user/userState.actions';
@@ -32,6 +32,7 @@ export class NavComponent {
   protected isMobileView: boolean = false;
   protected visibleSidebar!: boolean;
   private MOBILE_VIEW_WINDOW_SIZE: number = 1000;
+  protected isHiddenForDashboard: boolean = false;
 
   protected items: MenuItem[] = [
     {
@@ -67,7 +68,8 @@ export class NavComponent {
   constructor(
     private router: Router,
     private store: Store,
-    private userApi: UserApiService
+    private userApi: UserApiService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -80,6 +82,18 @@ export class NavComponent {
     this.monthDate = new Date();
     this.loggedInUser$.subscribe((username:string) => {
       this.loggedInUserVal = username;
+    });
+
+    this.router.events
+    .pipe(filter(event => event instanceof NavigationEnd))
+    .subscribe((event: any) => {
+      const currentUrl = event.url;
+      // Perform actions based on the new path
+      // this.updateNavbar(currentUrl);
+      console.log(currentUrl);
+      currentUrl === '/home' ? this.isHiddenForDashboard = true : this.isHiddenForDashboard = false;
+      console.log(this.isHiddenForDashboard);
+      
     });
   };
 
