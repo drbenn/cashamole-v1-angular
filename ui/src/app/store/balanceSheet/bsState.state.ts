@@ -57,6 +57,16 @@ export class BalanceSheetState {
     });
   };
 
+  @Action(BalanceSheetActions.SetMonthBalanceRecords)
+  setMonthBalanceRecords(
+    ctx: StateContext<BalanceSheetStateModel>,
+    action: BalanceSheetActions.SetMonthBalanceRecords
+  ) {
+      ctx.patchState({ 
+        entries: action.payload
+      });
+  };
+
   @Action(BalanceSheetActions.AddUserBalanceRecord)
   addUserBalanceRecord(
       ctx: StateContext<BalanceSheetStateModel>,

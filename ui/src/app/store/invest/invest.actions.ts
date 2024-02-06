@@ -12,6 +12,11 @@ export namespace InvestActions {
     constructor(public payload: string) {}
 };
 
+  export class SetMonthInvestRecords {
+    static readonly type =  '[Invest] Set entries on month change';
+    constructor(public payload: Invest[]) {}
+  };
+
   export class AddInvest {
     static readonly type =  '[Invest] Add invest record';
     constructor(public payload: Invest) {}

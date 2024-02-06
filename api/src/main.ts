@@ -40,12 +40,14 @@ async function bootstrap() {
     // methods: ['GET', 'PUT', 'PATCH', 'POST'],
     origin: true, // allows all origins
     // origin: [
-    //   "http://localhost:4000/",
+    //   "http://localhost:4200/",
     //   "http://cashamole.com",
-    //   "https://cashamole.com"
+    //   "https://cashamole.com",
+    //   "http://www.cashamole.com",
+    //   "https//www.cashamole.com",
     // ], // more restrictive allowed origins
     // allowedHeaders: ['content-type'], // orignal functioning config
-    // allowedHeaders: ['Access-Control-Allow-Credentials', 'content-type'], // additional config to consider
+    // allowedHeaders: ['Access-Control-Allow-Credentials', 'Access-Control-Allow-Origin', 'content-type'], // additional config to consider
   });
   app.use(cookieParser());
 

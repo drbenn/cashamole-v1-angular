@@ -14,6 +14,9 @@ import { InvestController } from './invest/invest.controller';
 import { InvestService } from './invest/invest.service';
 import { InvestModule } from './invest/invest.module';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { CoreModule } from './core/core.module';
+import { CoreController } from './core/core.controller';
+import { CoreService } from './core/core.service';
 
 
 
@@ -52,10 +55,11 @@ import { MailerModule } from '@nestjs-modules/mailer';
     ExpenseModule,
     IncomeModule,
     InvestModule,
-    MailerModule
+    MailerModule,
+    CoreModule
  
   ],
-  controllers: [AppController, ChipController, InvestController],
-  providers: [AppService, ChipService, InvestService],
+  controllers: [AppController, ChipController, InvestController, CoreController],
+  providers: [AppService, ChipService, InvestService, CoreService],
 })
 export class AppModule {}

@@ -58,6 +58,16 @@ export class InvestState {
     });
   };
 
+  @Action(InvestActions.SetMonthInvestRecords)
+  setInvestExpenseRecords(
+    ctx: StateContext<InvestStateModel>,
+    action: InvestActions.SetMonthInvestRecords
+  ) {
+      ctx.patchState({ 
+        investments: action.payload
+      });
+  };
+
   @Action(InvestActions.AddInvest)
   addInvest(
     ctx: StateContext<InvestStateModel>,

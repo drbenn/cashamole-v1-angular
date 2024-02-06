@@ -12,6 +12,11 @@ export namespace IncomeActions {
     constructor(public payload: string) {}
 };
 
+  export class SetMonthIncomeRecords {
+    static readonly type =  '[Income] Set entries on month change';
+    constructor(public payload: Income[]) {}
+  };
+
   export class AddIncome {
     static readonly type =  '[Income] Add income record';
     constructor(public payload: Income) {}

@@ -90,10 +90,7 @@ export class NavComponent {
       const currentUrl = event.url;
       // Perform actions based on the new path
       // this.updateNavbar(currentUrl);
-      console.log(currentUrl);
       currentUrl === '/home' ? this.isHiddenForDashboard = true : this.isHiddenForDashboard = false;
-      console.log(this.isHiddenForDashboard);
-      
     });
   };
 

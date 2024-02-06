@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Action, State, StateContext, Store } from '@ngxs/store';
-import { Increment, SetUserDataOnLogin, UpdateChips } from './appState.actions';
+import { Increment } from './appState.actions';
 
 
 
@@ -26,13 +26,15 @@ export class AppState {
   ) {}
 
 
-  @Action(SetUserDataOnLogin)
-  setUserDataOnLogin(
-    ctx: StateContext<AppStateModel>,
-    payload: { data: any }
-  ) {
-    ctx.patchState({ data: payload.data });
-  }
+  // @Action(SetUserDataOnLogin)
+  // setUserDataOnLogin(
+  //   ctx: StateContext<AppStateModel>,
+  //   payload: { data: any }
+  // ) {
+  //   console.log('in app state set user login');
+    
+  //   ctx.patchState({ data: payload.data });
+  // }
 
   // @Action(UpdateChips)
   // updateChips(

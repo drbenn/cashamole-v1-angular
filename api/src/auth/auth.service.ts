@@ -7,16 +7,12 @@ import { IncomeDto } from 'src/income/income-dto/income-dto';
 import { ExpenseDto } from 'src/expense/expense-dto/expense-dto';
 import { BalanceRecordDto } from 'src/balance_sheet/balance_sheet-dto/balance_sheet-dto';
 import { ChipDto } from 'src/chip/chip-dto/chip-dto';
-import { IncomeService } from 'src/income/income.service';
 import { InvestDto } from 'src/invest/invest-dto/invest-dto';
 
 @Injectable()
 export class AuthService {
     constructor(
-        @InjectClient() private readonly connection: Connection,
-        // private incomeService: IncomeService
-        
-        
+        @InjectClient() private readonly connection: Connection
         ) {}
 
     async findAll() {
@@ -191,8 +187,6 @@ export class AuthService {
 
     async validateLoginCredentials(loginUserDto: LoginUserDto): Promise<number> {
         const sqlQuery: string = `SELECT id, password FROM users WHERE username='${loginUserDto.username}'`;
-        console.log('before 149/151-ish query --- missing loginUserDto.username?');
-        console.log(sqlQuery);
         const hashSaltPasswordFromDbQuery = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], hashSaltPasswordFromDbQuery[0]);
         const dbHashSaltPassword: string = `${results[0].password}`;
@@ -247,11 +241,7 @@ export class AuthService {
     };
 
     async getUserBasicProfile(userId: number): Promise<UserBasicProfile> {
-        const sqlQuery: string = `SELECT id, username, email, join_date FROM users WHERE id='${userId}'`;
-        console.log('before 249/251-ish query --- missing id?');
-        console.log(sqlQuery);
-        
-        
+        const sqlQuery: string = `SELECT id, username, email, join_date FROM users WHERE id='${userId}'`;      
         const basicUserData = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], basicUserData[0]);
         return results[0];
@@ -262,7 +252,6 @@ export class AuthService {
         const userIncome = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], userIncome[0]);
         return this.checkForReturnValues(results);
-        // return this.incomeService.getActiveIncome(userId);
     };
 
     async getUserInvestments(userId: number, yearMonthString: string): Promise<InvestDto[]> {
@@ -270,7 +259,6 @@ export class AuthService {
         const userInvest = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], userInvest[0]);
         return this.checkForReturnValues(results);
-        // return this.incomeService.getActiveIncome(userId);
     };
 
     async getUserExpenses(userId: number, yearMonthString: string): Promise<ExpenseDto[]> {

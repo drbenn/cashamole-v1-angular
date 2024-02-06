@@ -6,6 +6,9 @@ import { BalanceSheetActions } from '../balanceSheet/bsState.actions';
 import { IncomeActions } from '../income/income.actions';
 import { ExpenseActions } from '../expense/expense.actions';
 import { InvestActions } from '../invest/invest.actions';
+import { CoreApiService } from '../../api-services/core-api.service';
+import { first, take } from 'rxjs';
+import { MonthRecordsResponse } from '../../models/core.model';
 
 
 export interface CalendarStateModel {
@@ -33,7 +36,8 @@ export interface CalendarStateModel {
 @Injectable()
 export class CalendarState {
   constructor(
-    private store: Store
+    private store: Store,
+    private coreApi: CoreApiService
   ) {}
 
   @Selector() 
@@ -58,14 +62,10 @@ export class CalendarState {
     const longMonthName = now.toLocaleString('en-US', { month: 'long' });
     const monthYear = now.toLocaleString('en-US', { month: 'long', year: 'numeric' });
 
-
     const year: string = firstDayOfCurrentMonth.getFullYear().toString();
     const month: string = (firstDayOfCurrentMonth.getMonth() + 1).toString().padStart(2, '0');
     const yearMonthId: string = `${year}-${month}`;
-    this.store.dispatch(new BalanceSheetActions.GetAndSetMonthBalanceRecords(yearMonthId));
-    this.store.dispatch(new IncomeActions.GetAndSetMonthIncomeRecords(yearMonthId));
-    this.store.dispatch(new ExpenseActions.GetAndSetMonthExpenseRecords(yearMonthId));
-    this.store.dispatch(new InvestActions.GetAndSetMonthInvestRecords(yearMonthId));
+    this.store.dispatch(new CalendarActions.GetAllRecordsForMonth(yearMonthId));
 
     ctx.patchState({ 
         monthYearDisplay: monthYear,
@@ -90,10 +90,7 @@ export class CalendarState {
     const year: string = action.payload.startDate.getFullYear().toString();
     const month: string = (action.payload.startDate.getMonth() + 1).toString().padStart(2, '0');
     const yearMonthId: string = `${year}-${month}`;
-    this.store.dispatch(new BalanceSheetActions.GetAndSetMonthBalanceRecords(yearMonthId));
-    this.store.dispatch(new IncomeActions.GetAndSetMonthIncomeRecords(yearMonthId));
-    this.store.dispatch(new ExpenseActions.GetAndSetMonthExpenseRecords(yearMonthId));
-    this.store.dispatch(new InvestActions.GetAndSetMonthInvestRecords(yearMonthId));
+    this.store.dispatch(new CalendarActions.GetAllRecordsForMonth(yearMonthId));
 
     ctx.patchState({
       monthYearDisplay: monthYear,
@@ -101,6 +98,36 @@ export class CalendarState {
       monthDisplayLongName: longMonthName,
       monthDateRange: {startDate: action.payload.startDate, endDate: action.payload.endDate} 
     });
+  };
+
+  @Action(CalendarActions.GetAllRecordsForMonth)
+  getAllRecordsForMonth(
+    ctx: StateContext<CalendarStateModel>,
+    action: CalendarActions.GetAllRecordsForMonth
+  ) {
+    this.coreApi.getActiveMonthRecords(action.yearMonthId).pipe(take(1), first())
+    .subscribe(
+      {
+        next: (response: any) => {
+          const records: MonthRecordsResponse = JSON.parse(response.data);
+          this.store.dispatch(new CalendarActions.SetAllRecordsForMonth(records));
+        },
+        error: (error: any) => {
+          console.error(error);
+        }
+      }
+    )
+  };
+
+  @Action(CalendarActions.SetAllRecordsForMonth)
+  setAllRecordsForMonth(
+    ctx: StateContext<CalendarStateModel>,
+    action: CalendarActions.SetAllRecordsForMonth
+  ) {
+      this.store.dispatch(new BalanceSheetActions.SetMonthBalanceRecords(action.monthRecords.balanceSheetRecords));
+      this.store.dispatch(new IncomeActions.SetMonthIncomeRecords(action.monthRecords.incomeRecords));
+      this.store.dispatch(new ExpenseActions.SetMonthExpenseRecords(action.monthRecords.expenseRecords));
+      this.store.dispatch(new InvestActions.SetMonthInvestRecords(action.monthRecords.investRecords));
   };
 
 }

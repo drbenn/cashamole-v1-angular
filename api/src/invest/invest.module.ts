@@ -4,6 +4,7 @@ import { InvestService } from './invest.service';
 
 @Module({
     controllers: [InvestController],
-    providers: [InvestService]
+    providers: [InvestService],
+    exports: [InvestService]
 })
 export class InvestModule {}

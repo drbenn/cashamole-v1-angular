@@ -35,6 +35,13 @@ export interface Expense {
     status?: string | 'active' | 'cancelled';
 }
 
+export interface MonthRecordsResponse {
+    balanceSheetRecords: BalanceSheetEntry[];
+    expenseRecords: Expense[];
+    incomeRecords: Income[];
+    investRecords: Invest[];
+}
+
 export interface BasicApiResponse {
     message: string,
     data: any

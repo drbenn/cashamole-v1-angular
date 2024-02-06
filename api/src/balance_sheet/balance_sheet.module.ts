@@ -6,6 +6,7 @@ import { ChipService } from 'src/chip/chip.service';
 
 @Module({
   controllers: [BalanceSheetController],
-  providers: [BalanceSheetService, ChipService]
+  providers: [BalanceSheetService, ChipService],
+  exports: [BalanceSheetService]
 })
 export class BalanceSheetModule {}

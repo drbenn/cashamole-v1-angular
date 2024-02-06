@@ -1,7 +1,7 @@
-export class SetUserDataOnLogin {
-    static readonly type = '[User] load data on login';
-    constructor(public data: any) {}
-}
+// export class SetUserDataOnLogin {
+//     static readonly type = '[User] load data on login';
+//     constructor(public data: any) {}
+// }
 
 export class UpdateChips {
   static readonly type = '[Chips] Get all chips';

@@ -12,6 +12,11 @@ export namespace ExpenseActions {
         constructor(public payload: string) {}
     };
 
+    export class SetMonthExpenseRecords {
+        static readonly type =  '[Expense] Set entries on month change';
+        constructor(public payload: Expense[]) {}
+    };
+
     export class AddExpense {
         static readonly type =  '[Expense] Add expense record';
         constructor(public payload: Expense) {}

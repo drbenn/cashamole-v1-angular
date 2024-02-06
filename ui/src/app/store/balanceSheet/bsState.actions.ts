@@ -12,6 +12,11 @@ export namespace BalanceSheetActions {
         constructor(public payload: string) {}
     };
 
+    export class SetMonthBalanceRecords {
+        static readonly type =  '[Balance Sheet] Set entries on month change';
+        constructor(public payload: BalanceSheetEntry[]) {}
+    };
+
     export class AddUserBalanceRecord {
         static readonly type =  '[Balance Sheet] Add user balance record';
         constructor(public payload: BalanceSheetEntry) {}

@@ -60,6 +60,16 @@ export class ExpenseState {
     });
   };
 
+  @Action(ExpenseActions.SetMonthExpenseRecords)
+  setMonthExpenseRecords(
+    ctx: StateContext<ExpenseStateModel>,
+    action: ExpenseActions.SetMonthExpenseRecords
+  ) {
+      ctx.patchState({ 
+        expenses: action.payload
+      });
+  };
+
   @Action(ExpenseActions.AddExpense)
   addExpense(
     ctx: StateContext<ExpenseStateModel>,

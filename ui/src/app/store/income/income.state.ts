@@ -60,6 +60,16 @@ export class IncomeState {
     });
   };
 
+  @Action(IncomeActions.SetMonthIncomeRecords)
+  setMonthIncomeRecords(
+    ctx: StateContext<IncomeStateModel>,
+    action: IncomeActions.SetMonthIncomeRecords
+  ) {
+      ctx.patchState({ 
+        income: action.payload
+      });
+  };
+
   @Action(IncomeActions.AddIncome)
   addIncome(
     ctx: StateContext<IncomeStateModel>,
