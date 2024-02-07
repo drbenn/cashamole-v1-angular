@@ -22,6 +22,9 @@ export class ExpenseService {
     // };
 
     async getAllActiveExpenseRecordsByMonth(userId: number, yearMonthString: string): Promise<ExpenseDto[] | 'get error' | 'undefined userid'> {
+        if (userId === undefined) { 
+            return 'undefined userid' 
+        };
         const sqlQuery: string = `SELECT * FROM user${userId}_expenses WHERE status != 'deactivated' AND date LIKE '${yearMonthString}%' ORDER BY date ASC;`;
         const userExpenseRecords = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], userExpenseRecords[0]);

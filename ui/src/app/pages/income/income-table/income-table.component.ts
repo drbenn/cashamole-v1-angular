@@ -30,7 +30,10 @@ export class IncomeTableComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
+    console.log('DATA RECIEVED FOR TABLE IN INCOME TABLE COMPONENT');
+    console.log(this.tableData);
+    
+    
   }
 
   protected onRowEditInit(row: any): void {

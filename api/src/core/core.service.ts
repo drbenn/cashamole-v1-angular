@@ -20,7 +20,7 @@ export class CoreService {
         private investService: InvestService
     ) {}
 
-    async getAllActiveRecordsByMonth(userId: number, yearMonthString: string): Promise<CoreDto> {
+    async getAllActiveRecordsByMonth(userId: number, yearMonthString: string): Promise<any> {
 
         let activeMonthBalanceRecords: BalanceRecordDto[] | 'get error' | 'undefined userid' =  await this.balanceSheetService.getAllActiveBalanceRecordsByMonth(userId, yearMonthString);
         let activeMonthExpenseRecords: ExpenseDto[] | 'get error' | 'undefined userid' =  await this.expenseService.getAllActiveExpenseRecordsByMonth(userId, yearMonthString);
@@ -40,7 +40,7 @@ export class CoreService {
             activeMonthInvestRecords = [];
         };
 
-        const activeMonthRecords: CoreDto = {
+        const activeMonthRecords: any = {
             balanceSheetRecords: activeMonthBalanceRecords,
             expenseRecords: activeMonthExpenseRecords,
             incomeRecords: activeMonthIncomeRecords,

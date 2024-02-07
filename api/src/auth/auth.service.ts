@@ -201,7 +201,8 @@ export class AuthService {
 
     async getUserDataOnSuccessfulValidation(userId: number): Promise<UserLoginData> {
         const today = new Date();
-        const thisMonth = today.getMonth() + 1;
+        let thisMonth: number | string = today.getMonth() + 1;
+        thisMonth.toString().length === 1 ? thisMonth = '0' + thisMonth : thisMonth = thisMonth.toString();
         const thisYear = today.getFullYear();        
         const yearMonthString: string = `${thisYear}-${thisMonth}`;
         
@@ -248,6 +249,8 @@ export class AuthService {
     };
 
     async getUserIncome(userId: number, yearMonthString: string): Promise<IncomeDto[]> {
+        console.log('income userid: ', userId, '   yearMonthSting: ', yearMonthString);
+        
         const sqlQuery: string = `SELECT * FROM user${userId}_income WHERE status != 'deactivated' AND date LIKE '${yearMonthString}%' ORDER BY date ASC;`;
         const userIncome = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], userIncome[0]);

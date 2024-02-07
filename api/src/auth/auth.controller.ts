@@ -110,6 +110,8 @@ export class AuthController {
           throw new HttpException('login failed', HttpStatus.BAD_REQUEST);
       } else {
           const userLoginData: UserLoginData = await this.authService.getUserDataOnSuccessfulValidation(userIdIfIsloginValidated);
+          console.log(userLoginData.income);
+          
           const username: string = userLoginData.basicProfile.username;
           const userId: number = <number>userLoginData.basicProfile.id;
           const payload = { username: username, id: userId };

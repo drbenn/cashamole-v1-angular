@@ -23,6 +23,10 @@ export class IncomeService {
     // };
 
     async getAllActiveIncomeRecordsByMonth(userId: number, yearMonthString: string): Promise<IncomeDto[] | 'get error' | 'undefined userid'> {
+        if (userId === undefined) { 
+            return 'undefined userid' 
+        };
+        
         const sqlQuery: string = `SELECT * FROM user${userId}_income WHERE status != 'deactivated' AND date LIKE '${yearMonthString}%' ORDER BY date ASC;`;
         const userIncomeRecords = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], userIncomeRecords[0]);

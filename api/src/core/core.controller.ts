@@ -25,7 +25,7 @@ export class CoreController {
             const userId: number = req.cookies.cashamole_uid;
             const yearMonthString: string = params.id;
 
-            const activeMonthRecords: CoreDto =  await this.coreService.getAllActiveRecordsByMonth(userId, yearMonthString);
+            const activeMonthRecords: any =  await this.coreService.getAllActiveRecordsByMonth(userId, yearMonthString);
 
             res.status(HttpStatus.OK)
                 .send({message: 'active month records retrieved successfully', data: JSON.stringify(activeMonthRecords)});

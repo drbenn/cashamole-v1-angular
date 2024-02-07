@@ -12,6 +12,9 @@ export class InvestService {
     ) {}
 
     async getAllActiveInvestRecordsByMonth(userId: number, yearMonthString: string): Promise<InvestDto[] | 'get error' | 'undefined userid'> {
+        if (userId === undefined) { 
+            return 'undefined userid' 
+        };
         const sqlQuery: string = `SELECT * FROM user${userId}_invest WHERE status != 'deactivated' AND date LIKE '${yearMonthString}%' ORDER BY date ASC;`;
         // console.log(sqlQuery);
         

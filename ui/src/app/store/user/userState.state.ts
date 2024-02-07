@@ -65,6 +65,10 @@ export class UserState implements NgxsOnInit {
     action: UserActions.SetUserDataOnLogin
   ) {
     console.log(action.payload);
+    console.log('income being set from setUserDataOnLogin --- userState');
+    console.log(action.payload.income);
+    
+    
     this.store.dispatch(new CalendarActions.SetCalendarOnLogin());
     this.store.dispatch(new IncomeActions.SetIncomeOnLogin(action.payload.income));
     this.store.dispatch(new InvestActions.SetInvestOnLogin(action.payload.investments));

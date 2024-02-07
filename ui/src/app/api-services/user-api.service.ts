@@ -11,8 +11,8 @@ import { environment } from '../../environments/environment.development';
 export class UserApiService {
   constructor(private httpClient: HttpClient) { }
 
-  // private apiUrl: string = environment.apiUrl;
-  private apiUrl: string = 'http://localhost:3006/mole-apiv1';
+  private apiUrl: string = environment.apiUrl;
+  // private apiUrl: string = 'http://localhost:3006/mole-apiv1';
 
   public getHello(): Observable<any> {
     return this.httpClient.get(this.apiUrl + '/', {withCredentials: true}) as Observable<any>;

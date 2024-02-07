@@ -9,6 +9,7 @@ import { InvestActions } from '../invest/invest.actions';
 import { CoreApiService } from '../../api-services/core-api.service';
 import { first, take } from 'rxjs';
 import { MonthRecordsResponse } from '../../models/core.model';
+import { Month } from 'primeng/calendar';
 
 
 export interface CalendarStateModel {
@@ -109,8 +110,28 @@ export class CalendarState {
     .subscribe(
       {
         next: (response: any) => {
-          const records: MonthRecordsResponse = JSON.parse(response.data);
-          this.store.dispatch(new CalendarActions.SetAllRecordsForMonth(records));
+          console.log('THE FRICKIN RESPONSE THAT HAS IT BUT DOESNT');
+          console.log(response);
+          
+          
+          console.log('calendar state - getAllRecordsForMonth --- JSON PARSEresponse.data');
+          // console.log(response.data);
+          console.log(JSON.parse(response.data));
+          
+          const responseParsed: any = JSON.parse(response.data);
+          const monthRecordsResponse: MonthRecordsResponse = {
+            balanceSheetRecords: responseParsed.balanceSheetRecords,
+            expenseRecords: responseParsed.expenseRecords,
+            incomeRecords: responseParsed.incomeRecords,
+            investRecords: responseParsed.investRecords
+          }
+          
+          console.log('dispatched setallRecordsForMonth as MonthRecordsResponse');
+          console.log(monthRecordsResponse);
+          
+          
+
+          this.store.dispatch(new CalendarActions.SetAllRecordsForMonth(monthRecordsResponse));
         },
         error: (error: any) => {
           console.error(error);
@@ -124,6 +145,10 @@ export class CalendarState {
     ctx: StateContext<CalendarStateModel>,
     action: CalendarActions.SetAllRecordsForMonth
   ) {
+      console.log('calendar state - setAllRecordsForMonth - action.monthRecords.incomeRecords');
+      console.log(action.monthRecords.incomeRecords);
+      
+      
       this.store.dispatch(new BalanceSheetActions.SetMonthBalanceRecords(action.monthRecords.balanceSheetRecords));
       this.store.dispatch(new IncomeActions.SetMonthIncomeRecords(action.monthRecords.incomeRecords));
       this.store.dispatch(new ExpenseActions.SetMonthExpenseRecords(action.monthRecords.expenseRecords));

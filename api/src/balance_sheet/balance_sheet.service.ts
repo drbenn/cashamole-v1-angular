@@ -25,6 +25,9 @@ export class BalanceSheetService {
     // };
 
     async getAllActiveBalanceRecordsByMonth(userId: number, yearMonthString: string): Promise<BalanceRecordDto[] | 'get error' | 'undefined userid'> {
+        if (userId === undefined) { 
+            return 'undefined userid' 
+        };
         const sqlQuery: string = `SELECT * FROM user${userId}_bal_sheet WHERE status != 'deactivated' AND date LIKE '${yearMonthString}%' ORDER BY date ASC;`;       
         const userBalanceRecords = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], userBalanceRecords[0]);

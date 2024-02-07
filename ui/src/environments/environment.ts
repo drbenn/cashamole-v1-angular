@@ -1,4 +1,4 @@
 export const environment = {
-    production: false,    
-    apiUrl: `https://www.whatever.com/api`,
+    production: true,    
+    apiUrl: `https://cashamole.com/mole-apiv1/`,
 };

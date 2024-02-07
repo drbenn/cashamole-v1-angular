@@ -10,8 +10,8 @@ import { BalanceSheetEntry, Expense, Income, Invest, MonthRecordsResponse } from
   providedIn: 'root'
 })
 export class CoreApiService {
-  // private apiUrl: string = environment.apiUrl;
-  private apiUrl: string = 'http://localhost:3006/mole-apiv1';
+  private apiUrl: string = environment.apiUrl;
+  // private apiUrl: string = 'http://localhost:3006/mole-apiv1';
 
   constructor(private httpClient: HttpClient) { }
 
@@ -38,9 +38,10 @@ export class CoreApiService {
   //   return this.httpClient.get(this.apiUrl + `/expense/${yearMonthId}`, {withCredentials: true}) as Observable<Expense[]>;
   // };
 
-  public getActiveMonthRecords(yearMonthId:string): Observable<MonthRecordsResponse> {
-    console.log('core api: getActiveMonthRecords');
-    return this.httpClient.get(this.apiUrl + `/core/${yearMonthId}`, {withCredentials: true}) as Observable<MonthRecordsResponse>;
+  public getActiveMonthRecords(yearMonthId:string): Observable<any> {
+    console.log('core api: getActiveMonthRecords ', 'yearMonthId: ', yearMonthId);
+
+    return this.httpClient.get(this.apiUrl + `/core/${yearMonthId}`, {withCredentials: true}) as Observable<any>;
   };
 
 

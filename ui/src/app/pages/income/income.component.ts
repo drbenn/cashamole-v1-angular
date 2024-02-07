@@ -22,6 +22,10 @@ export class IncomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.income$.subscribe((income: any) => {
+      console.log('income receved in income page and USED TO FEED INCOME TABLE');
+      console.log(income);
+      
+      
       if (income) {
         this.activeMonthIncome = income.income;
       };
