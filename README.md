@@ -29,7 +29,11 @@ nest app.module holds database config
 
 # NestJs
 enable cors config in main.ts
+
+jwt passport tutorial
 https://www.youtube.com/watch?v=UQEQHPwQJdg
+cors/http detail
+https://wanago.io/2023/07/17/api-nestjs-cors-cross-origin-resource-sharing/
 
 # NGXS App Module imports
 NgxsModule.forRoot([AppState]),

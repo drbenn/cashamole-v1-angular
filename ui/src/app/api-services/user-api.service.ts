@@ -9,7 +9,9 @@ import { environment } from '../../environments/environment.development';
   
 })
 export class UserApiService {
-  constructor(private httpClient: HttpClient) { }
+  constructor(
+    private httpClient: HttpClient
+  ) { }
 
   private apiUrl: string = environment.apiUrl;
   // private apiUrl: string = 'http://localhost:3006/mole-apiv1';

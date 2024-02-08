@@ -40,6 +40,7 @@ mysqldump -u root -ppass cashamole > mysql-cashamole-dump.sql
 
 ## NestJS Namecheap deployment
 
+
 ### Versioning issues
 - Namecheap latest version of Node is 14.21.2, NestJS current latest version 10, requires Node >= 16, so must use NestJS version 9 or below.
 - bcrypt requires a C dependency, _GLIBC_2.14_, which Namecheap does not support. Must use library bcryptjs as it is written completely in JavaScript and supported by Namecheap in production.

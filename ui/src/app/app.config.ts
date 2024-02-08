@@ -7,7 +7,6 @@ import { NgxsModule } from '@ngxs/store';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { CookieService } from 'ngx-cookie-service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ChartModule } from 'primeng/chart';
 import { AppState } from './store/appState.state';
 import { UserState } from './store/user/userState.state';
 import { ChipState } from './store/chip/chipState.state';
@@ -28,11 +27,10 @@ export const appConfig: ApplicationConfig = {
       NgxsModule.forRoot(
         [AppState, UserState, ChipState, BalanceSheetState, IncomeState, ExpenseState, CalendarState, DashboardState, InvestState]
       ),
-      // devtools always last
+      // devtools always last after NgxsModule
       NgxsReduxDevtoolsPluginModule.forRoot(),
       CookieService,
       BrowserAnimationsModule,
-      ChartModule
     )
   ]
 

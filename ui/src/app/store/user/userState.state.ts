@@ -15,6 +15,7 @@ import { DashboardActions } from '../dashboard/dashboard.actions';
 
 
 export interface UserStateModel {
+  isInitUserDataChecked: boolean,
   isInitUserDataLoaded: boolean,
   loggedInUser: User
 }
@@ -22,6 +23,7 @@ export interface UserStateModel {
 @State<UserStateModel>({
   name: 'user',
   defaults: {
+    isInitUserDataChecked: false,
     isInitUserDataLoaded: false,
     loggedInUser: {} as User
   }
@@ -36,8 +38,15 @@ export class UserState implements NgxsOnInit {
   ) {}
 
   ngxsOnInit(ctx: StateContext<UserState>) {
+    
     const userIdCookie: number = <number><unknown>this.cookieService.get('cashamole_uid');
     const userTokenCookie: string = this.cookieService.get('cashamole_user_token');
+
+    console.log('ngxs on init triggered and checking for existing cookies => redirect to appropriate home/dashboard if so');
+    console.log('cashamole userIdCookie retrieved: ', userIdCookie);
+    console.log('cashamole userTokenCookie retrieved: ', userTokenCookie);
+    
+    
     
     if (userIdCookie && userTokenCookie) {
       this.userApi.loginCachedUser(userIdCookie).subscribe({
@@ -93,7 +102,17 @@ export class UserState implements NgxsOnInit {
       loggedInUser: {} as User,
     });
   };
-
+  
+  @Action(UserActions.TriggerUserCookieCheck)
+  triggerUserCookieCheck(
+    ctx: StateContext<UserStateModel>
+  ) {
+    console.log('trigger cookie check action fired in state');
+    
+    ctx.patchState({     
+      isInitUserDataChecked: true
+    });
+  };
 }
 
 

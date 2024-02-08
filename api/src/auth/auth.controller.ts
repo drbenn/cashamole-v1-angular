@@ -119,9 +119,14 @@ export class AuthController {
           
           res.cookie('cashamole_user_token', this.jwtService.sign(payload), {
             expires: new Date(Date.now() + this.cookieExpireTime),
+            sameSite: 'none',
+            secure: true
+
           });
           res.cookie('cashamole_uid', userId, {
             expires: new Date(Date.now() + this.cookieExpireTime),
+            sameSite: 'none',
+            secure: true
           });
           res.status(HttpStatus.OK).send({message: 'login successful', data: JSON.stringify(userLoginData)});
       };

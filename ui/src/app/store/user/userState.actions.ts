@@ -15,4 +15,8 @@ export namespace UserActions {
   export class ClearUserStateOnLogout {
     static readonly type =  '[User] Clear user state data on logout';
   };
+
+  export class TriggerUserCookieCheck {
+    static readonly type =  '[User] Check for user cookies';
+  };
 }
