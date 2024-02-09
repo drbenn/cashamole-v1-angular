@@ -1,126 +1,129 @@
-
-<main 
-class="flex flex-wrap flex-column justify-content-center align-items-center min-h-screen fadein animation-duration-300"
-[ngStyle]="{'background': 'linear-gradient(165deg, white, white, white, mintcream, #9ce0c115, white)', 'padding-bottom': '10rem'}"
->
-    <div class="mt-8 w-full flex flex-column flex-nowrap justify-content-center align-items-center">
-        <div>
-            <p-selectButton
-                [options]="timeTypes"
-                [(ngModel)]="selectedTimeType"
-                optionLabel="type"
-                #type
-                (click)="handleChartTimePeriodSelect(type.value)"
-            ></p-selectButton>
-        </div>
-        @if (isMonthActiveChoice) {
-            <div class="h-5rem text-500 font-base text-base mt-4 flex flex-row flex-wrap justify-content-center align-items-start">
-                <div class="mt-3 mx-2">
-                    <p-dropdown
-                        [options]="yearOptions"
-                        [(ngModel)]="selectedMonthlyYear"
-                        optionLabel="type"
-                        inputId="float-label"
-                        (onChange)="handleMonthlyYearDropdownChange()"
-                    >
-                    </p-dropdown>
-                </div>
-
-                <div class="mt-3 mx-2">
-                    <p-dropdown
-                        [options]="monthOptions"
-                        [(ngModel)]="selectedMonth"
-                        optionLabel="type"
-                        inputId="float-label"
-                        (onChange)="handlMonthlyMonthDropdownChange()"
-                    >
-                    </p-dropdown>
-                </div>
+@defer {
+    <main 
+    class="flex flex-wrap flex-column justify-content-center align-items-center min-h-screen fadein animation-duration-300"
+    [ngStyle]="{'background': 'linear-gradient(165deg, white, white, white, mintcream, #9ce0c115, white)', 'padding-bottom': '10rem'}"
+    >
+        <div class="mt-8 w-full flex flex-column flex-nowrap justify-content-center align-items-center">
+            <div>
+                <p-selectButton
+                    [options]="timeTypes"
+                    [(ngModel)]="selectedTimeType"
+                    optionLabel="type"
+                    #type
+                    (click)="handleChartTimePeriodSelect(type.value)"
+                ></p-selectButton>
             </div>
-        } @else if (isYearActiveChoice) {
-            <div class="h-5rem text-green-300 font-semibold text-xl mt-4 text-center">
-                <div class="mt-3">
+            @if (isMonthActiveChoice) {
+                <div class="h-5rem text-500 font-base text-base mt-4 flex flex-row flex-wrap justify-content-center align-items-start">
+                    <div class="mt-3 mx-2">
                         <p-dropdown
                             [options]="yearOptions"
-                            [(ngModel)]="selectedAnnualYear"
+                            [(ngModel)]="selectedMonthlyYear"
                             optionLabel="type"
                             inputId="float-label"
-                            (onChange)="handleAnnualYearDropdownChange()"
+                            (onChange)="handleMonthlyYearDropdownChange()"
                         >
                         </p-dropdown>
+                    </div>
+
+                    <div class="mt-3 mx-2">
+                        <p-dropdown
+                            [options]="monthOptions"
+                            [(ngModel)]="selectedMonth"
+                            optionLabel="type"
+                            inputId="float-label"
+                            (onChange)="handlMonthlyMonthDropdownChange()"
+                        >
+                        </p-dropdown>
+                    </div>
                 </div>
-            </div>
-        } @else if (!isMonthActiveChoice && !isYearActiveChoice) {
-            <div class="h-5rem text-green-300 font-semibold text-xl mt-4">
+            } @else if (isYearActiveChoice) {
+                <div class="h-5rem text-green-300 font-semibold text-xl mt-4 text-center">
+                    <div class="mt-3">
+                            <p-dropdown
+                                [options]="yearOptions"
+                                [(ngModel)]="selectedAnnualYear"
+                                optionLabel="type"
+                                inputId="float-label"
+                                (onChange)="handleAnnualYearDropdownChange()"
+                            >
+                            </p-dropdown>
+                    </div>
+                </div>
+            } @else if (!isMonthActiveChoice && !isYearActiveChoice) {
+                <div class="h-5rem text-green-300 font-semibold text-xl mt-4">
 
-            </div>
-        }
-    </div>
-    <section class="flex flex-wrap flex-row justify-content-evenly align-items-start w-full mt-0 mb-8 px-6">
+                </div>
+            }
+        </div>
+        <section class="flex flex-wrap flex-row justify-content-evenly align-items-start w-full mt-0 mb-8 px-6">
 
-        @if (selectedView === 'monthly' || selectedView === 'annual' || selectedView === 'all-time') {
-            <div class="w-28rem h-content m-5">
-                <app-net-worth-time></app-net-worth-time>
-            </div>
-        }
+            @if (selectedView === 'monthly' || selectedView === 'annual' || selectedView === 'all-time') {
+                <div class="w-28rem h-content m-5">
+                    <app-net-worth-time></app-net-worth-time>
+                </div>
+            }
 
-        @if (selectedView === 'monthly' || selectedView === 'annual' || selectedView === 'all-time') {
-            <div class="w-28rem h-content m-5">
-                <app-expense-composition></app-expense-composition>
-            </div>
-        }
+            @if (selectedView === 'monthly' || selectedView === 'annual' || selectedView === 'all-time') {
+                <div class="w-28rem h-content m-5">
+                    <app-expense-composition></app-expense-composition>
+                </div>
+            }
 
-        @if (selectedView === 'monthly' || selectedView === 'annual' || selectedView === 'all-time') {
-            <div class="w-28rem h-content m-5">
-                <app-invest-composition></app-invest-composition>
-            </div>
-        }
+            @if (selectedView === 'monthly' || selectedView === 'annual' || selectedView === 'all-time') {
+                <div class="w-28rem h-content m-5">
+                    <app-invest-composition></app-invest-composition>
+                </div>
+            }
 
-        @if (selectedView === 'monthly' || selectedView === 'annual' || selectedView === 'all-time') {
-            <div class="w-28rem h-content m-5">
-                <app-net-cash-flow-time></app-net-cash-flow-time>
-            </div>
-        }
+            @if (selectedView === 'monthly' || selectedView === 'annual' || selectedView === 'all-time') {
+                <div class="w-28rem h-content m-5">
+                    <app-net-cash-flow-time></app-net-cash-flow-time>
+                </div>
+            }
 
-        @if (selectedView === 'monthly' || selectedView === 'annual' || selectedView === 'all-time') {
-            <div class="w-28rem h-content m-5">
-                <app-expense-history></app-expense-history>
-            </div>
-        }
-        
-        @if (selectedView === 'monthly' || selectedView === 'annual' || selectedView === 'all-time') {
-            <div class="w-28rem h-content m-5">
-                <app-asset-vs-liability-time></app-asset-vs-liability-time>
-            </div>
-        }
-        @if (selectedView === 'monthly' || selectedView === 'annual' ) {
-            <div class="w-28rem h-content m-5">
-                <app-asset-composition></app-asset-composition>
-            </div>
-        }
+            @if (selectedView === 'monthly' || selectedView === 'annual' || selectedView === 'all-time') {
+                <div class="w-28rem h-content m-5">
+                    <app-expense-history></app-expense-history>
+                </div>
+            }
+            
+            @if (selectedView === 'monthly' || selectedView === 'annual' || selectedView === 'all-time') {
+                <div class="w-28rem h-content m-5">
+                    <app-asset-vs-liability-time></app-asset-vs-liability-time>
+                </div>
+            }
+            @if (selectedView === 'monthly' || selectedView === 'annual' ) {
+                <div class="w-28rem h-content m-5">
+                    <app-asset-composition></app-asset-composition>
+                </div>
+            }
 
-        @if (selectedView === 'monthly' || selectedView === 'annual') {
-            <div class="w-28rem h-content m-5">
-                <app-liability-composition></app-liability-composition>
-            </div>
-        }
-        
-        @if (selectedView === 'monthly' || selectedView === 'annual' || selectedView === 'all-time') {
-            <div class="w-28rem h-content m-5">
-                <app-income-history></app-income-history>
-            </div>
-        }
-
-
+            @if (selectedView === 'monthly' || selectedView === 'annual') {
+                <div class="w-28rem h-content m-5">
+                    <app-liability-composition></app-liability-composition>
+                </div>
+            }
+            
+            @if (selectedView === 'monthly' || selectedView === 'annual' || selectedView === 'all-time') {
+                <div class="w-28rem h-content m-5">
+                    <app-income-history></app-income-history>
+                </div>
+            }
 
 
 
-        <!-- <div class="w-28rem h-content m-5">
-            <app-chart-one></app-chart-one>
-        </div> -->
+
+
+            <!-- <div class="w-28rem h-content m-5">
+                <app-chart-one></app-chart-one>
+            </div> -->
 
 
 
-        
-    </section>
-</main>
+            
+        </section>
+    </main>
+} @placeholder (minimum 0.15s) {
+    <app-progress-spinner></app-progress-spinner>
+}

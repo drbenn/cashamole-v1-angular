@@ -1,22 +1,26 @@
-<main class="flex flex-column flex-nowrap justify-content-center align-items-center pt-8 fadein animation-duration-300"
-[ngStyle]="{'background': 'linear-gradient(165deg, white, white, white, mintcream, #9ce0c115, white)', 'padding-bottom': '20rem'}"
->
-    <div>
-        <app-month-cash-flow-summary></app-month-cash-flow-summary>
-    </div>
-    <div class="w-10 flex flex-row flex-wrap justify-content-evenly align-items-start pt-4 my-3">
-        <section class="my-3">
-            <app-new-expense-transaction></app-new-expense-transaction>
-        </section>
-         <section *ngIf="latestData">
-            @for (category of expenseCategoryArray; track expenseCategoryObject[category].exp_id) {
-                <section class="my-3">
-            <app-expense-table [tableTitle]="category | titlecase" [tableData]="expenseCategoryObject[category]"></app-expense-table>
-                </section>
-            } @empty {
-                No Transactions Available
-            }
-         </section>
-    </div>
+@defer {
+    <main class="flex flex-column flex-nowrap justify-content-center align-items-center pt-8 fadein animation-duration-300"
+    [ngStyle]="{'background': 'linear-gradient(165deg, white, white, white, mintcream, #9ce0c115, white)', 'padding-bottom': '20rem'}"
+    >
+        <div>
+            <app-month-cash-flow-summary></app-month-cash-flow-summary>
+        </div>
+        <div class="w-10 flex flex-row flex-wrap justify-content-evenly align-items-start pt-4 my-3">
+            <section class="my-3">
+                <app-new-expense-transaction></app-new-expense-transaction>
+            </section>
+            <section *ngIf="latestData">
+                @for (category of expenseCategoryArray; track expenseCategoryObject[category].exp_id) {
+                    <section class="my-3">
+                <app-expense-table [tableTitle]="category | titlecase" [tableData]="expenseCategoryObject[category]"></app-expense-table>
+                    </section>
+                } @empty {
+                    No Transactions Available
+                }
+            </section>
+        </div>
 
-</main>
+    </main>
+} @placeholder (minimum 0.15s) {
+    <app-progress-spinner></app-progress-spinner>
+}

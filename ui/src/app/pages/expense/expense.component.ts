@@ -6,13 +6,14 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { Expense } from '../../models/core.model';
 import { MonthCashFlowSummaryComponent } from "../../dashboard-components/month-cash-flow-summary/month-cash-flow-summary.component";
+import { ProgressSpinnerComponent } from '../../shared/progress-spinner/progress-spinner.component';
 
 @Component({
     selector: 'app-expense',
     standalone: true,
     templateUrl: './expense.component.html',
     styleUrl: './expense.component.scss',
-    imports: [CommonModule, ExpenseTableComponent, NewExpenseTransactionComponent, MonthCashFlowSummaryComponent]
+    imports: [CommonModule, ExpenseTableComponent, NewExpenseTransactionComponent, MonthCashFlowSummaryComponent, ProgressSpinnerComponent]
 })
 export class ExpenseComponent implements OnInit {
   protected expenses$: Observable<Expense[]> = this.store.select((state) => state.expense);

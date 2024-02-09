@@ -1,4 +1,5 @@
-<main class="flex flex-column flex-nowrap justify-content-center align-items-center pt-8 fadein animation-duration-300"
+@defer {
+    <main class="flex flex-column flex-nowrap justify-content-center align-items-center pt-8 fadein animation-duration-300"
     [ngStyle]="{'background': 'linear-gradient(165deg, white, white, white, mintcream, #9ce0c115, white)', 'padding-bottom': '20rem'}"
 >
 
@@ -15,3 +16,6 @@
     </div>
 
 </main>
+} @placeholder (minimum 0.15s) {
+    <app-progress-spinner></app-progress-spinner>
+}

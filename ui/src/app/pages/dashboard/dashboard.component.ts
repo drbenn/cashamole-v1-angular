@@ -17,6 +17,7 @@ import { CalendarState } from '../../store/calendar/calendar.state';
 import { Observable } from 'rxjs';
 import { DashboardState } from '../../store/dashboard/dashboard.state';
 import { DashboardActions } from '../../store/dashboard/dashboard.actions';
+import { ProgressSpinnerComponent } from '../../shared/progress-spinner/progress-spinner.component';
 
 
 
@@ -42,7 +43,8 @@ export interface OptionType {
     LiabilityCompositionComponent,
     NetCashFlowTimeComponent,
     IncomeHistoryComponent,
-    InvestCompositionComponent
+    InvestCompositionComponent,
+    ProgressSpinnerComponent
   ]
 })
 export class DashboardComponent implements OnInit {

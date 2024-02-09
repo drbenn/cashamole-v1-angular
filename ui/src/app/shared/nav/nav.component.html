@@ -15,7 +15,7 @@
 
     <div>
         @if (loggedInUserVal && isMobileView && !isHiddenForDashboard) {
-            <div class="ml-8 h-1rem flex flex-row flex-nowrap justify-content-center align-items-center pb-1"
+            <div class="ml-8 h-1rem flex flex-row flex-nowrap justify-content-center align-items-center pb-1 fadein animation-duration-300"
                 [ngStyle]="{'transform': 'translate(0rem, 0rem)'}"
             >
                 <div (click)="backOneMonth()">
@@ -44,7 +44,7 @@
         <ul>
             @if (loggedInUserVal && !isMobileView && !isHiddenForDashboard) {
                 <li>
-                    <div class="h-1rem flex flex-row flex-nowrap justify-content-center align-items-center pb-1"
+                    <div class="h-1rem flex flex-row flex-nowrap justify-content-center align-items-center pb-1 fadein animation-duration-300"
                         [ngStyle]="{'transform': 'translate(0rem, 0.5rem)'}"
                     >
                         <div (click)="backOneMonth()">
