@@ -66,7 +66,7 @@ export class UserLoginComponent {
       .subscribe(
         {
           next: (value: any) => {
-            console.log(value);
+            // console.log(value);
             // add user token to local storage here but need to add user id and token to response object
             this.store.dispatch(new UserActions.SetUserDataOnLogin(JSON.parse(value.data)));
             this.router.navigate(['home']);

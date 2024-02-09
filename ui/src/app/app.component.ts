@@ -30,21 +30,13 @@ export class AppComponent implements OnInit {
     this.coreApi.verifyApiConnection().subscribe(
       {
         next: (value: any) => {
-          console.log('app on init data response from verifyApiConnection');
-          console.log('check cookies in browswer');
+          console.log('API connection successful!');
           const userIdCookie: number = <number><unknown>this.cookieService.get('cashamole_uid');
-          console.log('@@@@@@@@@@@ userID FROM COOKIE in app.ts @@@@@@');
-          console.log(userIdCookie);
-          localStorage.setItem('cashamoleYOLO', 'YOLO BOLO MONOLO');
-          
           this.userApi.loginCachedUser(userIdCookie)
-          this.store.dispatch(new UserActions.TriggerUserCookieCheck);
-          console.log(document.cookie);
-          
-          
+          this.store.dispatch(new UserActions.TriggerUserCookieCheck);            
         },
         error: (error: Error) => {
-          console.log('app on init ERROR response from verifyApiConnection');
+          console.log('API connection failed!');
           console.error(error)
         }
       }

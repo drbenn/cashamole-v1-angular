@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserLogin, UserRegister } from '../models/user.models';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment.dev';
 
 @Injectable({
   providedIn: 'root',
@@ -43,8 +43,6 @@ export class UserApiService {
 
 
   public logoutUser() {
-    console.log('user api: logout user');
-    
     return this.httpClient.get(this.apiUrl + '/auth/logout_user', {withCredentials: true}) as Observable<any>;
   };
   
@@ -55,13 +53,10 @@ export class UserApiService {
 
 
   public authenticateUser(loginBody: UserLogin): Observable<any> {
-    console.log('user api: authenticate user');
-    
     return this.httpClient.post(this.apiUrl + '/auth/login_user', loginBody, {withCredentials: true }) as Observable<any>;
   };
 
   public loginCachedUser(userId: number): Observable<any> {
-    console.log('user api: login cached user');
     return this.httpClient.get(this.apiUrl + `/auth/cached_login_user/${userId}`, {withCredentials: true}) as Observable<any>;
   };
   

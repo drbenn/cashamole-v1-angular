@@ -34,10 +34,6 @@ export class IncomeState {
     ctx: StateContext<IncomeStateModel>,
     action: IncomeActions.SetIncomeOnLogin
   ) {
-    console.log('set income login in income state action.payload');
-    console.log(action.payload);
-    
-    
     ctx.patchState({ 
       income: action.payload
     });
@@ -49,10 +45,6 @@ export class IncomeState {
     action: IncomeActions.GetAndSetMonthIncomeRecords
   ) {
     this.coreApi.getActiveIncomeRecordsByMonth(action.payload).subscribe((res: any) => {
-      console.log('coreapi get active income records by month response');
-      console.log(res);
-      
-      
       if (res.data === 'null') {
         this.store.dispatch(new DashboardActions.UpdateMonthIncomeTotal(null));
         ctx.patchState({ 
@@ -73,11 +65,6 @@ export class IncomeState {
     ctx: StateContext<IncomeStateModel>,
     action: IncomeActions.SetMonthIncomeRecords
   ) {
-
-    console.log('income state - set incomeRecords action.payload');
-    console.log(action.payload);
-    
-    
       ctx.patchState({ 
         income: action.payload
       });

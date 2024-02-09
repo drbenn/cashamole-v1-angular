@@ -10,6 +10,7 @@ import { CoreApiService } from '../../api-services/core-api.service';
 import { first, take } from 'rxjs';
 import { MonthRecordsResponse } from '../../models/core.model';
 import { Month } from 'primeng/calendar';
+import { DashboardActions } from '../dashboard/dashboard.actions';
 
 
 export interface CalendarStateModel {
@@ -109,27 +110,14 @@ export class CalendarState {
     this.coreApi.getActiveMonthRecords(action.yearMonthId).pipe(take(1), first())
     .subscribe(
       {
-        next: (response: any) => {
-          console.log('THE FRICKIN RESPONSE THAT HAS IT BUT DOESNT');
-          console.log(response);
-          
-          
-          console.log('calendar state - getAllRecordsForMonth --- JSON PARSEresponse.data');
-          // console.log(response.data);
-          console.log(JSON.parse(response.data));
-          
+        next: (response: any) => {         
           const responseParsed: any = JSON.parse(response.data);
           const monthRecordsResponse: MonthRecordsResponse = {
             balanceSheetRecords: responseParsed.balanceSheetRecords,
             expenseRecords: responseParsed.expenseRecords,
             incomeRecords: responseParsed.incomeRecords,
             investRecords: responseParsed.investRecords
-          }
-          
-          console.log('dispatched setallRecordsForMonth as MonthRecordsResponse');
-          console.log(monthRecordsResponse);
-          
-          
+          };
 
           this.store.dispatch(new CalendarActions.SetAllRecordsForMonth(monthRecordsResponse));
         },
@@ -145,14 +133,17 @@ export class CalendarState {
     ctx: StateContext<CalendarStateModel>,
     action: CalendarActions.SetAllRecordsForMonth
   ) {
-      console.log('calendar state - setAllRecordsForMonth - action.monthRecords.incomeRecords');
-      console.log(action.monthRecords.incomeRecords);
-      
-      
+      // set records for itemized transaction/table display and use
       this.store.dispatch(new BalanceSheetActions.SetMonthBalanceRecords(action.monthRecords.balanceSheetRecords));
       this.store.dispatch(new IncomeActions.SetMonthIncomeRecords(action.monthRecords.incomeRecords));
       this.store.dispatch(new ExpenseActions.SetMonthExpenseRecords(action.monthRecords.expenseRecords));
       this.store.dispatch(new InvestActions.SetMonthInvestRecords(action.monthRecords.investRecords));
+      
+      // send records for use in calculating dashboard summary values
+      this.store.dispatch(new DashboardActions.UpdateMonthBalanceSheetTotal(action.monthRecords.balanceSheetRecords));
+      this.store.dispatch(new DashboardActions.UpdateMonthIncomeTotal(action.monthRecords.incomeRecords));
+      this.store.dispatch(new DashboardActions.UpdateMonthExpenseTotal(action.monthRecords.expenseRecords));
+      this.store.dispatch(new DashboardActions.UpdateMonthInvestTotal(action.monthRecords.investRecords));
   };
 
 }

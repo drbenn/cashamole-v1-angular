@@ -4,7 +4,8 @@
 
 ```
 cd ui
-ng build
+ng build --configuration=production
+note: api url should point to the actual domain ie https://cashamole.com/api not localhost//3000
 ```
 - go to folder/dist/ui/browser and zip contents, the contents should include folders assets and media.
 - extract zip file into root cashamole.com folder

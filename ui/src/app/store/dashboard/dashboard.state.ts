@@ -16,6 +16,7 @@ import {
 
 
 export interface DashboardStateModel {
+    // required for transaction screen dashboard summaries 
     monthExpenses: number,
     monthIncome: number,
     monthInvest: number,
@@ -25,6 +26,8 @@ export interface DashboardStateModel {
     monthAssets: number,
     monthLiabilities: number,
     monthNetWorth: number,
+
+    // required for dashboard
     yearOptions: string[],
     yearMonthOptions: string[],
     activeAnnualYear: string,
@@ -46,6 +49,7 @@ export interface DashboardStateModel {
 @State<DashboardStateModel>({
   name: 'dashboard',
   defaults: {
+    // required for transaction screen dashboard summaries 
     monthExpenses: 0,
     monthIncome: 0,
     monthInvest: 0,
@@ -55,6 +59,8 @@ export interface DashboardStateModel {
     monthAssets: 0,
     monthLiabilities: 0,
     monthNetWorth: 0,
+
+    // required for dashboard
     yearOptions:[],
     yearMonthOptions: [],
     activeAnnualYear: '',
@@ -83,6 +89,35 @@ export class DashboardState {
   static yearOptions(state: DashboardStateModel): string[] {
     return state.yearOptions;
   };
+
+  @Selector() 
+  static monthCashFlowSummary(state: DashboardStateModel): any {
+    return {
+      monthIncome: state.monthIncome,
+      monthExpenses: state.monthExpenses,
+      monthNetCashFlow: state.monthNetCashFlow 
+    };
+  };
+
+  @Selector() 
+  static monthCashInvestedSummary(state: DashboardStateModel): any {
+    return {
+      monthIncome: state.monthIncome,
+      monthPreTaxInvest: state.monthPreTaxInvest,
+      monthPostTaxInvest: state.monthPostTaxInvest,
+      monthInvest: state.monthInvest
+    };
+  };
+
+  @Selector() 
+  static monthNetWorthSummary(state: DashboardStateModel): any {
+    return {
+      monthAssets: state.monthAssets,
+      monthLiabilities: state.monthLiabilities,
+      monthNetWorth: state.monthNetWorth
+    };
+  };
+
 
   @Selector() 
   static activeYearMonthOptions(state: DashboardStateModel): string[] {
@@ -360,8 +395,6 @@ export class DashboardState {
 
 
 
-
-  
   /////////////////////////////////////////////////////////////////////
   //
   //

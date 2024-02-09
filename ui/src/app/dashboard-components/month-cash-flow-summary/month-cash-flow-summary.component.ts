@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Store } from '@ngxs/store';
+import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { DashboardStateModel } from '../../store/dashboard/dashboard.state';
+import { DashboardState, DashboardStateModel } from '../../store/dashboard/dashboard.state';
 import { CardModule } from 'primeng/card';
 
 @Component({
@@ -13,12 +13,12 @@ import { CardModule } from 'primeng/card';
   styleUrl: './month-cash-flow-summary.component.scss'
 })
 export class MonthCashFlowSummaryComponent implements OnInit {
-  protected dashboardData$: Observable<any> = this.store.select((state: any) => state.dashboard);
+  @Select(DashboardState.monthCashFlowSummary) dashboardData$!: Observable<any>;
   protected monthIncome: number = 0;
   protected monthExpense: number = 0;
   protected monthNetCashflow: number = 0;
 
-  constructor(private store: Store) {}
+  constructor() {}
 
   ngOnInit(): void {
       this.dashboardData$.subscribe((data: DashboardStateModel) => {

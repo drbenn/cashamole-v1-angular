@@ -42,12 +42,6 @@ export class UserState implements NgxsOnInit {
     const userIdCookie: number = <number><unknown>this.cookieService.get('cashamole_uid');
     const userTokenCookie: string = this.cookieService.get('cashamole_user_token');
 
-    console.log('ngxs on init triggered and checking for existing cookies => redirect to appropriate home/dashboard if so');
-    console.log('cashamole userIdCookie retrieved: ', userIdCookie);
-    console.log('cashamole userTokenCookie retrieved: ', userTokenCookie);
-    
-    
-    
     if (userIdCookie && userTokenCookie) {
       this.userApi.loginCachedUser(userIdCookie).subscribe({
         next: (userLogin: any) => {
@@ -73,11 +67,6 @@ export class UserState implements NgxsOnInit {
     ctx: StateContext<UserStateModel>,
     action: UserActions.SetUserDataOnLogin
   ) {
-    console.log(action.payload);
-    console.log('income being set from setUserDataOnLogin --- userState');
-    console.log(action.payload.income);
-    
-    
     this.store.dispatch(new CalendarActions.SetCalendarOnLogin());
     this.store.dispatch(new IncomeActions.SetIncomeOnLogin(action.payload.income));
     this.store.dispatch(new InvestActions.SetInvestOnLogin(action.payload.investments));
@@ -107,8 +96,6 @@ export class UserState implements NgxsOnInit {
   triggerUserCookieCheck(
     ctx: StateContext<UserStateModel>
   ) {
-    console.log('trigger cookie check action fired in state');
-    
     ctx.patchState({     
       isInitUserDataChecked: true
     });
