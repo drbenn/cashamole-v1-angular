@@ -46,7 +46,7 @@ export class UserState implements NgxsOnInit {
       this.userApi.loginCachedUser(userIdCookie).subscribe({
         next: (userLogin: any) => {
           this.store.dispatch(new UserActions.SetUserDataOnLogin(JSON.parse(userLogin.data)));
-          this.router.navigate(['home']);
+          this.router.navigate(['dashboard']);
         },
         error: (err: any) => console.log(err)
       });

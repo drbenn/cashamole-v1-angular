@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { UserApiService } from '../../../api-services/user-api.service';
+import { UserApiService } from '../../api-services/user-api.service';
 import { first, take } from 'rxjs';
-import { UserLogin } from '../../../models/user.models';
+import { UserLogin } from '../../models/user.models';
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
-import { UserActions } from '../../../store/user/userState.actions';
+import { UserActions } from '../../store/user/userState.actions';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { AnimateOnScrollModule } from 'primeng/animateonscroll';
@@ -69,7 +69,7 @@ export class UserLoginComponent {
             // console.log(value);
             // add user token to local storage here but need to add user id and token to response object
             this.store.dispatch(new UserActions.SetUserDataOnLogin(JSON.parse(value.data)));
-            this.router.navigate(['home']);
+            this.router.navigate(['dashboard']);
             // console.log('platformId', localStorage);
             
           },

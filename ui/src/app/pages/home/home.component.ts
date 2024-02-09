@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ChartOneComponent } from '../../viz/chart-one/chart-one.component';
 import { AssetCompositionComponent } from "../../dashboard-components/asset-composition/asset-composition.component";
 import { ExpenseCompositionComponent } from "../../dashboard-components/expense-composition/expense-composition.component";
 import { ExpenseHistoryComponent } from "../../dashboard-components/expense-history/expense-history.component";
@@ -35,7 +34,6 @@ export interface OptionType {
         FormsModule,
         SelectButtonModule,
         DropdownModule,
-        ChartOneComponent,
         AssetCompositionComponent,
         ExpenseCompositionComponent,
         ExpenseHistoryComponent,

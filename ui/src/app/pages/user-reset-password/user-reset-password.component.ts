@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { UserApiService } from '../../../api-services/user-api.service';
+import { UserApiService } from '../../api-services/user-api.service';
 import { first, take } from 'rxjs';
 
 @Component({
