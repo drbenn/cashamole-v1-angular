@@ -3,9 +3,9 @@
     <p-card class="">
         <div class="mb-2 ml-4 font-base underline">Month Cash Invested Summary</div>
         <main class="flex flex-no-wrap flex-row justify-content-between align-items-center text-base h-4rem px-4"
-            [ngStyle]="{'width': '34rem'}"
+        [ngStyle]="{'min-width': '34rem'}"
         >
-            <div class="flex flex-no-wrap flex-column justify-content-between align-items-center h-full text-center">
+            <div class="flex flex-no-wrap flex-column justify-content-between align-items-center h-full w-9rem text-center">
                 <div>
                     {{ monthPretaxInvest | currency: 'USD' }}
                 </div>
@@ -18,7 +18,7 @@
                 +
             </div>
         
-            <div class="flex flex-no-wrap flex-column justify-content-between align-items-center h-full text-center">
+            <div class="flex flex-no-wrap flex-column justify-content-between align-items-center h-full w-9rem text-center">
                 <div>
                     {{ monthPosttaxInvest | currency: 'USD' }}
                 </div>

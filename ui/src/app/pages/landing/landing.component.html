@@ -1,0 +1,120 @@
+<main class="flex flex-column flex-nowrap justify-content-center align-items-center pt-8 fadein animation-duration-300"
+    [ngStyle]="{'background': 'linear-gradient(165deg, white, white, white, mintcream, #9ce0c115, white)', 'padding-bottom': '20rem'}"
+>   
+
+    <div class="w-8 flex flex-column flex-wrap justify-content-evenly align-items-start pt-4 my-3 text-700 text-2xl">
+        <div class="w-full text-center text-7xl font-bold animation-duration-500"
+            pAnimateOnScroll
+            enterClass="fadeindown"
+            leaveClass="fadeout"
+        >
+            Engaged personal finance tracking
+        </div>
+
+
+        <div class="w-full flex flex-row flex-wrap justify-content-around align-items-start mt-8 mb-3 bg-white border-landing py-6 animation-duration-500"
+            pAnimateOnScroll
+            enterClass="fadeindown"
+            leaveClass="fadeout"
+        >
+            <div class="w-6 text-left pt-4"
+            [ngStyle]="{'max-width': '25rem', 'min-width': '20rem'}"
+            >
+                <div class="py-4 text-2xl">
+                    Buy something, enter the transaction, immediately! Make it a habit, when you spend money. Be mindful. Enter the expense, see the affect, feel the pain.
+                </div>
+            </div>
+
+            <div class="w-30rem text-center">
+                    <img src="../../../assets/img/expense-anim-gif.gif" alt="expense animation"
+                    [ngStyle]="{ 'width': '100%'}"
+                    class="border-landing"
+                    >
+            </div>
+        </div>
+
+        
+        <div class="w-full text-left my-4 pt-8 animation-duration-500"
+            pAnimateOnScroll
+            enterClass="fadeinleft"
+            leaveClass="fadeout"
+        >
+            Cash-flow centered. No need to confuse and over-complicate everything with delayd payments from credit card due dates. Treat all expenses as if you spent cash.
+        </div>
+
+
+        @defer {
+            <div class="w-full flex flex-row flex-wrap justify-content-around align-items-start my-8 bg-white border-landing py-6 animation-duration-500"
+                pAnimateOnScroll
+                enterClass="fadeindown"
+                leaveClass="fadeout"
+            >
+
+                    <div class="w-30rem text-center">
+                            <img src="../../../assets/img/balancesheet-anim-gif.gif" alt="balancesheet animation"
+                            [ngStyle]="{ 'width': '100%'}"
+                            >
+                    </div>
+                    <div class="w-6 text-left pt-4"
+                    [ngStyle]="{'max-width': '25rem', 'min-width': '20rem'}"
+                    >
+                        <div class="py-4 pl-6 text-2xl">
+                            Every 1st of the month, enter the value of your asset and liablity accounts, a snapshot of your net worth to compare and contrast over time.
+                        </div>
+                    </div>
+            </div>
+
+
+
+            <div class="w-full text-left my-4 animation-duration-500"
+                pAnimateOnScroll
+                enterClass="fadeinleft"
+                leaveClass="fadeout"
+            >
+                If you buy something with a credit card, the charge affects your monthly cash-flow. Pay your credit card full balance every month, never get charged interest, and always collect cash back rewards.
+            </div>
+        }
+
+        @defer {
+            <div class="w-full flex flex-row flex-wrap justify-content-around align-items-start pt-4 mt-8 mb-3 bg-white border-landing py-6 animation-duration-500"
+                pAnimateOnScroll
+                enterClass="fadeindown"
+                leaveClass="fadeout"
+            >
+                <div class="w-6 text-left pt-4"
+                [ngStyle]="{'max-width': '25rem', 'min-width': '20rem'}"
+                >
+                    <div class="py-4 pr-6 text-2xl">
+                        Visualize trends in your finances. See changes over time and composition of your cash flows.
+                    </div>
+                </div>
+
+                <div class="w-30rem text-center">
+                        <img src="../../../assets/img/dashboard-anim-gif.gif" alt="dashboard animation"
+                        [ngStyle]="{ 'width': '100%'}"
+                        >
+                </div>
+            </div>
+
+            <div class="w-full text-left mt-8 mb-6 text-5xl font-bold animation-duration-500"
+                pAnimateOnScroll
+                enterClass="fadeinleft"
+                leaveClass="fadeout"
+            >
+                That's it.
+            </div>
+
+            <div class="w-full text-left mt-4 text-2xl animation-duration-500"
+                pAnimateOnScroll
+                enterClass="fadeinright"
+                leaveClass="fadeout"
+            >
+                Automate full payment of credit card balances every month, simplify yout finances and watch your net assets grow by maintaining a positive cash flow each month.
+            </div>
+        }
+
+
+
+    </div>
+
+</main>

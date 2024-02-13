@@ -95,9 +95,9 @@ export class NewInvestTransactionComponent implements OnInit {
     else if (values) {
       const investBody: Invest = {
         date: new Date(values.date),
-        amount: values.amount,
-        institution: values.institution.toLowerCase(),
-        note: values.note.toLowerCase(),
+        amount: values.amount ? values.amount : 0,
+        institution: values.institution && values.institution.length ? values.institution.toLowerCase() : 'unknown',
+        note: values.note && values.note.length ? values.note.toLowerCase() : '',
         status: 'active'
       }
       

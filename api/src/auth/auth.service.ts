@@ -248,9 +248,7 @@ export class AuthService {
         return results[0];
     };
 
-    async getUserIncome(userId: number, yearMonthString: string): Promise<IncomeDto[]> {
-        console.log('income userid: ', userId, '   yearMonthSting: ', yearMonthString);
-        
+    async getUserIncome(userId: number, yearMonthString: string): Promise<IncomeDto[]> {       
         const sqlQuery: string = `SELECT * FROM user${userId}_income WHERE status != 'deactivated' AND date LIKE '${yearMonthString}%' ORDER BY date ASC;`;
         const userIncome = await this.connection.query(sqlQuery);
         const results = Object.assign([{}], userIncome[0]);

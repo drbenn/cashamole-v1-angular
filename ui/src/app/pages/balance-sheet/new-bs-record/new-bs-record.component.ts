@@ -132,6 +132,7 @@ export class NewBsRecordComponent implements OnInit {
       description: '',
       amount: null
     });
+    this.newRecordForm.markAsPristine();
   }
 
   protected onSubmit(): void {
@@ -144,8 +145,8 @@ export class NewBsRecordComponent implements OnInit {
       const balanceSheetEntry: BalanceSheetEntry = {
         type: values.type,
         date: this.activeMonthStartDate,
-        description: values.description,
-        amount: values.amount,
+        description: values.description && values.description.length ? values.description.toLowerCase() : '',
+        amount: values.amount ? values.amount : 0,
         status: 'active'
       };
       

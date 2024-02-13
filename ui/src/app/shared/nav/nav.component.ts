@@ -106,8 +106,8 @@ export class NavComponent {
     this.visibleSidebar = false; 
   };
 
-  protected navigateHome(): void {
-    this.router.navigate(['home']);
+  protected navigateToLanding(): void {
+    this.router.navigate(['landing']);
   };
 
   protected logoutUser(navToSplash: boolean): void {
@@ -117,7 +117,7 @@ export class NavComponent {
         next: (value: any) => {
           this.store.dispatch(new UserActions.ClearUserStateOnLogout());
           if (navToSplash) {
-            this.router.navigate(['login']);
+            this.router.navigate(['landing']);
           }
         },
         error: (error: Error) => {

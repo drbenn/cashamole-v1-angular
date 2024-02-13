@@ -96,9 +96,9 @@ export class NewIncomeTransactionComponent implements OnInit {
     else if (values) {
       const incomeBody: Income = {
         date: new Date(values.date),
-        amount: values.amount,
-        source: values.source.toLowerCase(),
-        note: values.note.toLowerCase(),
+        amount: values.amount ? values.amount : 0,
+        source: values.source && values.source.length ? values.source.toLowerCase() : 'unknown',
+        note: values.note && values.note.length ? values.note.toLowerCase() : '',
         status: 'active'
       }
       

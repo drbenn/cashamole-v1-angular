@@ -1,7 +1,9 @@
 @if (monthAssets !== 0 && monthLiabilities !== 0 && monthNetWorth !== 0) {
     <p-card class="">
         <div class="mb-2 ml-4 font-base underline">Month Net Worth Summary</div>
-        <main class="flex flex-no-wrap flex-row justify-content-between align-items-center text-base h-3rem w-25rem px-4">
+        <main class="flex flex-no-wrap flex-row justify-content-between align-items-center text-base h-3rem px-4"
+            [ngStyle]="{'min-width': '25rem'}"
+        >
             <div class="flex flex-no-wrap flex-column justify-content-between align-items-center h-full">
                 <div>
                     {{ monthAssets | currency: 'USD'}}

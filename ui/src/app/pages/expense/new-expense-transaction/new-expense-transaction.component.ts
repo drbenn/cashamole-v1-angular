@@ -122,10 +122,10 @@ export class NewExpenseTransactionComponent implements OnInit {
     else if (values) {
       const expenseBody: Expense = {
         date: new Date(values.date),
-        amount: values.amount,
-        category: values.category.toLowerCase(),
-        vendor: values.vendor.toLowerCase(),
-        note: values.note.toLowerCase(),
+        amount: values.amount ? values.amount : 0,
+        category: values.category && values.category.length ? values.category.toLowerCase() : 'unknown',
+        vendor: values.vendor && values.vendor.length ? values.vendor.toLowerCase() : 'unknown',
+        note: values.note && values.note.length ? values.note.toLowerCase() : '',
         status: 'active'
       };
       
