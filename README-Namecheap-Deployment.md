@@ -4,7 +4,8 @@
 
 ```
 cd ui
-ng build --configuration=production
+<!-- ng build --configuration=production THIS DOESNT WORK!--> 
+ng build --configuration=production workaround: just use ng build but must switch uncommented apiUrl to cashamole.com in environment.dev.ts
 note: api url should point to the actual domain ie https://cashamole.com/api not localhost//3000
 ```
 - go to folder/dist/ui/browser and zip contents, the contents should include folders assets and media.
